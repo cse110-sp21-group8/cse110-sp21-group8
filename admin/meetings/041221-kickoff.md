@@ -28,6 +28,7 @@ Date: 4/11
 3. Group Contract Brainstorm 
     - [Overview](https://canvas.ucsd.edu/courses/25069/assignments/281355)
     - Rules 
+        - Ex: responding to slack messages in timely manner, meeting expectations, etc.
   
 4. Preview of next meeting 
     - solidfy time?
