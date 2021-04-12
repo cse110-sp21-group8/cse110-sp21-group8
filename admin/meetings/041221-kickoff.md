@@ -1,6 +1,16 @@
 
 # Kickoff Meeting 
 
+Team Number: 
+
+Type of Meeting: Kickoff
+
+Attendance: 
+
+Location: Zoom
+
+Date: 4/11
+
 ## Agenda
 
 1. Introductions:
@@ -16,6 +26,19 @@
     - Page and Video 
 
 3. Group Contract Brainstorm 
-  - Overview
-  - 
-5. 
+  - [Overview](https://canvas.ucsd.edu/courses/25069/assignments/281355)
+  - Rules 
+  
+4. Preview of next meeting 
+  - solidfy time?
+  - video skills
+  - brainstorm 
+
+5. Group Bonding 
+    - any ideas?
+
+## To do for next meeting: 
+- sign and submit the contract by tonight if possible
+- think about team names, brand, mascot, etc
+- 
+
