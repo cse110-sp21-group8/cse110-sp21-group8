@@ -23,7 +23,7 @@ Date: 4/11
     - Kickoff 
     - Contract 
     - Bonding 
-    - Page and Video 
+    - Branding, Page, Video
 
 3. Group Contract Brainstorm 
     - [Overview](https://canvas.ucsd.edu/courses/25069/assignments/281355)
