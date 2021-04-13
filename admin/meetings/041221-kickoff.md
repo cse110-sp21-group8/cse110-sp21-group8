@@ -41,12 +41,19 @@ Date: 4/11
         - Team leads will edit and notify team when final version is ready for signatures
   
 5. Preview of next meeting 
-    - solidfy time?
+    - solidfy time? 
+        - planning on 6-7
     - video skills
-    - brainstorm 
+        - team leads will put it together
+    - brainstorm  
+        - For the video: 
+            -  anime introductions 
+            -  passing an item around zoom 
+            -  Tik-Tok challenge 
 
 6. Group Bonding 
     - any ideas?
+        - we decided skribble.io
 
 ## To do for next meeting: 
   - sign and submit the contract by tonight if possible
