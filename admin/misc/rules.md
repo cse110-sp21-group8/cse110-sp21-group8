@@ -28,6 +28,7 @@
 
   - Mid-High Level: missing multiple meetings, being late multiple times, ghosting group, disrespecting teammates, etc
     - meet with the team 
+    - has to serenade the entire team 
   
   - If behavior continues, meeting with whole group 
     - potentially meet with TA/Prof.
