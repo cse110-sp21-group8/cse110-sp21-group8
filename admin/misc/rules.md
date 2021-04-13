@@ -1,13 +1,14 @@
 ### Rules and Expectations 
 - Communication:
   - group members should respond to messages within 12-24 hours 
-  - respond to messages in thread in slack
+  - respond to messages in thread on slack
   - being respectful to one another, use appropriate language
-  - give updates on progress/deadlines
+  - give regular updates on progress/deadlines
   - documentation channel on Slack
 
 - Meeting: 
   - join meetings on time
+  - be respectful (i.e. don't interrupt team members)
 
 - Brainstorming: 
   - each person should contribute at least one idea
@@ -30,5 +31,8 @@
     - meet with the team 
     - has to serenade the entire team 
   
-  - If behavior continues, meeting with whole group 
+  - If behavior continues, meeting with whole team 
     - potentially meet with TA/Prof.
+
+
+## Signature: 
