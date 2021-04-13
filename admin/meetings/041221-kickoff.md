@@ -18,24 +18,32 @@ Date: 4/11
     - Major
     - College 
     - Spirit animal?
+
+2. Impromptu Meeting w/ Sanat (Team Mentor) 
+    - Discussion sections (TA's personal zoom link) 
+        - only mandantory for team leads 
+        - recommends 2-3 people from team to come - who can come? Mondays 4-5
+
+    - Need to meet with Sanat every week for 30 mins (mandatory) 
+        - Please fill out [When2Meet](https://www.when2meet.com/?11632616-uNUUY) asap 
   
-2. Upcoming Due Dates: 4/15 Thursday  
+3. Upcoming Due Dates: 4/15 Thursday  
     - Kickoff 
     - Contract 
     - Bonding 
     - Branding, Page, Video
 
-3. Group Contract Brainstorm 
+4. Group Contract Brainstorm 
     - [Overview](https://canvas.ucsd.edu/courses/25069/assignments/281355)
     - Rules 
         - Ex: responding to slack messages in timely manner, meeting expectations, etc.
   
-4. Preview of next meeting 
+5. Preview of next meeting 
     - solidfy time?
     - video skills
     - brainstorm 
 
-5. Group Bonding 
+6. Group Bonding 
     - any ideas?
 
 ## To do for next meeting: 
