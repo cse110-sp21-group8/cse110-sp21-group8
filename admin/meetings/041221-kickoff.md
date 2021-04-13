@@ -37,6 +37,8 @@ Date: 4/11
     - [Overview](https://canvas.ucsd.edu/courses/25069/assignments/281355)
     - Rules 
         - Ex: responding to slack messages in timely manner, meeting expectations, etc.
+        - Established rough draft of rules 
+        - Team leads will edit and notify team when final version is ready for signatures
   
 5. Preview of next meeting 
     - solidfy time?
