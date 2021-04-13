@@ -54,7 +54,7 @@ Date: 4/12 6:00 PM
             -  Slack Etiquette 
             -  GitHub Etiquette
             -  Communication!!
-            -  See [rules.md](./misc/rules.md) for our group contract draft!
+            -  See [rules.md](../misc/rules.md) for our group contract draft!
         - Team leads will edit and notify team when final version is ready for signatures
   
 5. Preview of next meeting 
