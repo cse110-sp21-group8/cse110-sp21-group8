@@ -35,7 +35,7 @@ Date: 4/12 6:00 PM
         - recommends 2-3 people from team to come - who can come? Mondays 4-5 
             - follow up in the slack on who can come
 
-    - Need to meet with Sanat every week for 30 mins (mandatory) 
+    - Need to meet with Sanat every week for 30 mins (~~mandatory~~ optional) 
         - Please fill out [When2Meet](https://www.when2meet.com/?11632616-uNUUY) asap 
   
 3. Upcoming Due Dates: 4/15 Thursday  
