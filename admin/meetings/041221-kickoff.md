@@ -48,5 +48,6 @@ Date: 4/11
 
 ## To do for next meeting: 
   - sign and submit the contract by tonight if possible
+  - fill out [When2Meet](https://www.when2meet.com/?11632616-uNUUY)
   - think about team names, brand, mascot, etc
 
