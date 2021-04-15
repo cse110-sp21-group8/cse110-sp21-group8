@@ -15,7 +15,7 @@ Think Future. Think Fast. Think Flat.
 Bruce is an inquisitive Mathematics-Computer Science major in his 4th year at Sixth College. He's determined to learn everything there is to know about Software Engineering. Some of Bruce's hobbies include basketball (go Lakers!) and loves to be around nature so he goes on hikes frequently.
 
 [Navika Budhraja](https://github.com/nbudhraj)
-<img src="../teamphotos/navika.jpg" width="300" height="400"/><br>
+<img src="/teamphotos/navika.jpg" width="300" height="400"/><br>
 Navika Budhraja is a second-year Computer Science Major at Eleanor Roosevelt College. She is an aspiring software engineer who one day hopes to either work at or found a startup. In her free time, Navika loves to play and watch basketball (Go Warriors!), and has recently enjoyed adventuring around San Diego on her bike.
 
 Dennis Luc
