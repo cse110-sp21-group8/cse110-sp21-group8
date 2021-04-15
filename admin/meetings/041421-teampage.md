@@ -60,12 +60,8 @@ Date: 4/14 6:00 PM
      - Jinhao: Ryan 
      - Zakaria: Stanley
 
-5. [Team Page](https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/team.md)
-
-
-## To do for next meeting: 
-  - 
+5. Work on [Team Page](https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/team.md)
 
 ### Finishing 
-Meeting Finished at  PM
+Meeting Finished at 7:05 PM
 
