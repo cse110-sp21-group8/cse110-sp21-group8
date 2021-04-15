@@ -1,6 +1,6 @@
-## Team Page
+# Team Page
 
-## Team Name: Engineers for Flat Earthers
+### Team Name: Engineers for Flat Earthers
 
 ## [Team Brand](https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/brand.md)
 
