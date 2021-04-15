@@ -36,7 +36,9 @@ Bao is a senior CS (that is, Cognitive Science) major, minoring in the original 
 
 Zakaria Alhomsy
 
-Dante Tanjuatco
+[Dante Tanjuatco](https://github.com/Upleft-DT)<br>
+<img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/Dante.jpg" width="300" height="400" /><br>
+Dante is a 3rd year Computer Science major at Sixth College. He is exploring the many aspects of CSE at UCSD and has set his sights on becoming a Software Engineer. His favorite foods in order are Fried Chicken, Pizza, and Hotpot.
 
 [Chongbo Tang](https://github.com/tangcb26)<br>
 <img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/chongbo.jpg" width="300" height="400" /><br>
