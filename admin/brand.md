@@ -1,7 +1,9 @@
-## Team Brand
+# Team Brand
 
-[Team Colors](https://colorhunt.co/palette/273472)
+### [Team Colors](https://colorhunt.co/palette/273472)
 
-Logo: 
+### Logo<br>
+<img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/Logo.png" width="300" height="400" /><br>
 
-Mascot:
+### Mascot<br>
+<img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/Mascot.jpg" width="300" height="400" /><br>
