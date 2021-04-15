@@ -2,14 +2,14 @@
 
 ### Team Name: Engineers for Flat Earthers
 
-## [Team Brand](https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/brand.md)
+### [Team Brand](https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/brand.md)
 
-## Team Values:
+### Team Values:
 Our team strives to challenge societal norms with innovative, flat thinking. We are open to all ideas and opinions for a leveled world. We strive to:<br>
 Think Future. Think Fast. Think Flat.
 
 
-## Team Roster:
+### Team Roster:
 [Bruce Haidrey](https://github.com/brucehaidrey24)<br>
 <img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/Bruce.JPG" width="300" height="400" /><br>
 Bruce is an inquisitive Mathematics-Computer Science major in his 4th year at Sixth College. He's determined to learn everything there is to know about Software Engineering. Some of Bruce's hobbies include basketball (go Lakers!) and loves to be around nature so he goes on hikes frequently.
