@@ -42,7 +42,7 @@ Dante Tanjuatco
 
 [Chongbo Tang](https://github.com/tangcb26)<br>
 <img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/chongbo.jpg" width="368" height="400" /><br>
-Chongbo is a third-year student majoring in Computer Science at Sixth College, who has a particular interest in algorthm design and analysis.
+Chongbo is a third-year student majoring in Computer Science at Sixth College, who has a particular interest in algorthm design and analysis. Outside of school, Chongbo loves traveling around, hanging out in nature, and exploring small local restaurants. 
 
 [Dennis Luc](https://github.com/denniskluc)<br>
 <img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/dennis-tahoe.jpeg" width="300" height="400" /><br>
