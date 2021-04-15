@@ -14,7 +14,9 @@ Think Future. Think Fast. Think Flat.
 <img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/Bruce.JPG" width="300" height="400" /><br>
 Bruce is an inquisitive Mathematics-Computer Science major in his 4th year at Sixth College. He's determined to learn everything there is to know about Software Engineering. Some of Bruce's hobbies include basketball (go Lakers!) and loves to be around nature so he goes on hikes frequently.
 
-Navika Budhraja
+[Navika Budhraja](https://github.com/nbudhraj)
+<img src="../teamphotos/navika.jpg" width="300" height="400"/><br>
+Navika Budhraja is a second-year Computer Science Major at Eleanor Roosevelt College. She is an aspiring software engineer who one day hopes to either work at or found a startup. In her free time, Navika loves to play and watch basketball (Go Warriors!), and has recently enjoyed adventuring around San Diego on her bike.
 
 Dennis Luc
 
@@ -36,9 +38,7 @@ Bao is a senior CS (that is, Cognitive Science) major, minoring in the original 
 
 Zakaria Alhomsy
 
-[Dante Tanjuatco](https://github.com/Upleft-DT)<br>
-<img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/Dante.jpg" width="300" height="400" /><br>
-Dante is a 3rd year Computer Science major at Sixth College. He is exploring the many aspects of CSE at UCSD and has set his sights on becoming a Software Engineer. His favorite foods in order are Fried Chicken, Pizza, and Hotpot.
+Dante Tanjuatco
 
 [Chongbo Tang](https://github.com/tangcb26)<br>
 <img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/chongbo.jpg" width="300" height="400" /><br>
