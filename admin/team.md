@@ -45,5 +45,5 @@ Dante Tanjuatco
 Chongbo is a third-year student majoring in Computer Science at Sixth College, who has a particular interest in algorthm design and analysis.
 
 [Dennis Luc](https://github.com/denniskluc)<br>
-<img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/dennis-tahoe.jpg" width="300" height="400" /><br>
+<img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/dennis-tahoe.jpeg" width="300" height="400" /><br>
 Dennis is a second-year Computer Science major from Eleanor Roosevelt College. He hopes to be able to learn as much about software engineering as possiblle through CSE 110, and apply the skills he learns to future internships and projects. In his free time, Dennis enjoys hiking, learning how to cook, watching anime, and playing League of Legends!
