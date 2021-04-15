@@ -37,7 +37,7 @@ Karen is a second year Computer Science major at Eleanor Roosevelt College. She 
 Bao is a senior CS (that is, Cognitive Science) major, minoring in the original CS. He is an aspiring software engineer and is exploring ways machine learning can be applied to helping humans. He loves making food and watching movies, and wishes he could purchase a Zline Professional 48 Inch Wide 6 cu. ft. Slide-In Dual Fuel Range Stove for his house some day.
 
 [Zakaria Alhomsy](https://github.com/zakariaAlhomsy)<br>
-<img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/Zakaria.jpg" width="226" height="325" /><br>
+<img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/Zakaria.jpg" width="300" height="400" /><br>
 Zak is a fourth year CS major at Sixth College. He plans on becoming a software engineer who focuses on backend development. He enjoys playing video games, listening to music, and hanging out with friends. 
 
 Dante Tanjuatco(https://github.com/Upleft-DT)<br>
@@ -45,7 +45,7 @@ Dante Tanjuatco(https://github.com/Upleft-DT)<br>
 Dante is a 3rd year Computer Science major at Sixth College. He is exploring the many aspects of CSE at UCSD and has set his sights on becoming a Software Engineer. His favorite foods in order are Fried Chicken, Pizza, and Hotpot.
 
 [Chongbo Tang](https://github.com/tangcb26)<br>
-<img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/chongbo.jpg" width="368" height="400" /><br>
+<img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/chongbo.jpg" width="300" height="400" /><br>
 Chongbo is a third-year student majoring in Computer Science at Sixth College, who has a particular interest in algorthm design and analysis. Outside of school, Chongbo loves traveling around, hanging out in nature, and exploring small local restaurants. 
 
 [Dennis Luc](https://github.com/denniskluc)<br>
