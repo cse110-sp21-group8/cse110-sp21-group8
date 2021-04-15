@@ -30,7 +30,7 @@ Marlon is a second year computer science major from Muir College. He's intereste
 
 [Karen Gong](https://github.com/kwgong)<br>
 <img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/Karen.jpg" width="400" height="300" /><br>
-Karen is a Computer Science major at Eleanor Roosevelt College. Some things she really enjoys are dancing and going on food adventures with friends.
+Karen is a second year Computer Science major at Eleanor Roosevelt College. She aspires to apply creativity in software development to create responsible products that can be of use for people. In particular, she hopes to be involved with designs that facilitate or promote better mental health. Some things she really enjoys are dancing and going on food adventures with friends.
 
 [Bao Nguyen](https://github.com/bao153)<br>
 <img src="https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/teamphotos/Bao.jpg" width="300" height="400" /><br>
