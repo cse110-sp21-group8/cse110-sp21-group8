@@ -33,4 +33,4 @@ Date: 4/21 5:30 PM
 
 ## End Time
 
-Meeting ended at 
+Meeting ended at 7:30
