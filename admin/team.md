@@ -2,7 +2,7 @@
 
 ### Team Name: Engineers for Flat Earthers
 
-### [Team Brand](https://github.com/cse110-sp21-group8/cse110-sp21-group8/blob/main/admin/brand.md)
+### [Team Brand](branding/brand.md)
 
 ### Team Values:
 Our team strives to challenge societal norms with innovative, flat thinking. We are open to all ideas and opinions for a leveled world. We strive to:<br>
