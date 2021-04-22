@@ -27,7 +27,8 @@ Date: 4/21 5:30 PM
 3. Decide on a target audience as a team.
    - College Students
 
-4. Discuss team roles and how to divide the workload. 
+4. Discuss team roles and how to divide the workload.  
+   - Marlon: Designer (tentative)
 
 5. Add screenshot of Miro board to repo. 
 
