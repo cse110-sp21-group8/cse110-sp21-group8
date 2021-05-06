@@ -1,16 +1,16 @@
 Type of Meeting: CheckIn
 
 Attendance:  
-   - [] Dennis Luc	
-   - [] Jinhao Zhou	
-   - [] Marlon Trujillo Ariza	 
-   - [] Karen Gong	
-   - [] Chongbo Tang	
-   - [] Bao Nguyen	
-   - [] Zakaria Alhomsy	
-   - [] Dante Tanjuatco
-   - [] Navika Budhraja 
-   - [] Bruce Haidrey
+   - [x] Dennis Luc	
+   - [x] Jinhao Zhou	
+   - [x] Marlon Trujillo Ariza	 
+   - [x] Karen Gong	
+   - [x] Chongbo Tang	
+   - [x] Bao Nguyen	
+   - [x] Zakaria Alhomsy	
+   - [x] Dante Tanjuatco
+   - [x] Navika Budhraja 
+   - [x] Bruce Haidrey
 
 Location: Zoom
 
