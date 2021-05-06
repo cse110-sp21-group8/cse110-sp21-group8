@@ -1,0 +1,23 @@
+{
+  "name": "cse110-sp21-group8",
+  "version": "1.0.0",
+  "description": "Bullet Journal for the Flat Earthers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cse110-sp21-group8/cse110-sp21-group8.git"
+  },
+  "author": "Team 8",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cse110-sp21-group8/cse110-sp21-group8/issues"
+  },
+  "homepage": "https://github.com/cse110-sp21-group8/cse110-sp21-group8#readme",
+  "devDependencies": {
+    "eslint": "^7.25.0"
+  }
+}
