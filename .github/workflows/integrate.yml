@@ -1,6 +1,6 @@
 name: Test Node CI
 
-on: [push, commit]
+on: [push]
 
 jobs:
   eslint:
