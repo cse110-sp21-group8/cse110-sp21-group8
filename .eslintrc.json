@@ -10,10 +10,10 @@
     "extends": ["eslint:recommended", "plugin:prettier/recommended"],
     "plugins": ["prettier"],
     "rules": {
-      "prettier/prettier": "warn",
-      "indent": ["warn", 2],
-      "semi": ["warn", "always"],
-      "quotes": ["warn", "single"],
-      "no-unused-vars": "warn"
+      "prettier/prettier": "error",
+      "indent": ["error", 2],
+      "semi": ["error", "always"],
+      "quotes": ["error", "single"],
+      "no-unused-vars": "error"
     }
 }
