@@ -23,10 +23,5 @@
     "eslint-plugin-prettier": "^3.4.0",
     "husky": "^6.0.0",
     "prettier": "^2.2.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "echo \"pre-commit\" lint"
-    }
   }
 }
