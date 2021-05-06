@@ -1,6 +1,6 @@
 name: Test Node CI
 
-on: push
+on: [push, commit]
 
 jobs:
   eslint:
@@ -16,6 +16,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: yarn install
-    - run: yarn lint
+    - run: yarn lint --fix
 
 

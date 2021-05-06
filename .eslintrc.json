@@ -7,10 +7,13 @@
         "ecmaVersion": 12,
         "sourceType": "module"
     },
-    "extends": "eslint:recommended",
+    "extends": ["eslint:recommended", "prettier"],
+    "plugins": ["prettier"],
     "rules": {
-      "indent": ["error", 2],
-      "semi": ["error", "always"],
-      "quotes": ["error", "double"]
+      "prettier/prettier": "warn",
+      "indent": ["warn", 2],
+      "semi": ["warn", "always"],
+      "quotes": ["warn", "single"],
+      "no-unused-vars": "warn"
     }
 }

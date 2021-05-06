@@ -1,8 +1,9 @@
 function greeting(name) {
-    return 'Hello' + name;
+  return 'Hello' + name;
 }
 
-function broken() {
-  const u = 0;
-  u++;
+function pretty() {
+    let array = ['dog', 'cat', 'mouse'];
 }
+
+greeting();
