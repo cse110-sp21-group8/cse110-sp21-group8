@@ -15,7 +15,7 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - uses: bradennapier/eslint-plus-action@v3.4.2
+    - run: yarn install
+    - run: yarn lint
 
 
