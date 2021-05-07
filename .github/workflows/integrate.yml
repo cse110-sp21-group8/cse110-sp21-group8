@@ -1,6 +1,6 @@
-name: Check Node CI
+name: Test Node CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   eslint:
