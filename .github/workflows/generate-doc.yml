@@ -1,4 +1,4 @@
-name: Test Node CI
+name: Generator JS Docs
 
 on: [push, pull_request]
 
@@ -17,7 +17,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install modules
       run: yarn install
-    - run: yarn lint --fix
     - run: yarn doc
+
 
 

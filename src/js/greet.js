@@ -5,11 +5,7 @@
  */
 
 function greeting(name) {
-  return 'Hello' + name;
+  return `Hello ${name}!`;
 }
 
-//function pretty() {
-//  let array = ['dog', 'cat', 'mouse'];
-//}
-
-greeting();
+module.exports = greeting;
