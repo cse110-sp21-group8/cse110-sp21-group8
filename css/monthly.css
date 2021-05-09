@@ -1,0 +1,145 @@
+/* Monthly Log Styling */
+
+@import url(https://fonts.googleapis.com/css2?family=Questrial&display=swap);
+
+*{
+    font-family: 'Questrial', sans-serif;
+}
+
+/* Flex box for two sides of screen */
+.container {
+    display: flex;
+    flex-direction: row; /* row flex direction*/
+  }
+
+  /* left side of screen formatting*/
+  .left {
+    width: 65%; /* takes a little over half screen */
+  }
+
+  .left > h1 {
+    margin-left: 100px; 
+  }
+  
+  /* right side of screen formatting*/
+  .right {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  /*  */
+  .weekly{
+    display: grid;
+    grid-template-rows: auto auto auto;
+
+  }
+
+  .weekly > div {
+    padding: 20px;
+  }
+
+  /* all text in calendar is centered*/
+  .cal-cont {
+    text-align: center;
+  }
+
+  /* flexbox columns for days of week w/ border styling */
+  .cal {
+    display: flex;
+    flex-direction: column;
+    height: 130px;
+    min-width: 500px;
+    max-width: 80%;
+    box-shadow: 0px 2px 5px hsl(0, 0%, 80%);
+    border-radius: 30px;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+  }
+
+  /* calendar header styling */
+  .cal-head {
+    display: flex;
+    align-items: center;
+    color: black;
+    background-color:#f8a488;
+    border-radius: 25px; /* rounding the border */
+    border-bottom-left-radius: 5px; 
+    border-bottom-right-radius: 5px;
+    padding: 0em 2em;
+    height: 35%;
+    text-align: center;
+  }
+
+   /* calendar content styling */
+  .cal-content{
+    display: flex;
+    justify-content: space-evenly;
+
+  }
+
+  /* borders between days of cal */
+  .cal-content > div {
+    flex: 1 0 50px;
+    border-right: 1px solid hsl(0, 0%, 90%);
+    padding-top: 5px;
+  }
+
+  .cal-content:last-child {
+      border-right: none;  /* no border for last day of week */
+  }
+
+  .cal-content > div > div:last-child {
+    color: hsl(0, 0%, 70%);
+    margin-top: 4px;
+  }
+
+/* Refactor calendars and task-list to align vertically on small screens */
+  @media screen and (max-width: 800px){
+    .container {
+        flex-direction: column;
+      }
+      .left-half {
+        text-align: center;
+        width: 100%;
+      }
+  }
+
+/* align title text in center*/
+  .log{
+    text-align: center;
+  }
+
+  /* To-do List label styling*/
+  .label {
+    background-color:#5aa897;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    margin-top: -20px;
+    height:60px;
+  }
+
+/* To-do List styling*/
+.list{
+  background-color:#f8f5f1;
+  border-radius: 50px;
+  width:400px;
+  height:580px;
+  margin-top: -20px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

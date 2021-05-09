@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
+
+  <body>
+    <!-- grid container with 3 columns -->
+    <div class="grid-container">
+      <!-- left column contains calendar and index widgets -->
+      <div class="left-col col">
+        <!-- calendar widget -->
+        <div id="calendar" class="widget">
+          <div class="header">
+            <h2>Calendar</h2>
+          </div>
+          <div class="widget-content"></div>
+        </div>
+        <!-- index widget -->
+        <div id="index" class="widget">
+          <div class="header">
+            <h1>Index</h1>
+          </div>
+          <div class="widget-content">
+            <button>Daily Log</button>
+            <button>Monthly Log</button>
+            <button>Future Log</button>
+            <button>Custom Log</button>
+            <button>Weekly Summary</button>
+          </div>
+        </div>
+      </div>
+      <!-- center column contains search bar, mission statement and today's notes widget -->
+      <div class="center-col col">
+        <!-- container for search bar -->
+        <div id="search-container" class="widget">
+          <input id="search" type="text" placeholder="Search for Keywords" />
+        </div>
+        <!-- today's notes widget -->
+        <div id="todays-log" class="widget">
+          <div class="header">
+            <h1>Today's Notes</h1>
+            <div id="add">
+              <a><span>&#43;</span></a>
+            </div>
+          </div>
+
+          <div class="widget-content">
+            <ul>
+              <li>Do daily standup</li>
+              <li>Eat food</li>
+              <li>Walk dog</li>
+              <li>Exercise</li>
+              <li>Do work</li>
+            </ul>
+          </div>
+        </div>
+        <!-- mission statement widget -->
+        <div id="mission" class="widget">
+          <div class="header">
+            <h2>Our Mission</h2>
+          </div>
+          <div class="widget-content">
+            <p>
+              Our team strives to challenge societal norms with innovative, flat
+              thinking. We are open to all ideas and opinions for a leveled
+              world. We strive to: Think Future. Think Fast. Think Flat.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- right column contains greeting message and collection selector -->
+      <div class="right-col col">
+        <!-- greeting widget -->
+        <div id="greeting" class="widget">
+          <div class="header">
+            <h2>Hello <span>First Name</span></h2>
+          </div>
+          <div class="widget-content">
+            <img src="https://placeimg.com/480/480/people" alt="profile-pic" />
+          </div>
+        </div>
+        <!-- Collections widget -->
+        <div id="collections" class="widget">
+          <div class="header">
+            <h1>Collections</h1>
+          </div>
+          <div class="widget-content">
+            <button>Collection 1</button>
+            <button>Collection 2</button>
+            <button>Collection 3</button>
+            <button>Collection 4</button>
+            <button>Collection 5</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

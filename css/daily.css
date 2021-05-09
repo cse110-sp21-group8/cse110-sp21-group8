@@ -1,0 +1,91 @@
+/*Aligning the month on calendar*/
+#cal {
+  text-align: center;
+}
+
+/*Calendar*/
+#calendar {
+  background: #F7F3E9;
+  border-radius: 50px;
+  height: 32vh;
+  margin-left: 1%;
+  margin-bottom: 1%;
+  width: 44vw;
+}
+
+/*Wrapper for all components*/
+#daily-tasks-wrapper {
+  align-items: center;
+  display: flex;
+
+}
+
+/*Wrapper for daily tasks section*/
+#daily-tasks{
+  align-items: center;
+  background: #F7F3E9;
+  border-radius:  50px; 
+  display: grid;
+  grid-auto-columns: auto;
+  height: 105vh;
+  margin: .2%; 
+  padding-left: 7%;
+  text-align: center;
+  width: 54vw;  
+}
+
+/*Formatting for forms inside daily tasks*/
+#form {
+  display: inline-block;
+}
+
+/*Coral border on calendar*/
+#month {
+  align-items: center;
+  background: #E9896A;
+  border-radius: 50px 50px 0px 0px;
+  height: 9vh;
+  justify-content: center;
+  width: 44vw;
+}
+
+/*Formatting for relfection box*/
+#reflect-box {
+  background: #FFFFFF;
+  border-radius: 50px;
+  height: 23vh;
+  width: 40vw;
+}
+
+/*Formatting for the tasks box*/
+#text-box {
+  background: #FFFFFF;
+  border-radius: 50px;
+  height: 75vh;
+  width: 40vw;
+}
+
+/*Wrapper for tracker section*/
+#trackers {
+  background: #F7F3E9;
+  border-radius: 50px;
+  display: grid;
+  grid-auto-columns: auto;
+  height: 67vh;
+  margin-left: 1%;
+  margin-top: 1%;
+  text-align: center;
+  width: 44vw; 
+}
+
+/*Formatting for tracker box*/
+#tracker-box {
+  background: #FFFFFF;
+  border-radius: 50px;
+  height: 49vh;
+  margin-left: 8.5%;
+  margin-top: 10%;
+  width: 37vw;
+}
+
+
