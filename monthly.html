@@ -1,13 +1,217 @@
+<!-- Monthly Log Page --> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monthly Log</title>
-    <link rel="stylesheet" href="css/monthly.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monthly Log</title>
+  <link rel="stylesheet" href="css/monthly.css">
 </head>
 <body>
-    
+  <h1 class="log">Monthly Log</h1>
+  <!-- section to split screen into two sections of log: left = calendar view, right = task-list --> 
+  <section class = "container">
+    <div class = "left">
+      <div class = "weekly">
+        <!-- first week calendar -->
+        <div class = "cal-cont">
+          <div class = "cal">
+            <!-- cal split into header and content divs for styling -->
+            <div class = "cal-head">
+              <h3>May 3rd - May 9th, 2021</h3>
+            </div>
+            <div class="cal-content">
+              <!-- div for each day of week & date for clarity -->
+              <div>
+                <div>Sun</div>
+                <div class="date">5/4</div>
+              </div>
+
+              <div>
+                <div>Mon</div>
+                <div class="date">5/5</div>
+              </div>
+
+              <div>
+                <div>Tue</div>
+                <div class="date">5/6</div>
+              </div>
+
+              <div>
+                <div>Wed</div>
+                <div class="date">5/7</div>
+              </div>
+
+              <div>
+                <div>Thur</div>
+                <div class="date">5/8</div>
+              </div>
+                            
+              <div>
+                <div>Fri</div>
+                <div class="date">5/9</div>
+              </div>
+
+              <div>
+                <div>Sat</div>
+                <div class="date">5/10</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- second week calendar -->
+        <div class = "cal-cont">
+          <div class = "cal">
+            <div class = "cal-head">
+              <h3>May 3rd - May 9th, 2021</h3>
+            </div>
+            <div class="cal-content">
+              
+              <div>
+                <div>Sun</div>
+                <div class="date">5/4</div>
+              </div>
+
+              <div>
+                <div>Mon</div>
+                <div class="date">5/5</div>
+              </div>
+
+              <div>
+                <div>Tue</div>
+                <div class="date">5/6</div>
+              </div>
+
+              <div>
+                <div>Wed</div>
+                <div class="date">5/7</div>
+              </div>
+
+              <div>
+                <div>Thur</div>
+                <div class="date">5/8</div>
+              </div>
+                            
+              <div>
+                <div>Fri</div>
+                <div class="date">5/9</div>
+              </div>
+
+              <div>
+                <div>Sat</div>
+                <div class="date">5/10</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- third week calendar -->
+        <div class = "cal-cont">
+          <div class = "cal">
+            <div class = "cal-head">
+              <h3>May 3rd - May 9th, 2021</h3>
+            </div>
+            <div id="cal-content" class="cal-content">
+              
+              <div>
+                <div>Sun</div>
+                <div class="date">5/4</div>
+              </div>
+
+              <div>
+                <div>Mon</div>
+                <div class="date">5/5</div>
+              </div>
+
+              <div>
+                <div>Tue</div>
+                <div class="date">5/6</div>
+              </div>
+
+              <div>
+                <div>Wed</div>
+                <div class="date">5/7</div>
+              </div>
+
+              <div>
+                <div>Thur</div>
+                <div class="date">5/8</div>
+              </div>
+                            
+              <div>
+                <div>Fri</div>
+                <div class="date">5/9</div>
+              </div>
+
+              <div>
+                <div>Sat</div>
+                <div class="date">5/10</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         <!-- fourth week calendar -->
+        <div class = "cal-cont">
+          <div class = "cal">
+            <div class = "cal-head">
+              <h3>May 3rd - May 9th, 2021</h3>
+            </div>
+            <div id="cal-content" class="cal-content">
+              
+              <div>
+                <div>Sun</div>
+                <div class="date">5/4</div>
+              </div>
+
+              <div>
+                <div>Mon</div>
+                <div class="date">5/5</div>
+              </div>
+
+              <div>
+                <div>Tue</div>
+                <div class="date">5/6</div>
+              </div>
+
+              <div>
+                <div>Wed</div>
+                <div class="date">5/7</div>
+              </div>
+
+              <div>
+                <div>Thur</div>
+                <div class="date">5/8</div>
+              </div>
+                            
+              <div>
+                <div>Fri</div>
+                <div class="date">5/9</div>
+              </div>
+
+              <div>
+                <div>Sat</div>
+                <div class="date">5/10</div>
+              </div>
+            </div>
+          </div>
+        </div>                
+      </div>
+    </div>
+     <!-- right side of screen for the task list -->
+    <div class = "right"> 
+      <!-- TODO: Implement task list feature (back-end team) -->
+      <div class="task">
+        <div class = "label">
+          <h1>Goals</h1>
+        </div>
+        <div class = "list">
+          This is where we will implement task list
+        </div>
+      </div>
+    </div>
+  </section>
 </body>
 </html>
