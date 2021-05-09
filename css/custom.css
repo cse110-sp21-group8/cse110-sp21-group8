@@ -1,0 +1,35 @@
+/*Formatting for all three buttons.*/
+.buttons {
+  background: #F7F3E9;
+  border-radius: 50px;
+  height: 2.4em;
+  width: 9em;
+  text-align: center;
+}
+
+/*Formatting for overall wrapper of page.*/
+#custom-log-wrapper {
+  align-items: center;
+  display: grid;
+  justify-content: center;
+}
+
+/*Formatting for the log section.*/
+#log {
+  background: #F7F3E9;
+  border-radius: 50px;
+  height: 77vh;
+  margin: 5%;
+  text-align: center;
+  width: 56vw;
+}
+
+/*Formatting for the wrapper for buttons to center them.*/
+#nav-buttons {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 5%;
+  padding-left: 10%;
+}
+

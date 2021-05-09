@@ -1,12 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Log</title>
-    <link rel="stylesheet" href="css/daily.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Log</title>
+  <link rel="stylesheet" href="css/daily.css">
 </head>
+
+
+<!--Overall wrapper for all three sections for easier formatting and access-->
+<div id="daily-tasks-wrapper">
+  <!--Daily Tasks wrapper. Contains task box and reflection box-->
+  <div id="daily-tasks">
+    <!--Text box for tasks form. Contains form for tasks and buttons associated with input-->
+    <div id="text-box">
+      <form id="form">
+        <button id="status"></button>
+        <button id="delete"></button>
+        <button id="move"></button>
+        <input type="text" id="tasks" placeholder="Click to add tasks!"><br>
+      </form>
+    </div>
+    <!--Reflection box. Contains input area for reflections-->
+    <div id="reflect-box">
+      <input type="text" id="reflection" placeholder="Click to add reflections!"><br>
+    </div>
+  </div>
+
+  <!--Wrapper for calendar and tracker-->
+  <div id="left">
+    <!--Calendar. Containg month title-->
+    <div id="calendar">
+      <div id="month">
+        <h2 id="cal">Calendar</h2>
+      </div>
+    </div>
+    <!--Tracker. Containing tracker box and input area-->
+    <div id="trackers">
+      <!--Tracker box for formatting-->
+      <div id="tracker-box">
+        <input type="file" id="tracker" placeholder="Trackers are here!"><br>
+      </div>
+    </div>
+  </div>
+</div>
 <body>
     
 </body>
