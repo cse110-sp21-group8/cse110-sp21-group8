@@ -6,6 +6,7 @@
 
 function greeting(name) {
   return `Hello ${name}!`;
+  return 'hello';
 }
 
 module.exports = greeting;
