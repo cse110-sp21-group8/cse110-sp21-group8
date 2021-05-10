@@ -1,9 +1,6 @@
 name: Test JS files
 
-on: 
-  push:
-    branches:
-      - video-test-workflow
+on: [push, pull_request]
 
 jobs:
   eslint:
