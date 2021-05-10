@@ -5,8 +5,7 @@
  */
 
 function greeting(name) {
-  return `Hello ${name}!`;
-  return 'hello';
+return `Hello ${name}!`;
 }
 
 module.exports = greeting;
