@@ -5,7 +5,7 @@
  */
 
 function bye(name) {
-  return `Goodbye ${name}`;
+  return `Goodbye ${name}!`;
 }
 
 module.exports = bye;
