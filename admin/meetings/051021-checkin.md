@@ -23,13 +23,29 @@ Date: 5/10 6:00 PM
 ## Agenda
 
 1. Update from each team - show work  
-    - Front-end 
-    - Repo 
-    - Testing
+    - Front-end
+      -  finished basic hmtl/css for pages of the website 
+    - Repo  
+      - Take out issues and replace Kanban Board 
+      - take out documentation channel from Slack - redundant 
+      - CI/CD workflow video 
+      - CI/CD Wiki page 
+         - video 
+         - status page
+         - system diagram
+      - Finished CI/CD assignment
+    - Testing 
+      - MochaJS vs Jest 
+      - Jest is recommended 
     - Back-end 
+      - brainstorming databases 
+      - met with Sanat 
+      - SQL, MongoDB debate
 2. Team Decisions 
     - SQL vs MongoDB?
       - Custom log vs no custom log
+      - MongoDB has more flexibility with data 
+      - Choice: MongoDB
     - User Login as a core feature?
 3. To-dos 
     - Front-end: 
@@ -41,7 +57,7 @@ Date: 5/10 6:00 PM
       - start looking at tutorials for database 
       - map out pages and start coding 
     - Repo 
-        - finish up CI/CD pipeline
+        - CI/CD? 
     - Testing 
       - decide testing framework (add an ADR) 
       - help out other teams, especially back-end!
