@@ -47,6 +47,9 @@ Date: 5/10 6:00 PM
       - MongoDB has more flexibility with data 
       - Choice: MongoDB
     - User Login as a core feature?
+      - saving data 
+      - username + password (first)
+      - Google sign-in (if time)
 3. To-dos 
     - Front-end: 
       - navigation between going pages 
@@ -57,7 +60,11 @@ Date: 5/10 6:00 PM
       - start looking at tutorials for database 
       - map out pages and start coding 
     - Repo 
-        - CI/CD? 
+        - checkpoint 1 is done 
     - Testing 
       - decide testing framework (add an ADR) 
       - help out other teams, especially back-end!
+ 4. Reminders 
+    - Use Projects Tab to add To-Do list items!
+
+Meeting Ended: 6:43
