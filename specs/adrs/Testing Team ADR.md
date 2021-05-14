@@ -1,9 +1,12 @@
-# Use Markdown Architectural Decision Records
+# Testing Team ADR
 
-## Context and Problem Statement
+## Doing research on testing
+In the beginning we don't know what testing is all about, so we just browsed and seek information.  
 
-We want to record architectural decisions made in this project.
-Which format and structure should these records follow?
+## Getting a list of several optional frameworks
+After having a brief idea of what testing should be doing, we decided to get a quick start on settling down a list of frameworks we can use. </br>
+
+
 
 ## Considered Options
 
