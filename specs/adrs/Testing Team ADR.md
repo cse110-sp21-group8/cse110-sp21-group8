@@ -5,25 +5,27 @@ In the beginning we don't know what testing is all about, so we just browsed and
 
 ## Getting a list of several optional frameworks
 After having a brief idea of what testing should be doing, we decided to get a quick start on settling down a list of frameworks we can use. </br>
-
-
+The frameworks we considered using are:
+ - Jest
+ - MochaJS
+ - Jasmine
+ - Nightwatch
+After consideration, we decided to choose one from Jest and MochaJS to be our main testing framework. 
 
 ## Considered Options
 
-* [MADR](https://adr.github.io/madr/) 2.1.0 - The Markdown Architectural Decision Records
-* [Michael Nygard's template](http://thinkrelevance.com/blog/2011/11/15/documenting-architecture-decisions) - The first incarnation of the term "ADR"
-* [Sustainable Architectural Decisions](https://www.infoq.com/articles/sustainable-architectural-design-decisions) - The Y-Statements
-* Other templates listed at <https://github.com/joelparkerhenderson/architecture_decision_record>
-* Formless - No conventions for file format and structure
+* [Jest](https://jestjs.io/) - Minimal configuration and setup. Standard syntax with documentation support. Very fast and highly performant
+* [MochaJS](https://mochajs.org/) - Accurate reporting. Since it is old, lots of tutorial and documents are available online.
+* [Jasmine](https://jasmine.github.io/) - Offers an elegant programming style & patterns. Strong documentation and community support. 
+* [Nightwatch](https://nightwatchjs.org/) - The easiest set up, only need to import the Selenium library. The language is very simple as well.
 
-## Decision Outcome
 
-Chosen option: "MADR 2.1.0", because
+## Final Decision
 
-* Implicit assumptions should be made explicit.
-  Design documentation is important to enable people understanding the decisions later on.
-  See also [A rational design process: How and why to fake it](https://doi.org/10.1109/TSE.1986.6312940).
-* The MADR format is lean and fits our development style.
-* The MADR structure is comprehensible and facilitates usage & maintenance.
-* The MADR project is vivid.
-* Version 2.1.0 is the latest one available when starting to document ADRs.
+Chosen option: [Jest](https://jestjs.io/), because
+
+* It's convenient for smaller projects, which fits the characteristics of our project.
+* We will go over Jest during lectures and labs, by choosing Jest we can directly take advantage from the course material. 
+* Sanat and recommended Jest.
+
+All information above was up to 5/14/2021
