@@ -129,10 +129,13 @@
   border-top-right-radius: 0px;
 }
 
+/* formatting for home button div */
 .home-button {
   position: absolute;
+  z-index: 99;
 }
-
+  
+/* formatting for home button itself */
 .home-button button {
   border: none;
   background: #5aa89742;
@@ -144,10 +147,10 @@
   margin-left: 2rem;
 }
 
+/* formatting for home button when hovered on  */
 .home-button button:hover {
   background: #5aa8979f;
 }
-
 
 
 
