@@ -31,7 +31,8 @@ app.get('/daily', function (req, res) {
   if(currentUser){
     res.sendFile(path.join(__dirname, 'src/html/daily.html'));
   }else{
-    res.sendFile(path.join(__dirname, 'src/html/login.html'));
+    res.sendFile(path.join(__dirname, 'src/html/daily.html'));
+    //res.sendFile(path.join(__dirname, 'src/html/login.html'));
   }
 });
 app.get('/future', function (req, res) {
@@ -71,15 +72,18 @@ app.post('/user_signup', function (req, res) {
 
 
 //other request
-app.get('/info', function (req, res) {
-  res.send(taskData);
+app.post('/getDailyTask', function (req, res) {
+  let data= req.body;//get the form data
+   console.log('Got body:', data);
+   getDailyTask(data,res);
 })
 
+//adding task
 app.post('/addTask', function (req, res) {
   let data= req.body;//get the form data
   console.log('Got body:', data);
-  taskData.push(data);
-  res.send('Got a PUT request at /user')
+  //insert data into the database:
+  addTask(data,res);
 })
 
 
@@ -141,31 +145,48 @@ function verifyUser(data,res){
   });
 }
 
-
-
-//sample codes
-//connect database
-/*
-MongoClient.connect(url, function(err, db) {
-  var dbo = db.db("cse110"); //database name,
-
-  //create collection
-  /*
-  dbo.createCollection("customers", function(err, res) {
-    if (err) throw err;
-    console.log("Collection created!");
-    db.close();
-  });
- 
-  //insert collection
-  var myobj = { name: "Company Inc", address: "Highway 37" };
-  dbo.collection("customers").insertOne(myobj, function(err, res) {
-    if (err) throw err;
-    console.log("1 document inserted");
-    db.close();
-  });
-
-  //futhur instruction:
-  //https://www.w3schools.com/nodejs/nodejs_mongodb_insert.asp
+let TaskSchema = new mongoose.Schema({
+  status: String,
+  type: String,
+  content: String,
+  date:String,
 });
- */
+let Task = mongoose.model('Task', TaskSchema);
+
+function addTask(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert new task into the database
+    let newTask = new Task(data);
+    newTask.save(function (err, result) {
+      if (err) return console.error(err);
+      console.log("Task added successfully");
+      res.send({ status: 200, task: data});
+      mongoose_db.close();
+    });
+  });
+}
+
+//get tasks:
+//data: specify which date is it:
+//for example: {date: 'Sun May 16 2021' }
+function getDailyTask(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let  mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert the ner user or user signup
+    Task.find(data, function (err, one) {
+      if (err) return console.error(err);
+      console.log(one);
+      if(one.length>0){
+        res.send({ status: 200, task:one });
+      }else{
+        res.send({ status: 404 });
+      }
+      mongoose_db.close();
+    });
+  });
+}
