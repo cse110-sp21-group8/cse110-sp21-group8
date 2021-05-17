@@ -35,5 +35,5 @@ We use this Github Kanban board as our backlog to keep track tasks that our team
 
 ## Demo:
 
-![CI_demo](https://user-images.githubusercontent.com/46361434/118563678-db8b2600-b723-11eb-8ba1-414d966c8cdf.mp4)
+https://user-images.githubusercontent.com/46361434/118563678-db8b2600-b723-11eb-8ba1-414d966c8cdf.mp4
 
