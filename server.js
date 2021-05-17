@@ -32,6 +32,9 @@ app.get('/future', function (req, res) {
 app.get('/monthly', function (req, res) {
   res.sendFile(path.join(__dirname, 'src/html/monthly.html'));
 });
+app.get('/custom', function (req, res) {
+  res.sendFile(path.join(__dirname, 'src/html/custom.html'));
+});
 
 //other request
 app.get('/info', function (req, res) {
