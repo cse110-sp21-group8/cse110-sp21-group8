@@ -26,3 +26,14 @@ We use this Github Kanban board as our backlog to keep track tasks that our team
 - Husky: We tried implementing Husky Git hooks for pre-commit actions like enforcing code rules through ESLint and Prettier. We then found that its use was not only redundant but also inconsistent. Redundant in that the CI/CD pipeline via Github Actions can do this anyway. Inconsistent in that it did not work as smoothly on Windows OS as it did on MacOS through our testing.
 
 - Github Issues: We also decided that using Issues as a documentation or backlog tool was not as effective as the Github Project Kanban board. Moreover, although Issues could help members signal problems with the code, the scope of our project means that we can just use Slack for smoother and more direct communication. 
+
+
+## Diagram:
+
+![CI_diagram](https://user-images.githubusercontent.com/46361434/118563702-e34aca80-b723-11eb-88a5-eb6ef18ab365.png)
+
+
+## Demo:
+
+![CI_demo](https://user-images.githubusercontent.com/46361434/118563678-db8b2600-b723-11eb-8ba1-414d966c8cdf.mp4)
+
