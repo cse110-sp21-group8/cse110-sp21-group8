@@ -31,8 +31,7 @@ app.get('/daily', function (req, res) {
   if(currentUser){
     res.sendFile(path.join(__dirname, 'src/html/daily.html'));
   }else{
-    res.sendFile(path.join(__dirname, 'src/html/daily.html'));
-    //res.sendFile(path.join(__dirname, 'src/html/login.html'));
+     res.sendFile(path.join(__dirname, 'src/html/login.html'));
   }
 });
 app.get('/future', function (req, res) {
@@ -139,6 +138,7 @@ function verifyUser(data,res){
       console.log(one);
       if(one.length>0){
         currentUser = new User(data);
+        console.log(currentUser);
         res.send({ user_status: 200 });
       }else{
         res.send({ user_status: 404 });
@@ -153,6 +153,7 @@ let TaskSchema = new mongoose.Schema({
   type: String,
   content: String,
   date:String,
+  user: String,
 });
 let Task = mongoose.model('Task', TaskSchema);
 
@@ -162,6 +163,8 @@ function addTask(data,res){
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
     // insert new task into the database
+    //add the user id into the data
+    data["user"] = currentUser["_id"];
     let newTask = new Task(data);
     newTask.save(function (err, result) {
       if (err) return console.error(err);
@@ -181,11 +184,12 @@ function getDailyTask(data,res){
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
     // insert the ner user or user signup
-    Task.find(data, function (err, one) {
+    data["user"] = currentUser["_id"];
+    Task.find(data, function (err, result) {
       if (err) return console.error(err);
-      console.log(one);
-      if(one.length>0){
-        res.send({ status: 200, task:one });
+      console.log(result);
+      if(result.length>0){
+        res.send({ status: 200, task:result });
       }else{
         res.send({ status: 404 });
       }
