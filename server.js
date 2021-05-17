@@ -49,6 +49,9 @@ app.get('/monthly', function (req, res) {
     res.sendFile(path.join(__dirname, 'src/html/login.html'));
   }
 });
+app.get('/custom', function (req, res) {
+  res.sendFile(path.join(__dirname, 'src/html/custom.html'));
+});
 app.get('/login', function (req, res) {
   res.sendFile(path.join(__dirname, 'src/html/login.html'));
 });
