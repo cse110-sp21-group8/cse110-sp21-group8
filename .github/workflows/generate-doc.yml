@@ -1,6 +1,6 @@
 name: Generator JS Docs
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   eslint:
@@ -18,6 +18,11 @@ jobs:
     - name: Install modules
       run: yarn install
     - run: yarn doc
+    - name: Deploy JSDoc
+      uses: JamesIves/github-pages-deploy-action@4.1.3
+      with:
+        branch: repo/feature/docs # The branch the action should deploy to.
+        folder: docs # The folder the action should deploy.
 
 
 
