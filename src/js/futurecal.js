@@ -1,3 +1,14 @@
+module.exports = {
+  "env": {
+      "browser": true,
+      "node": true
+  },
+
+  "globals": {
+    "document": true
+  }
+}; 
+
 /* Declaring date variables for each of the boxes */
 const date = new Date();
 const date2 = new Date(date.getFullYear(), date.getMonth()+1, 1);
@@ -60,45 +71,6 @@ const lastDay6 = new Date(
     0
   ).getDate();
 /* */
-
-/* Getting the day before the last day for all the months */
-const prevLastDay = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    0
-  ).getDate();
-
-  const prevLastDay2 = new Date(
-    date2.getFullYear(),
-    date2.getMonth(),
-    0
-  ).getDate();
-
-  const prevLastDay3 = new Date(
-    date3.getFullYear(),
-    date3.getMonth(),
-    0
-  ).getDate();
-
-  const prevLastDay4 = new Date(
-    date4.getFullYear(),
-    date4.getMonth(),
-    0
-  ).getDate();
-
-  const prevLastDay5 = new Date(
-    date5.getFullYear(),
-    date5.getMonth(),
-    0
-  ).getDate();
-
-  const prevLastDay6 = new Date(
-    date6.getFullYear(),
-    date6.getMonth(),
-    0
-  ).getDate();
-/* */
-
 
 
 /* Array of the months */
