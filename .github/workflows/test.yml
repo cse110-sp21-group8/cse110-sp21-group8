@@ -1,4 +1,4 @@
-name: Test JS files
+name: Test JS files using Jest
 
 on: [push, pull_request]
 
