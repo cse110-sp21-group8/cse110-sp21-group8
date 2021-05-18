@@ -15,49 +15,19 @@
     <div class = "left">
       <div class = "weekly">
         <!-- first week calendar -->
-        <div class = "cal-cont">
+        <div class = "cal-cont" id="week1">
           <div class = "cal">
             <!-- cal split into header and content divs for styling -->
             <div class = "cal-head">
-              <h3>May 3rd - May 9th, 2021</h3>
+              <h3 id="head1"></h3>
             </div>
             <div class="cal-content">
               <!-- div for each day of week & date for clarity -->
               <div>
-                <div>Sun</div>
-                <div class="date">5/4</div>
+                <div class="cal-content" id="week-day1"></div>
+                <div class="cal-content" id="week-num1"></div>
               </div>
-
-              <div>
-                <div>Mon</div>
-                <div class="date">5/5</div>
-              </div>
-
-              <div>
-                <div>Tue</div>
-                <div class="date">5/6</div>
-              </div>
-
-              <div>
-                <div>Wed</div>
-                <div class="date">5/7</div>
-              </div>
-
-              <div>
-                <div>Thur</div>
-                <div class="date">5/8</div>
-              </div>
-                            
-              <div>
-                <div>Fri</div>
-                <div class="date">5/9</div>
-              </div>
-
-              <div>
-                <div>Sat</div>
-                <div class="date">5/10</div>
-              </div>
-            </div>
+            </div> 
           </div>
         </div>
 
@@ -65,43 +35,12 @@
         <div class = "cal-cont">
           <div class = "cal">
             <div class = "cal-head">
-              <h3>May 3rd - May 9th, 2021</h3>
+              <h3 id="head2"></h3>
             </div>
             <div class="cal-content">
-              
-              <div>
-                <div>Sun</div>
-                <div class="date">5/4</div>
-              </div>
-
-              <div>
-                <div>Mon</div>
-                <div class="date">5/5</div>
-              </div>
-
-              <div>
-                <div>Tue</div>
-                <div class="date">5/6</div>
-              </div>
-
-              <div>
-                <div>Wed</div>
-                <div class="date">5/7</div>
-              </div>
-
-              <div>
-                <div>Thur</div>
-                <div class="date">5/8</div>
-              </div>
-                            
-              <div>
-                <div>Fri</div>
-                <div class="date">5/9</div>
-              </div>
-
-              <div>
-                <div>Sat</div>
-                <div class="date">5/10</div>
+              <div> 
+                <div class="cal-content" id="week-day2"></div>
+                <div class="cal-content" id="week-num2"></div>
               </div>
             </div>
           </div>
@@ -111,43 +50,12 @@
         <div class = "cal-cont">
           <div class = "cal">
             <div class = "cal-head">
-              <h3>May 3rd - May 9th, 2021</h3>
+              <h3 id="head3"></h3>
             </div>
-            <div id="cal-content" class="cal-content">
-              
+            <div class="cal-content">
               <div>
-                <div>Sun</div>
-                <div class="date">5/4</div>
-              </div>
-
-              <div>
-                <div>Mon</div>
-                <div class="date">5/5</div>
-              </div>
-
-              <div>
-                <div>Tue</div>
-                <div class="date">5/6</div>
-              </div>
-
-              <div>
-                <div>Wed</div>
-                <div class="date">5/7</div>
-              </div>
-
-              <div>
-                <div>Thur</div>
-                <div class="date">5/8</div>
-              </div>
-                            
-              <div>
-                <div>Fri</div>
-                <div class="date">5/9</div>
-              </div>
-
-              <div>
-                <div>Sat</div>
-                <div class="date">5/10</div>
+                <div class="cal-content" id="week-day3"></div>
+                <div class="cal-content" id="week-num3"></div>
               </div>
             </div>
           </div>
@@ -157,47 +65,17 @@
         <div class = "cal-cont">
           <div class = "cal">
             <div class = "cal-head">
-              <h3>May 3rd - May 9th, 2021</h3>
+              <h3 id="head4"></h3>
             </div>
-            <div id="cal-content" class="cal-content">
-              
+            <div class="cal-content">
               <div>
-                <div>Sun</div>
-                <div class="date">5/4</div>
-              </div>
-
-              <div>
-                <div>Mon</div>
-                <div class="date">5/5</div>
-              </div>
-
-              <div>
-                <div>Tue</div>
-                <div class="date">5/6</div>
-              </div>
-
-              <div>
-                <div>Wed</div>
-                <div class="date">5/7</div>
-              </div>
-
-              <div>
-                <div>Thur</div>
-                <div class="date">5/8</div>
-              </div>
-                            
-              <div>
-                <div>Fri</div>
-                <div class="date">5/9</div>
-              </div>
-
-              <div>
-                <div>Sat</div>
-                <div class="date">5/10</div>
+                <div class="cal-content" id="week-day4"></div>
+                <div class="cal-content" id="week-num4"></div>
               </div>
             </div>
           </div>
-        </div>                
+        </div> 
+
       </div>
     </div>
      <!-- right side of screen for the task list -->
@@ -214,4 +92,5 @@
     </div>
   </section>
 </body>
+<script src="../js/monthlycal.js"></script>  
 </html>
