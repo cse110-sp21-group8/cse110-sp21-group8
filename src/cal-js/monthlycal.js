@@ -1,3 +1,9 @@
+module.exports = {
+  "globals": {
+    "document": true
+  },
+}
+
 /* Gets current day and month */ 
 let today = new Date();
 let currentMonth = today.getMonth();
@@ -25,7 +31,6 @@ let lDay;
 let fMonth;
 let lMonth;
 let currMonth = 0;
-let nextDate = 1;
 let actualDate = today.getDate();
 
 /* Code to get the weekly dates. First day will always be current day. */

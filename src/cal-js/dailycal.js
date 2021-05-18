@@ -1,7 +1,13 @@
+module.exports = {
+  "globals": {
+    "document": true
+  },
+}
+
 let today = new Date();
 let currentMonth = today.getMonth();
-let currentYear = today.getFullYear();
 
+/* Declarations of months */ 
 let months = [ "January", "February", "March", "April", "May", "June", 
 "July", "August", "September", "October", "November", "December" ];
 
@@ -12,24 +18,18 @@ const date = new Date();
 
 const monthDays = document.querySelector(".cal-body");
 
+/* Gets the last day of the month */ 
 date.setDate(1);
-
 const lastDay = new Date(
   date.getFullYear(),
   date.getMonth() + 1,
   0
 ).getDate();
 
-const prevLastDay = new Date(
-  date.getFullYear(),
-  date.getMonth(),
-  0
-).getDate();
-
 const firstDayIndex = date.getDay();
 
+/* Creates the calendar */
 let days = "";
-//document.querySelector(".cal-body").innerHTML = months[date.getMonth()];
 for (let x = firstDayIndex; x > 0; x--) {
   days += `<div class="prev-date1">${' '}</div>`;
 }
