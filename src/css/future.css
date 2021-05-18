@@ -153,3 +153,13 @@ ul {
     }
 }
 
+#text-box1 {
+    background: #FFFFFF;
+    border-radius: 50px;
+    height: 50vh;
+    width: 40vw;
+  }
+
+#form1 {
+    display: inline-block;
+}
