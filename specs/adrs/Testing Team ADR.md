@@ -9,7 +9,7 @@ The frameworks we considered using are:
  - Jest
  - MochaJS
  - Jasmine
- - Nightwatch
+ - Nightwatch</br>
 After consideration, we decided to choose one from Jest and MochaJS to be our main testing framework. 
 
 ## Considered Options
@@ -26,6 +26,6 @@ Chosen option: [Jest](https://jestjs.io/), because
 
 * It's convenient for smaller projects, which fits the characteristics of our project.
 * We will go over Jest during lectures and labs, by choosing Jest we can directly take advantage from the course material. 
-* Sanat and recommended Jest.
+* Sanat recommended Jest.
 
 All information above was up to 5/14/2021
