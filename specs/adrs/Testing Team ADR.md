@@ -10,7 +10,8 @@ The frameworks we considered using are:
  - MochaJS
  - Jasmine
  - Nightwatch</br>
-After consideration, we decided to choose one from Jest and MochaJS to be our main testing framework. 
+
+h</br>After consideration, we decided to choose one from Jest and MochaJS to be our main testing framework. 
 
 ## Considered Options
 
