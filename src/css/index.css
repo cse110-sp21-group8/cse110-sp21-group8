@@ -195,3 +195,20 @@ p {
 #todays-log #add:hover {
   color: lightgray;
 }
+
+/* formatting for home button itself */
+.home-button button {
+  border: none;
+  background: #5aa89742;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin: .5rem;
+  margin-left: 2rem;
+}
+
+/* formatting for home button when hovered on  */
+.home-button button:hover {
+  background: #5aa8979f;
+}

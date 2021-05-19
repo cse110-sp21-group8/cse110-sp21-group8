@@ -1,6 +1,6 @@
+
 let today = new Date();
 let currentMonth = today.getMonth();
-let currentYear = today.getFullYear();
 
 let months = [ "January", "February", "March", "April", "May", "June", 
 "July", "August", "September", "October", "November", "December" ];
@@ -20,16 +20,9 @@ const lastDay = new Date(
   0
 ).getDate();
 
-const prevLastDay = new Date(
-  date.getFullYear(),
-  date.getMonth(),
-  0
-).getDate();
-
 const firstDayIndex = date.getDay();
 
 let days = "";
-//document.querySelector(".cal-body").innerHTML = months[date.getMonth()];
 for (let x = firstDayIndex; x > 0; x--) {
   days += `<div class="prev-date1">${' '}</div>`;
 }
