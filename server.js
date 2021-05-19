@@ -49,7 +49,11 @@ app.get('/monthly', function (req, res) {
   }
 });
 app.get('/custom', function (req, res) {
-  res.sendFile(path.join(__dirname, 'src/html/custom.html'));
+  if(currentUser){
+    res.sendFile(path.join(__dirname, 'src/html/custom.html'));
+  }else{
+    res.sendFile(path.join(__dirname, 'src/html/login.html'));
+  }
 });
 app.get('/login', function (req, res) {
   res.sendFile(path.join(__dirname, 'src/html/login.html'));
@@ -80,12 +84,43 @@ app.post('/getDailyTask', function (req, res) {
    getDailyTask(data,res);
 })
 
+//get Custom tasks request
+app.post('/getCustomTask', function (req, res) {
+  let data= req.body;//get the form data
+   console.log('Got body:', data);
+   getCustomTask(data,res);
+})
+
 //adding task
 app.post('/addTask', function (req, res) {
   let data= req.body;//get the form data
   console.log('Got body:', data);
   //insert data into the database:
   addTask(data,res);
+})
+
+//adding Custom task
+app.post('/addCustomTask', function (req, res) {
+  let data= req.body;//get the form data
+  console.log('Got body:', data);
+  //insert data into the database:
+  addCustomTask(data,res);
+})
+
+//adding Custom task
+app.post('/UpdateCustomTask', function (req, res) {
+  let data= req.body;//get the form data
+  console.log('Got body:', data);
+  //insert data into the database:
+  UpdateCustomTask(data,res);
+})
+
+//deleting Custom task
+app.post('/DeleteCustomTask', function (req, res) {
+  let data= req.body;//get the form data
+  console.log('Got body:', data);
+  //insert data into the database:
+  DeleteCustomTask(data,res);
 })
 
 
@@ -137,8 +172,7 @@ function verifyUser(data,res){
       if (err) return console.error(err);
       console.log(one);
       if(one.length>0){
-        currentUser = new User(data);
-        console.log(currentUser);
+        currentUser = one;
         res.send({ user_status: 200 });
       }else{
         res.send({ user_status: 404 });
@@ -165,6 +199,7 @@ function addTask(data,res){
     // insert new task into the database
     //add the user id into the data
     data["user"] = currentUser["_id"];
+    data["status"] = "daily";
     let newTask = new Task(data);
     newTask.save(function (err, result) {
       if (err) return console.error(err);
@@ -185,7 +220,101 @@ function getDailyTask(data,res){
   mongoose_db.once('open', function(){
     // insert the ner user or user signup
     data["user"] = currentUser["_id"];
+    data["status"] = "daily";
     Task.find(data, function (err, result) {
+      if (err) return console.error(err);
+      console.log(result);
+      if(result.length>0){
+        res.send({ status: 200, task:result });
+      }else{
+        res.send({ status: 404 });
+      }
+      mongoose_db.close();
+    });
+  });
+}
+
+
+//define the schema for the custom log
+let CustomSchema = new mongoose.Schema({
+  sections: String,
+  content: String,
+  date:String,
+  user: String,
+  title:String,
+  color:String,
+});
+let Custom = mongoose.model('Custom', CustomSchema);
+
+//Call the addCustomTask functions to add the custom logs
+function addCustomTask(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert new task into the database
+    //add the user id into the data
+    data["user"] = currentUser["_id"];
+    let newCustom = new Custom(data);
+    newCustom.save(function (err, result) {
+      if (err) return console.error(err);
+      console.log("Custom Log added successfully");
+      res.send({ status: 200, task: data});
+      mongoose_db.close();
+    });
+  });
+}
+
+//Call the delete CustomTask functions to delete the custom logs
+function DeleteCustomTask(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert new task into the database
+    //add the user id into the data
+    data["user"] = currentUser["_id"];
+    Custom.deleteOne(data, function (err, result) {
+      if (err) return console.error(err);
+      console.log("Custom Log deleted successfully");
+      res.send({ status: 200});
+      mongoose_db.close();
+    });
+  });
+}
+
+//Call the UpdateCustomTask functions to update the custom logs
+function UpdateCustomTask(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert new task into the database
+    //add the user id into the data
+    let old_data = data["old"];
+    let new_data = data["new"];
+    old_data["user"] = currentUser["_id"];
+
+    Custom.updateOne(old_data,new_data,function (err, result) {
+      if (err) return console.error(err);
+      console.log("Custom Log Updated successfully");
+      res.send({ status: 200, task: data});
+      mongoose_db.close();
+    });
+  });
+}
+
+//get tasks:
+//data: specify which date is it:
+//for example: {date: 'Sun May 16 2021' }
+function getCustomTask(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let  mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert the ner user or user signup
+    data["user"] = currentUser["_id"];
+    Custom.find(data, function (err, result) {
       if (err) return console.error(err);
       console.log(result);
       if(result.length>0){
