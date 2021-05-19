@@ -19,6 +19,13 @@
       <div class = "calendars"> 
         <div class = "whole-cal1">
           <!-- Month 1 Calendar w/ days of week & dates for planning ahead--> 
+
+
+          
+          <button type = 'button' class="button1" onclick = 'onButtonClick()'>click to add task for this month</button>
+
+          
+
           <h2></h2>
           <div class="week">
             <div>Su</div>
@@ -122,6 +129,8 @@
     <!-- Right side = screen for tasklist --> 
     <div class = "right">
       <!-- TODO: Implement task-list feature (CRUD) --> 
+
+      <!--
       <h2>Tasks</h2>
       <p>Goal here is that when user clicks on date, it pulls up a canvas of that particular month (stored previously) and automates the day to the task</p>
       <br>
@@ -132,12 +141,19 @@
         <li>June 10th: something else (stored)</li>
         <li>June 8th: _______ (new entry for the user)</li>
       </ul>
+      -->
+      
       <div id="text-box1">
         <form id="form1">
           <button id="status"></button>
           <button id="delete"></button>
           <button id="move"></button>
-          <input type="text" id="tasks1" placeholder="Click to add tasks!"><br>
+          <div id= 'text-box2'>
+            <form id="form2"> 
+           
+              <input type="text" class='hide' id="tasks2" placeholder="Click to add tasks!" value='May: '><br>
+            </form>     
+          </div>
         </form>
       </div>
     </div>
