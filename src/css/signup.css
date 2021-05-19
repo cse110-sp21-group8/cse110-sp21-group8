@@ -7,7 +7,7 @@ body {
   font-family: "Questrial", sans-serif;
 }
 
-
+/* whole page container */
 .container {
   height: 100%;
   width: 100%;
@@ -16,6 +16,7 @@ body {
   justify-content: center;
 }
 
+/* div for form and header */
 .signup-div {
   width: 90%;
   height: 80%;
@@ -24,6 +25,7 @@ body {
 
 }
 
+/* sign up div header */
 .signup-div .header {
   background: #5aa897;
   width: 100%;
@@ -36,6 +38,7 @@ body {
   color: white;
 }
 
+/* div for only sign up form */
 .signup-div .signup {
   background: #f8f5f1;
   height: 80%;
@@ -47,14 +50,20 @@ body {
   flex-direction: column;
 }
 
+/* sign up form */
 .signup-div .signup form {
   text-align: center;
 }
 
-.signup-div .signup form input, .signup-div .signup form label, .signup-div .signup form button {
+/* form inputs */
+.signup-div .signup form input, 
+.signup-div .signup form label, 
+.signup-div .signup form button {
   margin: .75rem;
   font-size: large;
 }
+
+/* form button */
 .signup-div .signup form button {
   background: #5aa89742;
   border: none;
@@ -62,4 +71,9 @@ body {
   padding: 1rem;
   padding-left: 2rem;
   padding-right: 2rem;
+}
+
+/* form button hover */
+.signup-div .signup form button:hover {
+  background: #5aa8979f;
 }

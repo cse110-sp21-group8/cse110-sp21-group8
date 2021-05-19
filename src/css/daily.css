@@ -1,7 +1,5 @@
-@import url(https://fonts.googleapis.com/css2?family=Questrial&display=swap);
-
 *{
-    font-family: 'Questrial', sans-serif;
+  font-family: 'Questrial', sans-serif;
 }
 
 /*Aligning the month on calendar*/
@@ -17,15 +15,6 @@
   margin-left: 1%;
   margin-bottom: 1%;
   width: 44vw;
-}
-
-.cal-body {
-  display: grid;
-  grid-template-columns: repeat(7,2.5em);
-  justify-content: center;
-  grid-row-gap: .635em;
-  padding-top: .045em;
-  padding-left: .10em;
 }
 
 /*Wrapper for all components*/
@@ -62,14 +51,6 @@
   height: 9vh;
   justify-content: center;
   width: 44vw;
-}
-
-.week {
-  display: grid;
-  grid-template-columns: repeat(7,2.5em);
-  justify-content: center;
-  grid-row-gap: 0.635em;
-  padding-left: .09em;
 }
 
 /*Formatting for relfection box*/
@@ -112,3 +93,20 @@
 }
 
 
+
+/* formatting for home button itself */
+.home-button button {
+  border: none;
+  background: #5aa89742;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin: .5rem;
+  margin-left: 2rem;
+}
+
+/* formatting for home button when hovered on  */
+.home-button button:hover {
+  background: #5aa8979f;
+}
