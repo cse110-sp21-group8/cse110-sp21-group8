@@ -7,11 +7,8 @@
   <title>Daily Log</title>
   <link rel="stylesheet" href="../css/daily.css">
 </head>
+
 <body>
-  <!-- home button -->
-  <div class="home-button">
-    <button onclick="location.href='./'">Home</button>
-  </div>
   <!--Overall wrapper for all three sections for easier formatting and access-->
   <div id="daily-tasks-wrapper">
     <!--Daily Tasks wrapper. Contains task box and reflection box-->
@@ -36,7 +33,18 @@
       <!--Calendar. Containg month title-->
       <div id="calendar">
         <div id="month">
-          <h2 id="cal">Calendar</h2>
+          <h2 id="cal"></h2>
+          <div class="week"> 
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+          </div>
+        </div>
+        <div class="cal-body">
         </div>
       </div>
       <!--Tracker. Containing tracker box and input area-->
@@ -47,6 +55,9 @@
         </div>
       </div>
     </div>
-  </div> 
+  </div>
+  <script src="../js/daily.js"></script>
+<!--Daily Log Calendar Script-->
+<script src="../js/dailycal.js"></script>   
 </body>
 </html>

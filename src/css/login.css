@@ -7,7 +7,7 @@ body {
   font-family: "Questrial", sans-serif;
 }
 
-/* whole page container */
+
 .container {
   height: 100%;
   width: 100%;
@@ -16,7 +16,6 @@ body {
   justify-content: center;
 }
 
-/* div for form and header */
 .login-div {
   width: 90%;
   height: 80%;
@@ -25,7 +24,6 @@ body {
 
 }
 
-/* login div header */
 .login-div .header {
   background: #5aa897;
   width: 100%;
@@ -38,7 +36,6 @@ body {
   color: white;
 }
 
-/* div for only login form */
 .login-div .login {
   background: #f8f5f1;
   height: 80%;
@@ -50,20 +47,14 @@ body {
   flex-direction: column;
 }
 
-/* login form */
 .login-div .login form {
   text-align: center;
 }
 
-/* form inputs */
-.login-div .login form input, 
-.login-div .login form label, 
-.login-div .login form button {
+.login-div .login form input, .login-div .login form label, .login-div .login form button {
   margin: 1rem;
   font-size: larger;
 }
-
-/* form button */
 .login-div .login form button {
   background: #5aa89742;
   border: none;
@@ -71,9 +62,4 @@ body {
   padding: 1rem;
   padding-left: 2rem;
   padding-right: 2rem;
-}
-
-/* form button hover */
-.login-div .login form button:hover {
-  background: #5aa8979f;
 }
