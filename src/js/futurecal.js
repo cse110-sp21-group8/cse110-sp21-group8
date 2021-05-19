@@ -1,13 +1,3 @@
-module.exports = {
-  "env": {
-      "browser": true,
-      "node": true
-  },
-
-  "globals": {
-    "document": true
-  }
-}; 
 
 /* Declaring date variables for each of the boxes */
 const date = new Date();

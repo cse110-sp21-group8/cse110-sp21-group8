@@ -1,13 +1,3 @@
-module.exports = {
-  "env": {
-      "browser": true,
-      "node": true
-  },
-
-  "globals": {
-    "document": true
-  }
-}; 
 
 let today = new Date();
 let currentMonth = today.getMonth();
