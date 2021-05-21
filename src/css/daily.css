@@ -2,8 +2,15 @@
 
 *{
     font-family: 'Questrial', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
+html, 
+body {
+  height: 100%;
+  width: 100%;
+}
 /*Aligning the month on calendar*/
 #cal {
   text-align: center;
@@ -13,40 +20,39 @@
 #calendar {
   background: #F7F3E9;
   border-radius: 50px;
-  height: 32vh;
+
   margin-left: 1%;
   margin-bottom: 1%;
-  width: 44vw;
+
 }
 
 .cal-body {
   display: grid;
   grid-template-columns: repeat(7,2.5em);
-  justify-content: center;
-  grid-row-gap: .635em;
-  padding-top: .045em;
-  padding-left: .10em;
+  justify-content: space-evenly;
+  text-align: center;
 }
 
 /*Wrapper for all components*/
 #daily-tasks-wrapper {
   align-items: center;
-  display: flex;
-
+  display: grid;
+  grid-template-columns: 70% auto;
+  height: 95%;
+  min-height: 700px;
+  min-width: 900px;
 }
 
 /*Wrapper for daily tasks section*/
-#daily-tasks{
+#daily-tasks .widget{
   align-items: center;
   background: #F7F3E9;
   border-radius:  50px; 
   display: grid;
-  grid-auto-columns: auto;
-  height: 105vh;
-  margin: .2%; 
-  padding-left: 7%;
+  grid-template-rows: 9% 60% 31%;
   text-align: center;
-  width: 54vw;  
+  width: 100%;
+  height: 100%;
 }
 
 /*Formatting for forms inside daily tasks*/
@@ -59,58 +65,54 @@
   align-items: center;
   background: #E9896A;
   border-radius: 50px 50px 0px 0px;
-  height: 9vh;
-  justify-content: center;
-  width: 44vw;
+  justify-content:space-evenly;
+  display: flex;
+  flex-direction: column;
 }
 
 .week {
   display: grid;
   grid-template-columns: repeat(7,2.5em);
-  justify-content: center;
-  grid-row-gap: 0.635em;
-  padding-left: .09em;
+  justify-content: space-evenly;
+  text-align: center;
+  width: 100%;
 }
 
-/*Formatting for relfection box*/
+/*Formatting for reflection box*/
 #reflect-box {
   background: #FFFFFF;
   border-radius: 50px;
-  height: 23vh;
-  width: 40vw;
+  height: 90%;
+  width: 90%;
+  justify-self: center;
 }
 
 /*Formatting for the tasks box*/
 #text-box {
   background: #FFFFFF;
   border-radius: 50px;
-  height: 75vh;
-  width: 40vw;
+  height: 90%;
+  width: 90%;
+  justify-self: center;
 }
 
 /*Wrapper for tracker section*/
 #trackers {
   background: #F7F3E9;
   border-radius: 50px;
-  display: grid;
-  grid-auto-columns: auto;
-  height: 67vh;
-  margin-left: 1%;
-  margin-top: 1%;
   text-align: center;
-  width: 44vw; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /*Formatting for tracker box*/
 #tracker-box {
   background: #FFFFFF;
   border-radius: 50px;
-  height: 49vh;
-  margin-left: 8.5%;
-  margin-top: 10%;
-  width: 37vw;
+  width: 90%;
+  height: 90%;
 }
-
 
 /* formatting for home button itself */
 .home-button button {
@@ -127,4 +129,60 @@
 /* formatting for home button when hovered on  */
 .home-button button:hover {
   background: #5aa8979f;
+}
+
+.home-button {
+  height: 5%;
+  display: flex;
+  align-content: center;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
+  background: #E9896A;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  grid-column-start: 2;
+}
+
+#add {
+  font-size: xxx-large;
+  cursor: pointer;
+  user-select: none;
+}
+
+
+.col {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: 100%;
+  padding-bottom: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 1rem;
+  height: 95%;
+}
+
+
+.widget {
+  border-radius: 50px;
+  display: grid;
+  grid-template-rows: 25% auto;
+}
+
+#cal-tracker{
+  grid-template-rows: 40% auto;
+}
+
+.day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -28,6 +28,6 @@ for (let x = firstDayIndex; x > 0; x--) {
 }
 
 for(let i = 1; i <= lastDay; i++){
-  days += `<div>${i}</div>`;
+  days += `<div class="day">${i}</div>`;
   monthDays.innerHTML = days;
 }

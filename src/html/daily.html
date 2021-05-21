@@ -1,67 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daily Log</title>
-  <link rel="stylesheet" href="../css/daily.css">
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Log</title>
+    <link rel="stylesheet" href="../css/daily.css">
+  </head>
 
-<body>
-  <!-- home button -->
-  <div class="home-button">
-    <button onclick="location.href='./'">Home</button>
-  </div>
-  <!--Overall wrapper for all three sections for easier formatting and access-->
-  <div id="daily-tasks-wrapper">
-    <!--Daily Tasks wrapper. Contains task box and reflection box-->
-    <div id="daily-tasks">
-      <!--Text box for tasks form. Contains form for tasks and buttons associated with input-->
-      <div id="text-box">
-        <form id="form">
-          <button id="status"></button>
-          <button id="delete"></button>
-          <button id="move"></button>
-          <input type="text" id="tasks" placeholder="Click to add tasks!"><br>
-        </form>
-      </div>
-      <!--Reflection box. Contains input area for reflections-->
-      <div id="reflect-box">
-        <input type="text" id="reflection" placeholder="Click to add reflections!"><br>
-      </div>
+  <body>
+    <!-- home button -->
+    <div class="home-button">
+      <button onclick="location.href='./'">Home</button>
     </div>
-
-    <!--Wrapper for calendar and tracker-->
-    <div id="left">
-      <!--Calendar. Containg month title-->
-      <div id="calendar">
-        <div id="month">
-          <h2 id="cal"></h2>
-          <div class="week"> 
-            <div>Sun</div>
-            <div>Mon</div>
-            <div>Tue</div>
-            <div>Wed</div>
-            <div>Thu</div>
-            <div>Fri</div>
-            <div>Sat</div>
+    <!--Overall wrapper for all three sections for easier formatting and access-->
+    <div id="daily-tasks-wrapper">
+      <!--Daily Tasks wrapper. Contains task box and reflection box-->
+      <div class='col' id="daily-tasks">
+        <div class="widget">
+          <div class="header">
+            <h1>Today's Notes</h1>
+            <div id="add">
+              <a><span>&#43;</span></a>
+            </div>
+          </div>
+          <!--Text box for tasks form. Contains form for tasks and buttons associated with input-->
+          <div id="text-box">
+            <form id="form">
+              <button id="status"></button>
+              <button id="delete"></button>
+              <button id="move"></button>
+              <input type="text" id="tasks" placeholder="Click to add tasks!"><br>
+            </form>
+          </div>
+          <!--Reflection box. Contains input area for reflections-->
+          <div id="reflect-box">
+            <input type="text" id="reflection" placeholder="Click to add reflections!"><br>
           </div>
         </div>
-        <div class="cal-body">
-        </div>
       </div>
-      <!--Tracker. Containing tracker box and input area-->
-      <div id="trackers">
-        <!--Tracker box for formatting-->
-        <div id="tracker-box">
-          <input type="file" id="tracker" placeholder="Trackers are here!"><br>
+
+      <!--Wrapper for calendar and tracker-->
+      <div class='col' id="cal-tracker">
+        <!--Calendar. Containg month title-->
+        <div class="widget" id="calendar">
+          <div id="month">
+            <h2 id="cal"></h2>
+            <div class="week"> 
+              <div class="day">Sun</div>
+              <div class="day">Mon</div>
+              <div class="day">Tue</div>
+              <div class="day">Wed</div>
+              <div class="day">Thu</div>
+              <div class="day">Fri</div>
+              <div class="day">Sat</div>
+            </div>
+          </div>
+          <div class="cal-body">
+          </div>
+        </div>
+        <!--Tracker. Containing tracker box and input area-->
+        <div class="widget" id="trackers">
+          <!--Tracker box for formatting-->
+          <div id="tracker-box">
+            <input type="file" id="tracker" placeholder="Trackers are here!"><br>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <script src="../js/daily.js"></script>
-<!--Daily Log Calendar Script-->
-<script src="../js/dailycal.js"></script>   
-</body>
+    <script src="../js/daily.js"></script>
+  <!--Daily Log Calendar Script-->
+    <script src="../js/dailycal.js"></script>   
+  </body>
 </html>

@@ -15,10 +15,22 @@
       <div class="left-col col">
         <!-- calendar widget -->
         <div id="calendar" class="widget">
-          <div class="header">
-            <h2>Calendar</h2>
+          <div class="header" id="month">
+            <h2 id="cal"></h2>
+            <div class="week"> 
+              <div class="day">Sun</div>
+              <div class="day">Mon</div>
+              <div class="day">Tue</div>
+              <div class="day">Wed</div>
+              <div class="day">Thu</div>
+              <div class="day">Fri</div>
+              <div class="day">Sat</div>
+            </div>
           </div>
-          <div class="widget-content"></div>
+          <div class="widget-content">
+            <div class="cal-body">
+            </div>
+          </div>
         </div>
         <!-- index widget -->
         <div id="index" class="widget">
@@ -81,7 +93,7 @@
             <h2>Hello <span>First Name</span></h2>
           </div>
           <div class="widget-content">
-            <img src="https://placeimg.com/480/480/people" alt="profile-pic" />
+              <img src="https://placeimg.com/200/200/nature" alt="profile-pic" />
           </div>
         </div>
         <!-- Collections widget -->
@@ -99,5 +111,6 @@
         </div>
       </div>
     </div>
+    <script src="../js/dailycal.js"></script>   
   </body>
 </html>

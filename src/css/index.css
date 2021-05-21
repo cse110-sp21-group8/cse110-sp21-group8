@@ -100,18 +100,14 @@ p {
 }
 
 #greeting .widget-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+  text-align: center;
 }
 
 #greeting .widget-content img {
-  height: auto;
-  width: 80%;
-  max-height: 150px;
-  max-width: 150px;
   border-radius: 100%;
+  max-height: 80%;
+  max-width: 80%;
+  margin-top: 5%;
 }
 
 #collections .widget-content {
@@ -194,6 +190,7 @@ p {
 
 #todays-log #add:hover {
   color: lightgray;
+
 }
 
 /* formatting for home button itself */
@@ -211,4 +208,51 @@ p {
 /* formatting for home button when hovered on  */
 .home-button button:hover {
   background: #5aa8979f;
+}
+
+
+/*Aligning the month on calendar*/
+#cal {
+  text-align: center;
+  width: 100%;
+}
+
+/*Calendar*/
+#calendar {
+  background: #F7F3E9;
+  border-radius: 50px;
+
+  margin-left: 1%;
+  margin-bottom: 1%;
+
+}
+
+.cal-body {
+  display: grid;
+  grid-template-columns: repeat(7,14.2857143%);
+  justify-content: space-evenly;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+
+}
+
+/*Coral border on calendar*/
+#month {
+  justify-content:space-evenly;
+  flex-direction: column;
+}
+
+.week {
+  display: grid;
+  grid-template-columns: repeat(7,14.2857143%);
+  justify-content: space-evenly;
+  text-align: center;
+  width: 100%;
+}
+
+.day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
