@@ -124,13 +124,6 @@ app.post('/DeleteCustomTask', function (req, res) {
 })
 
 
-//listening to the port to let the server start up
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
-
-
-
 //install mongodb at local first
 //npm install mongoose
 //database:
@@ -152,12 +145,23 @@ function createUser(data,res){
   mongoose_db.once('open', function(){
     // insert the ner user or user signup
     let newUser = new User(data);
-    newUser.save(function (err, result) {
+    //Find if there is any exist username
+    User.find({username:data['username']}, function (err, result) {
       if (err) return console.error(err);
-      currentUser = new User(data);
-      console.log("User signup successfully");
-      res.send({ user_status: 200 });
-      mongoose_db.close();
+      if (result.length > 0){
+        console.log("User already exist");
+        exist = true;
+        res.send({ user_status: 400 });
+        mongoose_db.close();
+      }else{
+        newUser.save(function (err, result) {
+          if (err) return console.error(err);
+          currentUser = newUser;
+          console.log("User signup successfully");
+          res.send({ user_status: 200 });
+          mongoose_db.close();
+        });
+      }
     });
   });
 }
@@ -327,3 +331,9 @@ function getCustomTask(data,res){
     });
   });
 }
+
+
+//export the module function for testing
+module.exports = createUser;
+module.exports = currentUser;
+module.exports = app;
