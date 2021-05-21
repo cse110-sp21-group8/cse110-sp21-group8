@@ -243,6 +243,7 @@ let CustomSchema = new mongoose.Schema({
   user: String,
   title:String,
   color:String,
+  tags:String,
 });
 let Custom = mongoose.model('Custom', CustomSchema);
 

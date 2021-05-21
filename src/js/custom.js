@@ -38,6 +38,8 @@ Updating.addEventListener("click", ()=>{
 
         let title = document.getElementById("title");
         title.value = current_log["title"];
+        let tags = document.getElementById("tags");
+        tags.value = current_log["tags"];
         let content = document.getElementById("content");
         content.value = current_log["content"];
 
@@ -62,7 +64,7 @@ Updating.addEventListener("click", ()=>{
     }else{
         log.style.display="block";
         add_section.style.display = "none";
-        Adding.innerText="Update Custom Log";
+        Updating.innerText="Update Custom Log";
         status = 0;
     }
 });
@@ -128,14 +130,59 @@ window.onload = function(event){
 
                     //add event listern to display the content
                     item.addEventListener("click", ()=>{
+                        currentCustom = item.getAttribute("index");
                         //remove the old content
                         let log_content = document.querySelector(".log-content");
                         log_content.remove();
                         //add the new content
                         let new_content = document.createElement("div");
                         new_content.classList.add("log-content");
-                        new_content.innerText = CustomsList[item.getAttribute("index")]["content"];
-                        currentCustom = item.getAttribute("index");
+
+                        //subitems:
+                        //1) title:
+                        let c_title = document.createElement("span");
+                        c_title.innerText = "Title:";
+                        let c_title_content = document.createElement("span");
+                        c_title_content.innerText = CustomsList[item.getAttribute("index")]["content"];
+                        
+                        //2) color:
+                        let c_color = document.createElement("span");
+                        c_color.innerText = "Color:";
+                        let c_color_content = document.createElement("span");
+                        c_color_content.innerText = CustomsList[item.getAttribute("index")]["color"];
+
+                        //3) section:
+                        let c_section = document.createElement("span");
+                        c_section.innerText = "section:";
+                        let c_section_content = document.createElement("span");
+                        c_section_content.innerText = CustomsList[item.getAttribute("index")]["sections"];
+
+                          //4) content:
+                          let c_content = document.createElement("span");
+                          c_content.innerText = "content:";
+                          let c_content_content = document.createElement("span");
+                          c_content_content.innerText = CustomsList[item.getAttribute("index")]["content"];
+
+                          //4) tags:
+                          let c_tags = document.createElement("span");
+                          c_tags.innerText = "tags:";
+                          let c_tags_content = document.createElement("span");
+                          c_tags_content.innerText = CustomsList[item.getAttribute("index")]["tags"];
+
+                        new_content.appendChild(c_title);
+                        new_content.appendChild(c_title_content);
+                        new_content.appendChild(document.createElement("br"));
+                        new_content.appendChild(c_tags);
+                        new_content.appendChild(c_tags_content);
+                        new_content.appendChild(document.createElement("br"));
+                        new_content.appendChild(c_color);
+                        new_content.appendChild(c_color_content);
+                        new_content.appendChild(document.createElement("br"));
+                        new_content.appendChild(c_section);
+                        new_content.appendChild(c_section_content);
+                        new_content.appendChild(document.createElement("br"));
+                        new_content.appendChild(c_content);
+                        new_content.appendChild(c_content_content);
                         log.appendChild(new_content);
                     });
 
@@ -159,9 +206,11 @@ form.addEventListener("submit",(event)=>{
     event.preventDefault();
     //obtain data
     let title = document.getElementById("title").value;
+    let tags = document.getElementById("tags").value;
     let color;
     let sections;
     let content = document.getElementById("content").value;
+
 
     //get the color checked value
     let colors_radio = document.getElementsByName('Color');           
@@ -177,7 +226,7 @@ form.addEventListener("submit",(event)=>{
 
     //status = 1: adding
     if(status == 1){
-        let data={title:title,color:color,sections:sections,content:content, date: new Date().toDateString()};
+        let data={title:title,tags:tags,color:color,sections:sections,content:content, date: new Date().toDateString()};
         fetch('/addCustomTask', {  
             method: 'POST',
             headers: {
@@ -196,24 +245,63 @@ form.addEventListener("submit",(event)=>{
                     //added component to the html
                     let item = document.createElement('button');
                         item.classList.add("buttons");
+                        item.classList.add("customs-buttons");
                         item.innerText = newTask["title"];
                         item.style.backgroundColor=newTask["color"];
                         item.setAttribute("index",index);
 
                     //add event listern to display the content
                     item.addEventListener("click", ()=>{
-                        //remove the old content
-                        let log_content = document.querySelector(".log-content");
-                        log_content.remove();
-                        //add the new content
-                        let new_content = document.createElement("div");
-                        new_content.classList.add("log-content");
-                        new_content.innerText = CustomsList[item.getAttribute("index")]["content"];
-                        currentCustom = item.getAttribute("index");
-                        log.appendChild(new_content);
+                         //remove the old content
+                         let log_content = document.querySelector(".log-content");
+                         log_content.remove();
+                         //add the new content
+                         let new_content = document.createElement("div");
+                         new_content.classList.add("log-content");
+ 
+                         //subitems:
+                         //1) title:
+                         let c_title = document.createElement("span");
+                         c_title.innerText = "Title:";
+                         let c_title_content = document.createElement("span");
+                         c_title_content.innerText = CustomsList[item.getAttribute("index")]["content"];
+                         
+                         //2) color:
+                         let c_color = document.createElement("span");
+                         c_color.innerText = "Color:";
+                         let c_color_content = document.createElement("span");
+                         c_color_content.innerText = CustomsList[item.getAttribute("index")]["color"];
+ 
+                         //3) section:
+                         let c_section = document.createElement("span");
+                         c_section.innerText = "section:";
+                         let c_section_content = document.createElement("span");
+                         c_section_content.innerText = CustomsList[item.getAttribute("index")]["sections"];
+ 
+                           //4) content:
+                           let c_content = document.createElement("span");
+                           c_content.innerText = "content:";
+                           let c_content_content = document.createElement("span");
+                           c_content_content.innerText = CustomsList[item.getAttribute("index")]["content"];
+ 
+                         new_content.appendChild(c_title);
+                         new_content.appendChild(c_title_content);
+                         new_content.appendChild(document.createElement("br"));
+                         new_content.appendChild(c_color);
+                         new_content.appendChild(c_color_content);
+                         new_content.appendChild(document.createElement("br"));
+                         new_content.appendChild(c_section);
+                         new_content.appendChild(c_section_content);
+                         new_content.appendChild(document.createElement("br"));
+                         new_content.appendChild(c_content);
+                         new_content.appendChild(c_content_content);
+                         log.appendChild(new_content);
                     });
 
                     log_bar.appendChild(item);
+
+                    //return
+                    Adding.click();
 
                 }else{
                     alert("Task didn't added");
@@ -226,7 +314,7 @@ form.addEventListener("submit",(event)=>{
 
     //status = 2: updating
     if(status == 2){
-        let data={new:{title:title,color:color,sections:sections,content:content, date: new Date().toDateString()},
+        let update_data={new:{title:title,tags:tags,color:color,sections:sections,content:content, date: new Date().toDateString()},
         old:CustomsList[currentCustom]
         };
         fetch('/UpdateCustomTask', {  
@@ -234,12 +322,25 @@ form.addEventListener("submit",(event)=>{
             headers: {
             "Content-Type": "application/json"
             }, 
-            body: JSON.stringify(data)
+            body: JSON.stringify(update_data)
             })
             .then(response => response.json())
             .then(data => {
                 if(data["status"]==200){
+                    //update the CustomsList first
+                    CustomsList[currentCustom] = update_data["new"];
+                
+                    let c_index = parseInt(currentCustom)+1;
+                    //update the tags:
+                    let tmp = "button:nth-child("+c_index+")";
+                    console.log(tmp);
+                    let item = document.querySelector(tmp);
+                    item.innerText = (CustomsList[currentCustom])["title"];
+                    item.style.backgroundColor =  (CustomsList[currentCustom])["color"];
                     
+
+                    //return
+                    Updating.click();
 
                 }else{
                     alert("Task didn't added");
