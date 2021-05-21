@@ -1,4 +1,4 @@
-name: Generator JS Docs
+name: Deploy with JSDoc
 
 on: [push]
 
@@ -17,8 +17,8 @@ jobs:
     - name: Deploy JSDoc
       uses: JamesIves/github-pages-deploy-action@4.1.3
       with:
-        branch: repo/feature/docs # The branch the action should deploy to.
-        folder: docs # The folder the action should deploy.
+        branch: repo/feature/deploy # The branch the action should deploy to.
+        folder: . # The folder the action should deploy.
 
 
 
