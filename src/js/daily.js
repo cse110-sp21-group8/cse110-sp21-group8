@@ -11,6 +11,7 @@ addButton.addEventListener('click', ()=> {
     taskInput.addEventListener('focusout', (event)=> {
         console.log('focus out');
         event.preventDefault();
+        //Put task, event, note drop down menu
         let content = taskInput.value;
         let date = new Date();
         console.log(date.toLocaleString());
