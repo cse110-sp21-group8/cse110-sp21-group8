@@ -17,19 +17,19 @@ class TaskList extends HTMLElement {
         grid-template-columns: 10% 10% 10% auto;
       }
     </style>
-    <div class=“entry”>
-      <select name=“Checklist Category” id=“checklist-select”>
-        <option value=“”>--Please choose an option--</option>
-        <option value=“Task”> Task </option>
-        <option value=“Event”> Event </option>
-        <option value=“Note”> Note </option>
+    <div class="entry">
+      <select name="Checklist Category" id="checklist-select">
+        <option value="">--Please choose an option--</option>
+        <option value="Task"> Task </option>
+        <option value="Event"> Event </option>
+        <option value="Note"> Note </option>
       </select>
-      <div id=“text-box”>
-        <form id=“form”>
-          <button id=“status”></button>
-          <button id=“delete”></button>
-          <button id=“move”></button>
-          <input type=“text” id=“tasks” placeholder=“Click to add tasks!“><br>
+      <div id="text-box">
+        <form id='form'>
+          <button id="status"></button>
+          <button id="delete"></button>
+          <button id="move"></button>
+          <input type="text" id="tasks" placeholder="Click to add tasks!"><br>
         </form>
       </div>
     </div>
