@@ -7,13 +7,25 @@ addButton.addEventListener('click', ()=> {
     text_box.prepend(task);
     console.log(task.shadowRoot);
     let taskInput = task.shadowRoot.querySelector('#tasks');
-    console.log(taskInput);
-    
+    let selection = task.shadowRoot.querySelector('#checklist-select');
+    console.log(taskInput); 
+
+    selection.addEventListener('change', () => {
+        if(selection.value == "Task"){
+            taskInput.value = "●";
+        } else if (selection.value == "Note"){
+            taskInput.value = "-";
+        } else {
+            taskInput.value = "⚬";
+        }
+    })
+
     taskInput.addEventListener('focusout', (event)=> {
         if(task.isNew){
             console.log('focus out');
             event.preventDefault();
-            //Put task, event, note drop down menu
+            //Put task, event, note drop down men 
+
             let content = taskInput.value;
             let date = new Date();
             console.log(date.toLocaleString());
@@ -40,7 +52,32 @@ addButton.addEventListener('click', ()=> {
                 });
             task.isNew = false;
         } else {
-            // Update Log Code here
+            
+            let oldData = data;
+            let content = taskInput.value;
+            let date = new Date();
+            data = {status:"daily",type:"task", content:content,date:date.toDateString()};
+            let newData = data;
+            send_data = {old:oldData, new:newData}; 
+            fetch('/updateTask', {  
+                method: 'POST',
+                headers: {
+                  "Content-Type": "application/json"
+                }, 
+                body: JSON.stringify(send_data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data["status"]==200){
+                        let newTask = data["task"];
+                    }else{
+                        alert("Task didn't added");
+                    }
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+            });
+
         }
     });
 
