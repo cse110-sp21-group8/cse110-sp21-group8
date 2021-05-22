@@ -95,6 +95,7 @@ body {
   width: 90%;
   justify-self: center;
   overflow-y: auto;
+  padding: 2rem;
 }
 
 /*Wrapper for tracker section*/
