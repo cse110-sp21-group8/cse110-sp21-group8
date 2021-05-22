@@ -203,7 +203,6 @@ function addTask(data,res){
     // insert new task into the database
     //add the user id into the data
     data["user"] = currentUser["_id"];
-    data["status"] = "daily";
     let newTask = new Task(data);
     newTask.save(function (err, result) {
       if (err) return console.error(err);
