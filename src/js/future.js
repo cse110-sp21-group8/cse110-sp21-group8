@@ -54,13 +54,11 @@ form.addEventListener('submit', (event)=>{
         .then(data => {
             if(data["status"]==200){
                 let newTask = data["task"];
-                
                 //added component to the html
                 let text_box = document.getElementById("text-box2");
                 let item = document.createElement('div');
                 item.innerText = newTask["content"];
                 text_box.appendChild(item);
-
 
             }else{
                 alert("Task didn't added");
@@ -88,18 +86,51 @@ form.addEventListener('submit', (event)=>{
     });
   });*/
 
-  function onButtonClick(){
-    document.getElementById('tasks2').className="show";
-    var x = document.getElementById("tasks2").defaultValue;
-    document.getElementById("tasks2").innerHTML = x;
+  var i; 
+  for(i = 1; i<7; i++){
+      var j; 
+      for(j = 1; j < 32; j++){
+        let name = ".whole-cal" + i;
+        let cal = document.querySelector(name);
+        let geth2 = name + " " +"h2";
+        let text = document.querySelector(geth2).textContent;
 
-    
-    var d = new Date();
-    var n = d.getMonth();
-    document.getElementById("demo").innerHTML = n;
-
-    
-
-
-
+        let classname = ".date" + i + j;
+        let day = document.querySelector(classname);
+        if(day != null){
+            day.addEventListener('click', (event) => {
+                document.getElementById('tasks2').className="show";
+                console.log(day.innerHTML);
+                document.getElementById("tasks2").value = text + " " + day.innerHTML+ ": ";
+            });
+        }
+      }
   }
+
+  /*var i;
+  var content;
+  for(i = 1; i<7; i++){
+    let name = ".whole-cal" + i;
+    let cal = document.querySelector(name);
+    cal.addEventListener('click', (event) => {
+         //document.getElementById("tasks2").value = "";
+         let geth2 = name + " " +"h2";
+         let text = document.querySelector(geth2).textContent;
+         //document.getElementById("tasks2").value = text + ": ";
+         content = text;
+    });
+
+    var j;
+    for(j = 1; j < 32; j++){
+        let classname = ".date" + i + j;
+        let day = document.querySelector(classname);
+        if(day != null){
+            day.addEventListener('click', (event) => {
+                document.getElementById('tasks2').className="show";
+                console.log(day.innerHTML);
+                document.getElementById("tasks2").value = content + day.innerHTML;
+            });
+        }
+        
+    }
+  }*/

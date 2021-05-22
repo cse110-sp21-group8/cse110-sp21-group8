@@ -150,7 +150,7 @@ for (let x = firstDayIndex; x > 0; x--) {
   }
 
 for(let i = 1; i <= lastDay; i++){
-    days += `<div>${i}</div>`;
+    days += `<div class = date1${i}>${i}</div>`;
     monthDays.innerHTML = days;
     
 }
@@ -162,7 +162,7 @@ for (let x = firstDayIndex2; x > 0; x--) {
   }
 
 for(let i = 1; i <= lastDay2; i++){
-    days2 += `<div>${i}</div>`;
+    days2 += `<div class = date2${i}>${i}</div>`;
     monthDays2.innerHTML = days2;
 
 }
@@ -174,7 +174,7 @@ for (let x = firstDayIndex3; x > 0; x--) {
   }
 
 for(let i = 1; i <= lastDay3; i++){
-    days3 += `<div>${i}</div>`;
+    days3 += `<div class = date3${i}>${i}</div>`;
     monthDays3.innerHTML = days3;
 
 }
@@ -186,7 +186,7 @@ for (let x = firstDayIndex4; x > 0; x--) {
   }
 
 for(let i = 1; i <= lastDay4; i++){
-    days4 += `<div>${i}</div>`;
+    days4 += `<div class = date4${i}>${i}</div>`;
     monthDays4.innerHTML = days4;
 
 }
@@ -198,7 +198,7 @@ for (let x = firstDayIndex5; x > 0; x--) {
   }
 
 for(let i = 1; i <= lastDay5; i++){
-    days5 += `<div>${i}</div>`;
+    days5 += `<div class = date5${i}>${i}</div>`;
     monthDays5.innerHTML = days5;
 
 }
@@ -210,7 +210,7 @@ for (let x = firstDayIndex6; x > 0; x--) {
   }
 
 for(let i = 1; i <= lastDay6; i++){
-    days6 += `<div>${i}</div>`;
+    days6 += `<div class = date6${i}>${i}</div>`;
     monthDays6.innerHTML = days6;
 }
 /* */
