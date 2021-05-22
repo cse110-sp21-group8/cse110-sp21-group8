@@ -23,7 +23,7 @@ describe('Test user signup', () => {
 
     test('User sign up with existing username, should return status code 400', done =>{
         //generating random data
-        let sendData = {username:"adming@gmail.com", password:"123",name:"test"};
+        let sendData = {username:"admin@gmail.com", password:"123",name:"test"};
         //send the request
         request(app)
         .post("/user_signup").send(sendData)
@@ -33,4 +33,31 @@ describe('Test user signup', () => {
           done();
         });
     });
+});
+
+describe('Test user Login', () => {
+  test('User login successfully with correct password and username', done =>{
+      //send the request
+      let sendData={username:"admin@gmail.com",password:"123456"};
+      request(app)
+      .post("/user_login").send(sendData)
+      .set('Accept', 'application/json')
+      .then(response => {
+        expect(response.body.user_status).toEqual(200);
+        done();
+      });
+  });
+
+  test('User sign in with incorrect username and password, should return status code 404', done =>{
+      //generating random data
+      let sendData = {username:"adming@gmail.com", password:"12"};
+      //send the request
+      request(app)
+      .post("/user_login").send(sendData)
+      .set('Accept', 'application/json')
+      .then(response => {
+        expect(response.body.user_status).toEqual(404);
+        done();
+      });
+  });
 });

@@ -192,7 +192,7 @@ function verifyUser(data,res){
       if (err) return console.error(err);
       console.log(one);
       if(one.length>0){
-        currentUser = one;
+        currentUser = one[0];
         res.send({ user_status: 200 });
       }else{
         res.send({ user_status: 404 });
@@ -279,7 +279,6 @@ function getDailyTask(data,res){
   mongoose_db.once('open', function(){
     // insert the ner user or user signup
     data["user"] = currentUser["_id"];
-    data["status"] = "daily";
     Task.find(data, function (err, result) {
       if (err) return console.error(err);
       console.log(result);
