@@ -99,6 +99,22 @@ app.post('/addTask', function (req, res) {
   addTask(data,res);
 })
 
+//adding task
+app.post('/updateTask', function (req, res) {
+  let data= req.body;//get the form data
+  console.log('Got body:', data);
+  //insert data into the database:
+  UpdateTask(data,res);
+})
+
+//adding task
+app.post('/deleteTask', function (req, res) {
+  let data= req.body;//get the form data
+  console.log('Got body:', data);
+  //insert data into the database:
+  DeleteTask(data,res);
+})
+
 //adding Custom task
 app.post('/addCustomTask', function (req, res) {
   let data= req.body;//get the form data
@@ -203,12 +219,51 @@ function addTask(data,res){
     // insert new task into the database
     //add the user id into the data
     data["user"] = currentUser["_id"];
-    data["status"] = "daily";
     let newTask = new Task(data);
     newTask.save(function (err, result) {
       if (err) return console.error(err);
       console.log("Task added successfully");
       res.send({ status: 200, task: data});
+      mongoose_db.close();
+    });
+  });
+}
+
+//data formate: {old:old_data,new:new_data}
+//Call the UpdateCustomTask functions to update the tasks list
+function UpdateTask(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert new task into the database
+    //add the user id into the data
+    let old_data = data["old"];
+    let new_data = data["new"];
+    old_data["user"] = currentUser["_id"];
+
+    Task.updateOne(old_data,new_data,function (err, result) {
+      if (err) return console.error(err);
+      console.log("Task List Updated successfully");
+      res.send({ status: 200, task: data});
+      mongoose_db.close();
+    });
+  });
+}
+
+//Call the DeleteTask functions to delete the tasks list
+function DeleteTask(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert new task into the database
+    //add the user id into the data
+    data["user"] = currentUser["_id"];
+    Task.deleteOne(data, function (err, result) {
+      if (err) return console.error(err);
+      console.log("Tasks list deleted successfully");
+      res.send({ status: 200});
       mongoose_db.close();
     });
   });
