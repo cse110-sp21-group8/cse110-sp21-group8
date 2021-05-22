@@ -218,7 +218,8 @@ function addTask(data,res){
   mongoose_db.once('open', function(){
     // insert new task into the database
     //add the user id into the data
-    data["user"] = currentUser["_id"];
+    data["user"] = currentUser["_id"].toString();
+    console.log(data);
     let newTask = new Task(data);
     newTask.save(function (err, result) {
       if (err) return console.error(err);
@@ -240,7 +241,8 @@ function UpdateTask(data,res){
     //add the user id into the data
     let old_data = data["old"];
     let new_data = data["new"];
-    old_data["user"] = currentUser["_id"];
+
+    old_data["user"] = currentUser["_id"].toString();
 
     Task.updateOne(old_data,new_data,function (err, result) {
       if (err) return console.error(err);
@@ -259,7 +261,7 @@ function DeleteTask(data,res){
   mongoose_db.once('open', function(){
     // insert new task into the database
     //add the user id into the data
-    data["user"] = currentUser["_id"];
+    data["user"] = currentUser["_id"].toString();
     Task.deleteOne(data, function (err, result) {
       if (err) return console.error(err);
       console.log("Tasks list deleted successfully");

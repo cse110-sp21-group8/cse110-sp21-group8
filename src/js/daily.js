@@ -52,6 +52,7 @@ addButton.addEventListener('click', ()=> {
                 });
             task.isNew = false;
         } else {
+            
             let oldData = data;
             let content = taskInput.value;
             let date = new Date();
@@ -63,7 +64,7 @@ addButton.addEventListener('click', ()=> {
                 headers: {
                   "Content-Type": "application/json"
                 }, 
-                body: JSON.stringify(data)
+                body: JSON.stringify(send_data)
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -76,6 +77,7 @@ addButton.addEventListener('click', ()=> {
                 .catch((error) => {
                 console.error('Error:', error);
             });
+
         }
     });
 
