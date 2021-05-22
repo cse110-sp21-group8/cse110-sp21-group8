@@ -8,74 +8,79 @@ addButton.addEventListener('click', ()=> {
     console.log(task.shadowRoot);
     let taskInput = task.shadowRoot.querySelector('#tasks');
     console.log(taskInput);
+    
     taskInput.addEventListener('focusout', (event)=> {
-        console.log('focus out');
-        event.preventDefault();
-        //Put task, event, note drop down menu
-        let content = taskInput.value;
-        let date = new Date();
-        console.log(date.toLocaleString());
-        console.log(content);
-        //type: task, events, reminders.
-        data = {status:"daily",type:"task", content:content,date:date.toDateString()};
-        fetch('/addTask', {  
-            method: 'POST',
-            headers: {
-              "Content-Type": "application/json"
-            }, 
-            body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data["status"]==200){
-                    let newTask = data["task"];
-                    
-                    //added component to the html
-    
-    
-                }else{
-                    alert("Task didn't added");
-                }
-            })
-            .catch((error) => {
-            console.error('Error:', error);
-            });
-    })
+        if(task.isNew){
+            console.log('focus out');
+            event.preventDefault();
+            //Put task, event, note drop down menu
+            let content = taskInput.value;
+            let date = new Date();
+            console.log(date.toLocaleString());
+            console.log(content);
+            //type: task, events, reminders.
+            data = {status:"daily",type:"task", content:content,date:date.toDateString()};
+            fetch('/addTask', {  
+                method: 'POST',
+                headers: {
+                  "Content-Type": "application/json"
+                }, 
+                body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data["status"]==200){
+                        let newTask = data["task"];
+                    }else{
+                        alert("Task didn't added");
+                    }
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+                });
+            task.isNew = false;
+        } else {
+            // Update Log Code here
+        }
+    });
 
     let taskForm = task.shadowRoot.querySelector('#form');
 
     taskForm.addEventListener('submit', (event)=>{
         event.preventDefault();
-        let content = taskInput.value;
-        let date = new Date();
-        console.log(date.toLocaleString());
-        console.log(content);
-        //type: task, events, reminders.
-        data = {status:"daily",type:"task", content:content,date:date.toDateString()};
-        fetch('/addTask', {  
-            method: 'POST',
-            headers: {
-              "Content-Type": "application/json"
-            }, 
-            body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data["status"]==200){
-                    let newTask = data["task"];
-                    
-                    //added component to the html
-    
-    
-                }else{
-                    alert("Task didn't added");
-                }
-            })
-            .catch((error) => {
-            console.error('Error:', error);
-        });
+        if(task.isNew){
+            console.log('focus out');
+            //Put task, event, note drop down menu
+            let content = taskInput.value;
+            let date = new Date();
+            console.log(date.toLocaleString());
+            console.log(content);
+            //type: task, events, reminders.
+            data = {status:"daily",type:"task", content:content,date:date.toDateString()};
+            fetch('/addTask', {  
+                method: 'POST',
+                headers: {
+                  "Content-Type": "application/json"
+                }, 
+                body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data["status"]==200){
+                        let newTask = data["task"];
+                    }else{
+                        alert("Task didn't added");
+                    }
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+                });
+            task.isNew = false;
+        } else {
+            // Update Log Code here
+        }
         document.activeElement.blur();
-    })
+    });
     taskInput.focus();
 })
 
@@ -101,10 +106,24 @@ window.onload = function(event){
                 //add each task into the box
                 tasks.forEach((tmp)=>{
                     console.log(tmp);
-                    let item = document.createElement('task-list');
-                    let itemTextInput = item.shadowRoot.querySelector('#tasks');
-                    itemTextInput.value = tmp["content"];
-                    text_box.appendChild(item);
+                    let task = document.createElement('task-list');
+                    let taskInput = task.shadowRoot.querySelector('#tasks');
+                    let taskForm = task.shadowRoot.querySelector('#form');
+                    taskInput.value = tmp["content"];
+                    task.isNew = false;
+
+                    taskInput.addEventListener('focusout', (event)=> {
+                        event.preventDefault();
+                        //update task code here
+                    });
+
+                    taskForm.addEventListener('submit', (event)=>{
+                        event.preventDefault();
+                        //update task code here
+                        document.activeElement.blur();
+                    })
+
+                    text_box.appendChild(task);
                 });
 
             }else{
@@ -127,40 +146,40 @@ window.onload = function(event){
 
 
 //add tasks:
-form.addEventListener('submit', (event)=>{
-    event.preventDefault();
-    let content = document.getElementById('tasks').value;
-    let date = new Date();
-    console.log(date.toLocaleString());
-    console.log(content);
-    //type: task, events, reminders.
-    data = {status:"daily",type:"task", content:content,date:date.toDateString()};
-    fetch('/addTask', {  
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"
-        }, 
-        body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data["status"]==200){
-                let newTask = data["task"];
+// form.addEventListener('submit', (event)=>{
+//     event.preventDefault();
+//     let content = document.getElementById('tasks').value;
+//     let date = new Date();
+//     console.log(date.toLocaleString());
+//     console.log(content);
+//     //type: task, events, reminders.
+//     data = {status:"daily",type:"task", content:content,date:date.toDateString()};
+//     fetch('/addTask', {  
+//         method: 'POST',
+//         headers: {
+//           "Content-Type": "application/json"
+//         }, 
+//         body: JSON.stringify(data)
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//             if(data["status"]==200){
+//                 let newTask = data["task"];
                 
-                //added component to the html
-                let text_box = document.getElementById("text-box");
-                let item = document.createElement('div');
-                item.innerText = newTask["content"];
-                text_box.appendChild(item);
+//                 //added component to the html
+//                 let text_box = document.getElementById("text-box");
+//                 let item = document.createElement('div');
+//                 item.innerText = newTask["content"];
+//                 text_box.appendChild(item);
 
 
-            }else{
-                alert("Task didn't added");
-            }
-        })
-        .catch((error) => {
-        console.error('Error:', error);
-        });
-    form.reset();
-});
+//             }else{
+//                 alert("Task didn't added");
+//             }
+//         })
+//         .catch((error) => {
+//         console.error('Error:', error);
+//         });
+//     form.reset();
+// });
 
