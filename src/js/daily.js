@@ -4,7 +4,7 @@ let text_box = document.querySelector('#text-box');
 addButton.addEventListener('click', ()=> {
     console.log('click')
     let task = document.createElement('task-list')
-    text_box.appendChild(task);
+    text_box.prepend(task);
     console.log(task.shadowRoot);
     let taskInput = task.shadowRoot.querySelector('#tasks');
     console.log(taskInput);
@@ -81,6 +81,14 @@ addButton.addEventListener('click', ()=> {
         }
         document.activeElement.blur();
     });
+
+    let deleteButton = task.shadowRoot.querySelector('#delete');
+
+    deleteButton.addEventListener('click', () => {
+        task.remove();
+        // delete back end code here
+    });
+
     taskInput.focus();
 })
 
@@ -123,6 +131,12 @@ window.onload = function(event){
                         document.activeElement.blur();
                     })
 
+                    let deleteButton = task.shadowRoot.querySelector('#delete');
+
+                    deleteButton.addEventListener('click', () => {
+                        task.remove();
+                        // delete back end code here
+                    });
                     text_box.appendChild(task);
                 });
 
