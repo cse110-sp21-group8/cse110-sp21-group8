@@ -14,7 +14,7 @@ window.onload = function(event){
             if(data["status"]==200){
                 //obtains the task list
                 let tasks = data["task"];
-                let text_box = document.getElementById("text-box2");
+                let text_box = document.getElementById("text-box1");
                 //add each task into the box
                 tasks.forEach((tmp)=>{
                     console.log(tmp);

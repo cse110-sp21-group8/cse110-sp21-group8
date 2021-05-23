@@ -1,6 +1,24 @@
 let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
 
+document.addEventListener('keydown', function(e){
+    e.preventDefault();
+    if(e.keyCode == '9'){
+        console.log("tab key pressed");
+        console.log(document.activeElement.nodeName);
+        if(document.activeElement.nodeName == "TASK-LIST"){
+            console.log('tasklist selected and pressed tab');
+            let task = document.activeElement;
+            let subTask = document.createElement('task-list');
+            subTask.className = 'subtask';
+            task.after(subTask);
+        }
+        console.log(document.activeElement);
+    } 
+   // if(document.activeElement)
+
+});
+
 addButton.addEventListener('click', ()=> {
     console.log('click')
     let task = document.createElement('task-list');
