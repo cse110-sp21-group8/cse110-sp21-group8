@@ -12,11 +12,11 @@ addButton.addEventListener('click', ()=> {
 
     selection.addEventListener('change', () => {
         if(selection.value == "Task"){
-            taskInput.value = "●";
+            taskInput.value = "● ";
         } else if (selection.value == "Note"){
-            taskInput.value = "-";
+            taskInput.value = "- ";
         } else {
-            taskInput.value = "⚬";
+            taskInput.value = "⚬ ";
         }
     })
 
@@ -122,8 +122,37 @@ addButton.addEventListener('click', ()=> {
     let deleteButton = task.shadowRoot.querySelector('#delete');
 
     deleteButton.addEventListener('click', () => {
-        task.remove();
+        //task.remove();
         // delete back end code here
+        let deleteButton = task.shadowRoot.querySelector('#delete');
+
+        deleteButton.addEventListener('click', () => {
+            let index = Array.prototype.indexOf.call(text_box.children, task);
+            delete_data = data.task[index];
+            fetch('/deleteTask', {  
+                method: 'POST',
+                headers: {
+                  "Content-Type": "application/json"
+                }, 
+                body: JSON.stringify(delete_data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data["status"]==200){
+                        let newTask = data["task"];
+                    }else{
+                        alert("Task didn't added");
+                    }
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+            });
+
+            task.remove();
+        });
+
+    
+        
     });
 
     taskInput.focus();
@@ -171,8 +200,28 @@ window.onload = function(event){
                     let deleteButton = task.shadowRoot.querySelector('#delete');
 
                     deleteButton.addEventListener('click', () => {
+                        let index = Array.prototype.indexOf.call(text_box.children, task);
+                        delete_data = data.task[index];
+                        fetch('/deleteTask', {  
+                            method: 'POST',
+                            headers: {
+                              "Content-Type": "application/json"
+                            }, 
+                            body: JSON.stringify(delete_data)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if(data["status"]==200){
+                                    let newTask = data["task"];
+                                }else{
+                                    alert("Task didn't added");
+                                }
+                            })
+                            .catch((error) => {
+                            console.error('Error:', error);
+                        });
+
                         task.remove();
-                        // delete back end code here
                     });
                     text_box.appendChild(task);
                 });
