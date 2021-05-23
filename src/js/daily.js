@@ -3,7 +3,7 @@ let text_box = document.querySelector('#text-box');
 
 addButton.addEventListener('click', ()=> {
     console.log('click')
-    let task = document.createElement('task-list')
+    let task = document.createElement('task-list');
     text_box.prepend(task);
     console.log(task.shadowRoot);
     let taskInput = task.shadowRoot.querySelector('#tasks');

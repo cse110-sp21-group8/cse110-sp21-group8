@@ -1,6 +1,5 @@
 let form = document.querySelector('form');
-
-
+let text_box = document.querySelector('#text-box1');
 //load Task:
 window.onload = function(event){
     fetch('/getFutureTask', {  
@@ -19,9 +18,38 @@ window.onload = function(event){
                 //add each task into the box
                 tasks.forEach((tmp)=>{
                     console.log(tmp);
-                    let item = document.createElement('div');
-                    item.innerText = tmp["content"];
-                    text_box.appendChild(item);
+                    let task = document.createElement('task-list');
+                    let taskInput = task.shadowRoot.querySelector('#tasks');
+                    let taskForm = task.shadowRoot.querySelector('#form');
+                    taskInput.value = tmp["content"];
+                    task.isNew = false;
+                    text_box.appendChild(task);
+                    let deleteButton = task.shadowRoot.querySelector('#delete');
+
+                    deleteButton.addEventListener('click', () => {
+                        let index = Array.prototype.indexOf.call(text_box.children, task);
+                        delete_data = data.task[index];
+                        fetch('/deleteTask', {  
+                            method: 'POST',
+                            headers: {
+                              "Content-Type": "application/json"
+                            }, 
+                            body: JSON.stringify(delete_data)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if(data["status"]==200){
+                                    let newTask = data["task"];
+                                }else{
+                                    alert("Task didn't added");
+                                }
+                            })
+                            .catch((error) => {
+                            console.error('Error:', error);
+                        });
+
+                        task.remove();
+                    });
                 });
 
             }else{
@@ -33,58 +61,6 @@ window.onload = function(event){
         });
 }
 
-
-//add tasks:
-form.addEventListener('submit', (event)=>{
-    event.preventDefault();
-    let content = document.getElementById('tasks2').value;
-    let date = new Date();
-    console.log(date.toLocaleString());
-    console.log(content);
-    //type: task, events, reminders.
-    data = {status:"future",type:"task", content:content,date:date.toDateString()};
-    fetch('/addTask', {  
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"
-        }, 
-        body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data["status"]==200){
-                let newTask = data["task"];
-                //added component to the html
-                let text_box = document.getElementById("text-box2");
-                let item = document.createElement('div');
-                item.innerText = newTask["content"];
-                text_box.appendChild(item);
-
-            }else{
-                alert("Task didn't added");
-            }
-        })
-        .catch((error) => {
-        console.error('Error:', error);
-        });
-});
-
-/*function pop() {
-    document.getElementById('textInput').className="show";
-}*/
-
-/*document.addEventListener("DOMContentLoaded", function() {
-    let num_answers = 0;
-    let mcAnswer = document.getElementById("myPopup");
-    mcAnswer.addEventListener("click", function() {
-      let elem = document.createElement("input");
-      elem.name = "answer";
-      //document.getElementById("answer_input").appendChild(elem);
-      // inserts elem after mcAnswer
-      mcAnswer.parentNode.insertBefore(elem, myPopup.nextSibling);
-      num_answers++;
-    });
-  });*/
 
   var i; 
   for(i = 1; i<7; i++){
@@ -99,38 +75,114 @@ form.addEventListener('submit', (event)=>{
         let day = document.querySelector(classname);
         if(day != null){
             day.addEventListener('click', (event) => {
-                document.getElementById('tasks2').className="show";
-                console.log(day.innerHTML);
-                document.getElementById("tasks2").value = text + " " + day.innerHTML+ ": ";
+                //document.getElementById('tasks2').className="show";
+                let task = document.createElement('task-list');
+                text_box.prepend(task);
+                console.log(task.shadowRoot);
+                let taskInput = task.shadowRoot.querySelector('#tasks');
+                let selection = task.shadowRoot.querySelector('#checklist-select');
+                console.log(taskInput); 
+                let prefixed = text + " " + day.innerHTML+ ": ";
+                taskInput.value = prefixed;
+                selection.addEventListener('change', () => {
+                    if(selection.value == "Task"){
+                        taskInput.value = prefixed + "● ";
+                    } else if (selection.value == "Note"){
+                        taskInput.value = prefixed + "- ";
+                    } else {
+                        taskInput.value = prefixed + "⚬ ";
+                    }
+                })
+
+                taskInput.addEventListener('focusout', (event)=> {
+                    if(task.isNew){
+                        console.log('focus out');
+                        event.preventDefault();
+                        //Put task, event, note drop down men 
+            
+                        let content = taskInput.value;
+                        let date = new Date();
+                        console.log(date.toLocaleString());
+                        console.log(content);
+                        //type: task, events, reminders.
+                        data = {status:"future",type:"task", content:content,date:date.toDateString()};
+                        fetch('/addTask', {  
+                            method: 'POST',
+                            headers: {
+                              "Content-Type": "application/json"
+                            }, 
+                            body: JSON.stringify(data)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if(data["status"]==200){
+                                    let newTask = data["task"];
+                                }else{
+                                    alert("Task didn't added");
+                                }
+                            })
+                            .catch((error) => {
+                            console.error('Error:', error);
+                            });
+                        task.isNew = false;
+                    } else {
+                        
+                        let oldData = data;
+                        let content = taskInput.value;
+                        let date = new Date();
+                        data = {status:"future",type:"task", content:content,date:date.toDateString()};
+                        let newData = data;
+                        send_data = {old:oldData, new:newData}; 
+                        fetch('/updateTask', {  
+                            method: 'POST',
+                            headers: {
+                              "Content-Type": "application/json"
+                            }, 
+                            body: JSON.stringify(send_data)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if(data["status"]==200){
+                                    let newTask = data["task"];
+                                }else{
+                                    alert("Task didn't added");
+                                }
+                            })
+                            .catch((error) => {
+                            console.error('Error:', error);
+                        });
+            
+                    }
+
+                    let deleteButton = task.shadowRoot.querySelector('#delete');
+
+                    deleteButton.addEventListener('click', () => {
+                        let index = Array.prototype.indexOf.call(text_box.children, task);
+                        delete_data = data.task[index];
+                        fetch('/deleteTask', {  
+                            method: 'POST',
+                            headers: {
+                              "Content-Type": "application/json"
+                            }, 
+                            body: JSON.stringify(delete_data)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if(data["status"]==200){
+                                    let newTask = data["task"];
+                                }else{
+                                    alert("Task didn't added");
+                                }
+                            })
+                            .catch((error) => {
+                            console.error('Error:', error);
+                        });
+
+                        task.remove();
+                    });
+                });
+
             });
         }
       }
   }
-
-  /*var i;
-  var content;
-  for(i = 1; i<7; i++){
-    let name = ".whole-cal" + i;
-    let cal = document.querySelector(name);
-    cal.addEventListener('click', (event) => {
-         //document.getElementById("tasks2").value = "";
-         let geth2 = name + " " +"h2";
-         let text = document.querySelector(geth2).textContent;
-         //document.getElementById("tasks2").value = text + ": ";
-         content = text;
-    });
-
-    var j;
-    for(j = 1; j < 32; j++){
-        let classname = ".date" + i + j;
-        let day = document.querySelector(classname);
-        if(day != null){
-            day.addEventListener('click', (event) => {
-                document.getElementById('tasks2').className="show";
-                console.log(day.innerHTML);
-                document.getElementById("tasks2").value = content + day.innerHTML;
-            });
-        }
-        
-    }
-  }*/
