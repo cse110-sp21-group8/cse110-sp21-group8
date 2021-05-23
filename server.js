@@ -80,6 +80,8 @@ app.post('/user_signup', function (req, res) {
 //other request
 app.post('/getDailyTask', function (req, res) {
   let data= req.body;//get the form data
+    data["user"] = currentUser["_id"];
+    data["status"] = "daily";
    console.log('Got body:', data);
    getDailyTask(data,res);
 })
@@ -89,6 +91,14 @@ app.post('/getCustomTask', function (req, res) {
   let data= req.body;//get the form data
    console.log('Got body:', data);
    getCustomTask(data,res);
+})
+
+app.post('/getFutureTask', function (req, res) {
+  let data= req.body;//get the form data
+  data["user"] = currentUser["_id"];
+  data["status"] = "future";
+   console.log('Got body:', data);
+   getFutureTask(data,res);
 })
 
 //adding task
@@ -281,6 +291,28 @@ function getDailyTask(data,res){
   mongoose_db.once('open', function(){
     // insert the ner user or user signup
     data["user"] = currentUser["_id"];
+    data["status"] = "daily";
+    Task.find(data, function (err, result) {
+      if (err) return console.error(err);
+      console.log(result);
+      if(result.length>0){
+        res.send({ status: 200, task:result });
+      }else{
+        res.send({ status: 404 });
+      }
+      mongoose_db.close();
+    });
+  });
+}
+
+function getFutureTask(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let  mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert the ner user or user signup
+    data["user"] = currentUser["_id"];
+    data["status"] = "future";
     Task.find(data, function (err, result) {
       if (err) return console.error(err);
       console.log(result);
