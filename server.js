@@ -139,6 +139,12 @@ app.post('/DeleteCustomTask', function (req, res) {
   DeleteCustomTask(data,res);
 })
 
+app.post('/addReflection', function (req, res) {
+  let data = req.body;
+  console.log('Got body:', data);
+  AddReflection(data,res);
+})
+
 
 //install mongodb at local first
 //npm install mongoose
@@ -274,7 +280,8 @@ function DeleteTask(data,res){
 //get tasks:
 //data: specify which date is it:
 //for example: {date: 'Sun May 16 2021' }
-function getDailyTask(data,res){
+function 
+DailyTask(data,res){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -383,6 +390,31 @@ function getCustomTask(data,res){
       }else{
         res.send({ status: 404 });
       }
+      mongoose_db.close();
+    });
+  });
+}
+
+//ddefine the schema for the reflection
+let ReflectionSchema = new mongoose.Schema({
+  content: String,
+  date: String,
+  user: String
+});
+let Reflection = mongoose.model('Reflection', ReflectionSchema);
+
+function AddReflection(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let  mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+
+    data["user"] = currentUser["_id"];
+    let newReflection = new Reflection(data);
+    newReflection.save(function (err, result) {
+      if (err) return console.error(err);
+      console.log("Reflection added successfully");
+      res.sendd({status: 200, task:data});
       mongoose_db.close();
     });
   });

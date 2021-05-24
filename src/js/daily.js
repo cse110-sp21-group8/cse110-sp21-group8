@@ -1,5 +1,7 @@
 let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
+let reflect_btn = document.querySelector('#add-reflection');
+
 
 addButton.addEventListener('click', ()=> {
     console.log('click')
@@ -178,51 +180,53 @@ window.onload = function(event){
                 let text_box = document.getElementById("text-box");
                 //add each task into the box
                 tasks.forEach((tmp)=>{
-                    console.log(tmp);
-                    let task = document.createElement('task-list');
-                    let taskInput = task.shadowRoot.querySelector('#tasks');
-                    let taskForm = task.shadowRoot.querySelector('#form');
-                    taskInput.value = tmp["content"];
-                    task.isNew = false;
+                    if (tmp["type"] === "task") {
+                        console.log(tmp);
+                        let task = document.createElement('task-list');
+                        let taskInput = task.shadowRoot.querySelector('#tasks');
+                        let taskForm = task.shadowRoot.querySelector('#form');
+                        taskInput.value = tmp["content"];
+                        task.isNew = false;
 
-                    taskInput.addEventListener('focusout', (event)=> {
-                        event.preventDefault();
-                        //update task code here
-                    });
-
-                    taskForm.addEventListener('submit', (event)=>{
-                        event.preventDefault();
-                        //update task code here
-                        document.activeElement.blur();
-                    })
-
-                    let deleteButton = task.shadowRoot.querySelector('#delete');
-
-                    deleteButton.addEventListener('click', () => {
-                        let index = Array.prototype.indexOf.call(text_box.children, task);
-                        delete_data = data.task[index];
-                        fetch('/deleteTask', {  
-                            method: 'POST',
-                            headers: {
-                              "Content-Type": "application/json"
-                            }, 
-                            body: JSON.stringify(delete_data)
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if(data["status"]==200){
-                                    let newTask = data["task"];
-                                }else{
-                                    alert("Task didn't added");
-                                }
-                            })
-                            .catch((error) => {
-                            console.error('Error:', error);
+                        taskInput.addEventListener('focusout', (event)=> {
+                            event.preventDefault();
+                            //update task code here
                         });
 
-                        task.remove();
-                    });
-                    text_box.appendChild(task);
+                        taskForm.addEventListener('submit', (event)=>{
+                            event.preventDefault();
+                            //update task code here
+                            document.activeElement.blur();
+                        })
+
+                        let deleteButton = task.shadowRoot.querySelector('#delete');
+
+                        deleteButton.addEventListener('click', () => {
+                            let index = Array.prototype.indexOf.call(text_box.children, task);
+                            delete_data = data.task[index];
+                            fetch('/deleteTask', {  
+                                method: 'POST',
+                                headers: {
+                                "Content-Type": "application/json"
+                                }, 
+                                body: JSON.stringify(delete_data)
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if(data["status"]==200){
+                                        let newTask = data["task"];
+                                    }else{
+                                        alert("Task didn't added");
+                                    }
+                                })
+                                .catch((error) => {
+                                console.error('Error:', error);
+                            });
+
+                            task.remove();
+                        });
+                        text_box.appendChild(task);
+                    }
                 });
 
             }else{
@@ -232,7 +236,67 @@ window.onload = function(event){
         .catch((error) => {
         console.error('Error:', error);
         });
+
+    //load reflection
+    fetch('/getDailyTask', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({date: new Date().toDateString()})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data["status"]  == 200) {
+            let tasks = data["task"];
+            let content = document.getElementById("reflection-content");
+    
+            tasks.forEach((tmp) => {
+                if (tmp["type"] === "reflection") {
+                    content.append(tmp["content"]);
+                }
+            });
+            if (document.getElementById("reflection-content").innerHTML.length > 0) {
+                document.getElementById("add-reflection").disabled = true;
+            }
+        }
+    });
 }
+
+reflect_btn.addEventListener('click', (event) => {
+    const content = document.getElementById('reflection').value;
+    document.getElementById('reflection-content').append(content);
+
+    event.preventDefault();
+
+    let date = new Date();
+    data = { content: content, date: date.toDateString(), type: "reflection" };
+    console.log(data);
+    fetch('/addDailyTask', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data["status"] == 200) {
+            let newReflection = data["reflection"];
+        }
+        else {
+            alert("Reflection didn't add");
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+    if (document.getElementById("reflection-content").innerHTML.length > 0) {
+        document.getElementById("add-reflection").disabled = true;
+    }
+});
+
+
 
 
 
