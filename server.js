@@ -80,8 +80,7 @@ app.post('/user_signup', function (req, res) {
 //other request
 app.post('/getDailyTask', function (req, res) {
   let data= req.body;//get the form data
-    data["user"] = currentUser["_id"];
-    data["status"] = "daily";
+    data["user"] = currentUser["_id"].toString();
    console.log('Got body:', data);
    getDailyTask(data,res);
 })
@@ -290,8 +289,6 @@ function getDailyTask(data,res){
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
     // insert the ner user or user signup
-    data["user"] = currentUser["_id"];
-    data["status"] = "daily";
     Task.find(data, function (err, result) {
       if (err) return console.error(err);
       console.log("get:",result);
