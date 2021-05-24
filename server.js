@@ -12,10 +12,26 @@ app.use(bodyParser.urlencoded({extended: true}));
 //used to store the data.
 let currentUser;
 
+//Upload picture
+const multer = require('multer');
+let storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    let img_url = new Date().toDateString()+currentUser["_id"].toString() +'.jpg'
+    cb(null, img_url) //Appending .jpg
+  }
+})
+
+let upload = multer({ storage: storage });
+
+
 //setup static files path
 app.use('/js',express.static(path.join(__dirname, 'src/js')));
 app.use('/css',express.static(path.join(__dirname, 'src/css')));
 app.use('/css',express.static(path.join(__dirname, 'src/html')));
+app.use('/image',express.static(path.join(__dirname, 'uploads')));
 //setup the router for post and get request.
 
 //the home page
@@ -61,6 +77,22 @@ app.get('/login', function (req, res) {
 app.get('/signup', function (req, res) {
   res.sendFile(path.join(__dirname, 'src/html/signup.html'));
 });
+
+//user upload picture.
+app.post('/uploadImg', upload.single('file-to-upload'), (req, res) => {
+  console.log("Upload User Picture Successfully");
+  let img_url = new Date().toDateString()+currentUser["_id"].toString() +'.jpg?'+new Date().getTime();
+  res.send({ status: 200,src: "/image/"+img_url});
+});
+
+//user get the current date picture.
+app.get('/getImg', function (req, res) {
+  let img_url = new Date().toDateString()+currentUser["_id"].toString() +'.jpg?'+new Date().getTime();
+  res.send({ status: 200,src: "/image/"+img_url});
+})
+
+
+
 
 //user login
 app.post('/user_login', function (req, res) {
