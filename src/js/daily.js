@@ -2,8 +2,8 @@ let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
 
 document.addEventListener('keydown', function(e){
-    e.preventDefault();
-    if(e.keyCode == '9'){
+    if(e.key == 'Tab'){
+        e.preventDefault();
         console.log("tab key pressed");
         console.log(document.activeElement.nodeName);
         if(document.activeElement.nodeName == "TASK-LIST"){
@@ -12,11 +12,11 @@ document.addEventListener('keydown', function(e){
             let subTask = document.createElement('task-list');
             subTask.className = 'subtask';
             task.after(subTask);
+            subTask.shadowRoot.querySelector('#tasks').focus();
         }
         console.log(document.activeElement);
     } 
    // if(document.activeElement)
-
 });
 
 addButton.addEventListener('click', ()=> {
@@ -240,7 +240,7 @@ window.onload = function(event){
 
                         task.remove();
                     });
-                    text_box.appendChild(task);
+                    text_box.prepend(task);
                 });
 
             }else{
