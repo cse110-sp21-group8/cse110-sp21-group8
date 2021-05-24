@@ -57,7 +57,11 @@
         <div class="widget" id="trackers">
           <!--Tracker box for formatting-->
           <div id="tracker-box">
-            <input type="file" id="tracker" placeholder="Trackers are here!"><br>
+            <form id="tracker-form" action="/uploadImg" enctype="multipart/form-data" method="post">
+            <input type="file" id="tracker" placeholder="Trackers are here!" name="file-to-upload"><br>
+            <input type="submit" value="Upload">
+            </form>
+            <img class="tracker-image">
           </div>
         </div>
       </div>

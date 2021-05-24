@@ -205,6 +205,29 @@ let form = document.querySelector('form');
 
 //load Task:
 window.onload = function(event){
+
+    //added by Jinhao Zhou
+    //get the user image of that day
+    fetch('/getImg', {  
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json"
+        }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data["status"]==200){
+                let image = document.querySelector(".tracker-image");
+                image.src = data["src"];
+            }else{
+                alert("no image data exist");
+            }
+        })
+        .catch((error) => {
+        console.error('Error:', error);
+    });
+
+
     fetch('/getDailyTask', {  
         method: 'POST',
         headers: {
@@ -314,3 +337,72 @@ window.onload = function(event){
         console.error('Error:', error);
         });
 }
+//upload picture:
+let upload = document.getElementById('tracker-form');
+upload.addEventListener("submit", (event)=>{
+    event.preventDefault();
+    
+    let input = document.querySelector('input[type="file"]')
+    let data = new FormData()
+    data.append('file-to-upload', input.files[0]);
+
+    fetch('/uploadImg', {
+    method: 'POST',
+    body: data
+    }).then(response => response.json())
+    .then(data => {
+        if(data["status"]==200){
+            let image = document.querySelector(".tracker-image");
+            image.src = data["src"];
+        }
+    })
+    .catch((error) => {
+    console.error('Error:', error);
+    });
+    
+});
+
+
+
+
+
+
+
+//add tasks:
+// form.addEventListener('submit', (event)=>{
+//     event.preventDefault();
+//     let content = document.getElementById('tasks').value;
+//     let date = new Date();
+//     console.log(date.toLocaleString());
+//     console.log(content);
+//     //type: task, events, reminders.
+//     data = {status:"daily",type:"task", content:content,date:date.toDateString()};
+//     fetch('/addTask', {  
+//         method: 'POST',
+//         headers: {
+//           "Content-Type": "application/json"
+//         }, 
+//         body: JSON.stringify(data)
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//             if(data["status"]==200){
+//                 let newTask = data["task"];
+                
+//                 //added component to the html
+//                 let text_box = document.getElementById("text-box");
+//                 let item = document.createElement('div');
+//                 item.innerText = newTask["content"];
+//                 text_box.appendChild(item);
+
+
+//             }else{
+//                 alert("Task didn't added");
+//             }
+//         })
+//         .catch((error) => {
+//         console.error('Error:', error);
+//         });
+//     form.reset();
+// });
+
