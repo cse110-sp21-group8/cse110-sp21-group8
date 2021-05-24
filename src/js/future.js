@@ -50,6 +50,8 @@ window.onload = function(event){
 
                         task.remove();
                     });
+
+                    
                 });
 
             }else{
