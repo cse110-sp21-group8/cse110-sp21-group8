@@ -14,6 +14,7 @@ P: Which parts of our pipeline do we want automated? Which parts do we want done
   * [Codacy](https://www.codacy.com/)
 * Testing
   * [Jest](https://jestjs.io/)
+  * [Puppeteer](https://jestjs.io/docs/puppeteer)
   * [Cypress](https://www.cypress.io/)
   * [MochaJS](https://mochajs.org/)
 * Documentation
@@ -24,5 +25,5 @@ Chosen options: ESlint & Prettier; CodeFactor; Jest & Cypress; JSDocs
 
 * ESLint & Pretter: We picked these two for their automatic code formatting, style fixing, and reporting on code smells. They are also really easy to integrate into Github Actions.
 * CodeFactor: We picked CodeFactor because of the very easy Github integration, and setup. The grading scheme also gives upfront and easily understandable feedback.
-* Jest & Cypress: First, Jest was picked under the Testing Team's decision. While Jest handles more small unit tests, Cypress is there for our e2e tests and was recommended in our meetings with Sanat.
+* Jest & Puppeteer: First, Jest was picked under the Testing Team's decision. While Jest handles more small unit tests, Puppeteer is there for our e2e testing. We chose it because it was the e2e testing used in the lab and it is on the same platform as Jest.
 * JSDocs: JSDocs has multiple guides and documentation online. It also has a comment syntax similar to those of requirements in previous class PA's. It was also recommended to us by Sanat.
