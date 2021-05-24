@@ -2,8 +2,8 @@
 //reference: https://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/
 //Install: npm install --save-dev babel-cli babel-preset-env jest supertest superagent
 
-const app = require('../../server.js');
-const currentUser = require('../../server.js');
+const server = require('../../server.js');
+const app = server["app"];
 const request = require("supertest");
 
 describe('Test user signup', () => {

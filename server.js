@@ -234,7 +234,7 @@ function addTask(data,res){
     newTask.save(function (err, result) {
       if (err) return console.error(err);
       console.log("Task added successfully");
-      res.send({ status: 200, task: data});
+      res.send({ status: 200, task: result});
       mongoose_db.close();
     });
   });
@@ -294,7 +294,7 @@ function getDailyTask(data,res){
     data["status"] = "daily";
     Task.find(data, function (err, result) {
       if (err) return console.error(err);
-      console.log(result);
+      console.log("get:",result);
       if(result.length>0){
         res.send({ status: 200, task:result });
       }else{
@@ -420,8 +420,136 @@ function getCustomTask(data,res){
   });
 }
 
+//##############################################################################
+//Subtasks:
+
+let SubTaskSchema = new mongoose.Schema({
+  status: String,
+  type: String,
+  content: String,
+  date:String,
+  user: String,
+  task_id: String,
+});
+let SubTask = mongoose.model('SubTask', SubTaskSchema);
+
+//get Subtask
+app.post('/getSubTask', function (req, res) {
+    let data= req.body;//get the form data
+    data["user"] = currentUser["_id"].toString();
+   console.log('Got Sub task body:', data);
+   getSubTask(data,res);
+})
+
+//adding Subtask
+app.post('/addSubTask', function (req, res) {
+  let data= req.body;//get the form data
+  data["user"] = currentUser["_id"].toString();
+  console.log('Got Sub task body:', data);
+  //insert data into the database:
+  addSubTask(data,res);
+})
+
+//update Subtask
+app.post('/updateSubTask', function (req, res) {
+  let data= req.body;//get the form data
+  console.log('Got Sub task body:', data);
+  //insert data into the database:
+  UpdateSubTask(data,res);
+})
+
+//delete Subtask
+app.post('/deleteSubTask', function (req, res) {
+  let data= req.body;//get the form data
+  data["user"] = currentUser["_id"].toString();
+  console.log('Got Sub task body:', data);
+  //insert data into the database:
+  DeleteSubTask(data,res);
+})
+
+
+function addSubTask(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert new task into the database
+    //add the user id into the data
+    let newSubTask = new SubTask(data);
+    newSubTask.save(function (err, result) {
+      if (err) return console.error(err);
+      console.log("SubTask added successfully");
+      res.send({ status: 200, Subtask: data});
+      mongoose_db.close();
+    });
+  });
+}
+
+
+//get tasks:
+//data: specify which date is it:
+//for example: {date: 'Sun May 16 2021' }
+function getSubTask(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let  mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert the ner user or user signup
+    SubTask.find(data, function (err, result) {
+      if (err) return console.error(err);
+      console.log("getSub tasks:",result);
+      if(result.length>0){
+        console.log(result);
+        res.send({ status: 200, task:result });
+      }else{
+        res.send({ status: 404 });
+      }
+      mongoose_db.close();
+    });
+  });
+}
+
+
+//data formate: {old:old_data,new:new_data}
+//Call the UpdateSubTask functions to update the sub tasks list
+function UpdateSubTask(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert new task into the database
+    //add the user id into the data
+    let old_data = data["old"];
+    let new_data = data["new"];
+
+    old_data["user"] = currentUser["_id"].toString();
+
+    SubTask.updateOne(old_data,new_data,function (err, result) {
+      if (err) return console.error(err);
+      console.log("SubTask List Updated successfully");
+      res.send({ status: 200, task: data});
+      mongoose_db.close();
+    });
+  });
+}
+
+
+//Call the DeleteTask functions to delete the tasks list
+function DeleteSubTask(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert new task into the database
+    //add the user id into the data
+    SubTask.deleteOne(data, function (err, result) {
+      if (err) return console.error(err);
+      console.log("SubTasks deleted successfully");
+      res.send({ status: 200});
+      mongoose_db.close();
+    });
+  });
+}
 
 //export the module function for testing
-module.exports = createUser;
-module.exports = currentUser;
-module.exports = app;
+module.exports = {app:app,currentUser:currentUser};
