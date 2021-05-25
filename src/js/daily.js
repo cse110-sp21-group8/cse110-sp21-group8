@@ -1,14 +1,82 @@
+
 let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
 
+/* Custom Tag Script */ 
+let addTagButton = document.getElementById('add-tag').firstElementChild;
+let tagTracker = document.getElementById('tracker-box');
+
+let customTag;
+let customForm;
+let customInput;
+let newTag = false;
+
+addTagButton.addEventListener('click', ()=>{
+  console.log("clicked yay");
+  customTag = document.createElement('custom-tag');
+  tagTracker.appendChild(customTag);
+
+  customForm = customTag.shadowRoot.getElementById('custom-form');
+  customInput = customTag.shadowRoot.querySelector("#custom-tags");
+  let setTag = function(event) {
+    event.preventDefault();
+    newTag = true;
+    customTag.id = customInput.value;
+    console.log(customTag.id);
+    let tagList = document.getElementById('text-box').childNodes;
+    
+    console.log(tagList);
+    for(let i = 1; i < tagList.length; i++){
+      newTag = false;
+      console.log(i);
+      let choices = new Option(`${customTag.id}`, `${customTag.id}`);
+      console.log(choices);
+      if(tagList[i].nodeName == "TASK-LIST"){
+        tagList[i].shadowRoot.getElementById('tag-select').add(choices);
+      }
+    }
+    
+  }
+  customForm.addEventListener('submit', setTag);
+});
+/* */
+
+
 addButton.addEventListener('click', ()=> {
     console.log('click')
-    let task = document.createElement('task-list')
+    let task = document.createElement('task-list');
+
+    /* Custom Tag Script */ 
+    let tagList = document.getElementById('text-box').childNodes;
+    if(tagList[1].nodeName == "TASK-LIST"){
+      let opts = tagList[1].shadowRoot.getElementById('tag-select').options;
+
+      for(let i = 4; i < opts.length; i++){
+        let choices = new Option(`${opts[i].value}`, `${opts[i].value}`);
+        task.shadowRoot.getElementById('tag-select').add(choices);
+      }
+
+      if(newTag == true){
+        let tagList = document.getElementById('text-box').childNodes;
+
+        for(let i = 1; i < tagList.length; i++){
+          newTag = false;
+          console.log(i);
+          let choices = new Option(`${customTag.id}`, `${customTag.id}`);
+          if(tagList[i].nodeName == "TASK-LIST"){
+            tagList[i].shadowRoot.getElementById('tag-select').add(choices);
+          }
+          console.log(tagList[i]);
+        }
+      }
+    }
+    /* */
+
     text_box.prepend(task);
     console.log(task.shadowRoot);
     let taskInput = task.shadowRoot.querySelector('#tasks');
     let selection = task.shadowRoot.querySelector('#checklist-select');
-    console.log(taskInput); 
+
 
     selection.addEventListener('change', () => {
         if(selection.value == "Task"){
@@ -184,6 +252,14 @@ window.onload = function(event){
                     let taskForm = task.shadowRoot.querySelector('#form');
                     taskInput.value = tmp["content"];
                     task.isNew = false;
+
+                    /* Custom Tag Script 
+                    if(customTag && customTag.value != ''){
+                      let opts = task.shadowRoot.getElementById('tag-select');
+                      let choices = new Option(`${customTag.id}`, `${customTag.id}`);
+                      opts.add(choices);
+                    }
+                     */
 
                     taskInput.addEventListener('focusout', (event)=> {
                         event.preventDefault();

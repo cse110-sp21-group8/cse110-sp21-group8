@@ -6,7 +6,7 @@ class TaskList extends HTMLElement {
     <style>
       .entry {
         display: grid;
-        grid-template-columns: 25% auto;
+        grid-template-columns: 20% 20% auto;
         width: 100%;
       }
       #text-box {
@@ -16,6 +16,9 @@ class TaskList extends HTMLElement {
         display: grid;
         grid-template-columns: 10% 10% 10% auto;
       }
+      #tag-select {
+
+      }
     </style>
     <div class="entry">
       <select name="Checklist Category" id="checklist-select">
@@ -23,6 +26,12 @@ class TaskList extends HTMLElement {
         <option value="Task"> Task </option>
         <option value="Event"> Event </option>
         <option value="Note"> Note </option>
+      </select>
+      <select name="Tags" id="tag-select">
+        <option value="">--Please choose an option--</option>
+        <option value="Important"> Important </option>
+        <option value="Later"> Later </option>
+        <option value="Interesting"> Interesting </option>
       </select>
       <div id="text-box">
         <form id='form'>
