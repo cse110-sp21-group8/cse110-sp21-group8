@@ -1,4 +1,3 @@
-
 let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
 let reflect_btn = document.querySelector('#add-reflection');
@@ -50,7 +49,7 @@ addButton.addEventListener('click', ()=> {
 
     /* Custom Tag Script */ 
     let tagList = document.getElementById('text-box').childNodes;
-    if(tagList[1].nodeName == "TASK-LIST"){
+    if(tagList[0].nodeName == "TASK-LIST"){
       let opts = tagList[1].shadowRoot.getElementById('tag-select').options;
 
       for(let i = 4; i < opts.length; i++){
@@ -63,14 +62,16 @@ addButton.addEventListener('click', ()=> {
 
         for(let i = 1; i < tagList.length; i++){
           newTag = false;
-          console.log(i);
           let choices = new Option(`${customTag.id}`, `${customTag.id}`);
           if(tagList[i].nodeName == "TASK-LIST"){
             tagList[i].shadowRoot.getElementById('tag-select').add(choices);
           }
-          console.log(tagList[i]);
         }
       }
+    }
+    else {
+      let choices = new Option(`${customTag.id}`, `${customTag.id}`);
+      task.shadowRoot.getElementById('tag-select').add(choices);
     }
     /* */
 
