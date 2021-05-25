@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 //used to store the data.
 let currentUser;
 
+/*
 //Upload picture
 const multer = require('multer');
 let storage = multer.diskStorage({
@@ -25,7 +26,7 @@ let storage = multer.diskStorage({
 })
 
 let upload = multer({ storage: storage });
-
+*/
 
 //setup static files path
 app.use('/js',express.static(path.join(__dirname, 'src/js')));
@@ -78,6 +79,7 @@ app.get('/signup', function (req, res) {
   res.sendFile(path.join(__dirname, 'src/html/signup.html'));
 });
 
+/*
 //user upload picture.
 app.post('/uploadImg', upload.single('file-to-upload'), (req, res) => {
   console.log("Upload User Picture Successfully");
@@ -91,7 +93,7 @@ app.get('/getImg', function (req, res) {
   res.send({ status: 200,src: "/image/"+img_url});
 })
 
-
+*/
 
 
 //user login
@@ -112,9 +114,16 @@ app.post('/user_signup', function (req, res) {
 //other request
 app.post('/getDailyTask', function (req, res) {
   let data= req.body;//get the form data
-    data["user"] = currentUser["_id"].toString();
+   data["user"] = currentUser["_id"].toString();
    console.log('Got body:', data);
    getDailyTask(data,res);
+})
+
+app.post('/getMonthlyTask', function (req, res) {
+  let data= req.body;//get the form data
+  data["user"] = currentUser["_id"].toString();
+  console.log('Got body:', data);
+  getMonthlyTask(data,res);
 })
 
 //get Custom tasks request
@@ -126,10 +135,9 @@ app.post('/getCustomTask', function (req, res) {
 
 app.post('/getFutureTask', function (req, res) {
   let data= req.body;//get the form data
-  data["user"] = currentUser["_id"];
-  data["status"] = "future";
+   data["user"] = currentUser["_id"].toString();
    console.log('Got body:', data);
-   getFutureTask(data,res);
+   getDailyTask(data,res);
 })
 
 //adding task
@@ -196,6 +204,8 @@ let User = mongoose.model('User', UserSchema);
 //user signup
 //assumpt that the database has the collections of User to store user information
 function createUser(data,res){
+  //Remote Cloud Database address:
+  //Url:mongodb+srv://CSE110:CSE110@cluster0.1sq34.mongodb.net/cse110_group8?retryWrites=true&w=majority
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -249,6 +259,7 @@ let TaskSchema = new mongoose.Schema({
   content: String,
   date:String,
   user: String,
+  tag: String,
 });
 let Task = mongoose.model('Task', TaskSchema);
 
@@ -334,17 +345,34 @@ function getDailyTask(data,res){
   });
 }
 
+function getMonthlyTask(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let  mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert the ner user or user signup
+    Task.find(data, function (err, result) {
+      if (err) return console.error(err);
+      console.log("get:",result);
+      if(result.length>0){
+        res.send({ status: 200, task:result });
+      }else{
+        res.send({ status: 404 });
+      }
+      mongoose_db.close();
+    });
+  });
+}
+
 function getFutureTask(data,res){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
     // insert the ner user or user signup
-    data["user"] = currentUser["_id"];
-    data["status"] = "future";
     Task.find(data, function (err, result) {
       if (err) return console.error(err);
-      console.log(result);
+      console.log("get:",result);
       if(result.length>0){
         res.send({ status: 200, task:result });
       }else{

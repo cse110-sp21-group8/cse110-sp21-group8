@@ -1,68 +1,7 @@
 let form = document.querySelector('form');
 let text_box = document.querySelector('#text-box1');
-//load Task:
-window.onload = function(){
-    fetch('/getFutureTask', {  
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"
-        }, 
-        body: JSON.stringify({date: new Date().toDateString()})
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data["status"]==200){
-                //obtains the task list
-                let tasks = data["task"];
-                let text_box = document.getElementById("text-box1");
-                //add each task into the box
-                tasks.forEach((tmp)=>{
-                    console.log(tmp);
-                    let task = document.createElement('task-list');
-                    let taskInput = task.shadowRoot.querySelector('#tasks');
-                    let taskForm = task.shadowRoot.querySelector('#form');
-                    taskInput.value = tmp["content"];
-                    task.isNew = false;
-                    text_box.appendChild(task);
-                    let deleteButton = task.shadowRoot.querySelector('#delete');
 
-                    deleteButton.addEventListener('click', () => {
-                        let index = Array.prototype.indexOf.call(text_box.children, task);
-                        delete_data = data.task[index];
-                        fetch('/deleteTask', {  
-                            method: 'POST',
-                            headers: {
-                              "Content-Type": "application/json"
-                            }, 
-                            body: JSON.stringify(delete_data)
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if(data["status"]==200){
-                                    let newTask = data["task"];
-                                }else{
-                                    alert("Task didn't added");
-                                }
-                            })
-                            .catch((error) => {
-                            console.error('Error:', error);
-                        });
-
-                        task.remove();
-                    });
-
-                    
-                });
-
-            }else{
-                alert("Task didn't added");
-            }
-        })
-        .catch((error) => {
-        console.error('Error:', error);
-        });
-
-
+document.addEventListener('DOMContentLoaded', () => {
 
   var i; 
   for(i = 1; i<7; i++){
@@ -79,7 +18,7 @@ window.onload = function(){
             day.addEventListener('click', (event) => {
                 //document.getElementById('tasks2').className="show";
                 let task = document.createElement('task-list');
-                text_box.prepend(task);
+                text_box.append(task);
                 console.log(task.shadowRoot);
                 let taskInput = task.shadowRoot.querySelector('#tasks');
                 let selection = task.shadowRoot.querySelector('#checklist-select');
@@ -187,5 +126,71 @@ window.onload = function(){
             });
         }
       }
-  }
+  }})
+
+  //load Task:
+window.onload = function(event){
+    fetch('/getFutureTask', {  
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        }, 
+        body: JSON.stringify({date: new Date().toDateString()})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data["status"]==200){
+                //obtains the task list
+                let tasks = data["task"];
+                let text_box = document.getElementById("text-box1");
+                //add each task into the box
+                tasks.forEach((tmp)=>{
+                    
+                    let task = document.createElement('task-list');
+                    let taskInput = task.shadowRoot.querySelector('#tasks');
+                    let taskForm = task.shadowRoot.querySelector('#form');
+                    taskInput.value = tmp["content"];
+                    task.isNew = false;
+                    
+                    if(tmp["status"] == "future"){
+                        text_box.appendChild(task);
+                    }
+        
+                    let deleteButton = task.shadowRoot.querySelector('#delete');
+
+                    deleteButton.addEventListener('click', () => {
+                        let index = Array.prototype.indexOf.call(text_box.children, task);
+                        delete_data = data.task[index];
+                        fetch('/deleteTask', {  
+                            method: 'POST',
+                            headers: {
+                              "Content-Type": "application/json"
+                            }, 
+                            body: JSON.stringify(delete_data)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if(data["status"]==200){
+                                    let newTask = data["task"];
+                                }else{
+                                    alert("Task didn't added");
+                                }
+                            })
+                            .catch((error) => {
+                            console.error('Error:', error);
+                        });
+
+                        task.remove();
+                    });
+
+                    
+                });
+
+            }else{
+                alert("Task didn't added");
+            }
+        })
+        .catch((error) => {
+        console.error('Error:', error);
+        });
 }
