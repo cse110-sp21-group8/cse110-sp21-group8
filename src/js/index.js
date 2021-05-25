@@ -240,7 +240,10 @@ window.onload = function(event){
 
                         task.remove();
                     });
-                    text_box.prepend(task);
+                    if(tmp["status"] == "daily"){
+                        text_box.append(task);
+                    }
+                    
                 });
 
             }else{

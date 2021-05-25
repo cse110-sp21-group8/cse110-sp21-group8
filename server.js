@@ -112,9 +112,16 @@ app.post('/user_signup', function (req, res) {
 //other request
 app.post('/getDailyTask', function (req, res) {
   let data= req.body;//get the form data
-    data["user"] = currentUser["_id"].toString();
+   data["user"] = currentUser["_id"].toString();
    console.log('Got body:', data);
    getDailyTask(data,res);
+})
+
+app.post('/getMonthlyTask', function (req, res) {
+  let data= req.body;//get the form data
+  data["user"] = currentUser["_id"].toString();
+  console.log('Got body:', data);
+  getMonthlyTask(data,res);
 })
 
 //get Custom tasks request
@@ -126,10 +133,9 @@ app.post('/getCustomTask', function (req, res) {
 
 app.post('/getFutureTask', function (req, res) {
   let data= req.body;//get the form data
-  data["user"] = currentUser["_id"];
-  data["status"] = "future";
+   data["user"] = currentUser["_id"].toString();
    console.log('Got body:', data);
-   getFutureTask(data,res);
+   getDailyTask(data,res);
 })
 
 //adding task
@@ -337,17 +343,34 @@ function getDailyTask(data,res){
   });
 }
 
+function getMonthlyTask(data,res){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let  mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert the ner user or user signup
+    Task.find(data, function (err, result) {
+      if (err) return console.error(err);
+      console.log("get:",result);
+      if(result.length>0){
+        res.send({ status: 200, task:result });
+      }else{
+        res.send({ status: 404 });
+      }
+      mongoose_db.close();
+    });
+  });
+}
+
 function getFutureTask(data,res){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
     // insert the ner user or user signup
-    data["user"] = currentUser["_id"];
-    data["status"] = "future";
     Task.find(data, function (err, result) {
       if (err) return console.error(err);
-      console.log(result);
+      console.log("get:",result);
       if(result.length>0){
         res.send({ status: 200, task:result });
       }else{
