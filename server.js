@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 //used to store the data.
 let currentUser;
 
+/*
 //Upload picture
 const multer = require('multer');
 let storage = multer.diskStorage({
@@ -25,7 +26,7 @@ let storage = multer.diskStorage({
 })
 
 let upload = multer({ storage: storage });
-
+*/
 
 //setup static files path
 app.use('/js',express.static(path.join(__dirname, 'src/js')));
@@ -78,6 +79,7 @@ app.get('/signup', function (req, res) {
   res.sendFile(path.join(__dirname, 'src/html/signup.html'));
 });
 
+/*
 //user upload picture.
 app.post('/uploadImg', upload.single('file-to-upload'), (req, res) => {
   console.log("Upload User Picture Successfully");
@@ -91,7 +93,7 @@ app.get('/getImg', function (req, res) {
   res.send({ status: 200,src: "/image/"+img_url});
 })
 
-
+*/
 
 
 //user login
