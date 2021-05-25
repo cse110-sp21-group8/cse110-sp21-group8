@@ -196,6 +196,32 @@ addButton.addEventListener('click', ()=> {
         
     });*/
 
+    let deleteButton = task.shadowRoot.querySelector('#delete');
+
+    deleteButton.addEventListener('click', () => {
+        delete_data = data;
+        fetch('/deleteTask', {  
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json"
+            }, 
+            body: JSON.stringify(delete_data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data["status"]==200){
+                    let newTask = data["task"];
+                }else{
+                    alert("Task didn't added");
+                }
+            })
+            .catch((error) => {
+            console.error('Error:', error);
+        });
+
+        task.remove();
+    });
+
     taskInput.focus();
 })
 
@@ -208,6 +234,7 @@ window.onload = function(event){
 
     //added by Jinhao Zhou
     //get the user image of that day
+    
     fetch('/getImg', {  
         method: 'GET',
         headers: {
@@ -249,7 +276,11 @@ window.onload = function(event){
                     let taskForm = task.shadowRoot.querySelector('#form');
                     taskInput.value = tmp["content"];
                     task.isNew = false;
-                    text_box.append(task);
+
+                    //fixed bug where future and monthly tasks were getting mixed up
+                    if(tmp["status"] == "daily"){
+                        text_box.append(task);
+                    }
 
                     let selection = task.shadowRoot.querySelector('#checklist-select');
                     console.log(taskInput); 
@@ -337,7 +368,7 @@ window.onload = function(event){
         console.error('Error:', error);
         });
 }
-//upload picture:
+/*upload picture:
 let upload = document.getElementById('tracker-form');
 upload.addEventListener("submit", (event)=>{
     event.preventDefault();
@@ -360,7 +391,7 @@ upload.addEventListener("submit", (event)=>{
     console.error('Error:', error);
     });
     
-});
+});*/
 
 
 
