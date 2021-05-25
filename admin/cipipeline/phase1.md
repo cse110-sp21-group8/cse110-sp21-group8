@@ -3,7 +3,10 @@
 **What works for our CI/CD pipeline:**
 
 - Jest:
-We can create tests for our JavaScript which will be run in our Github Actions. We just need to figure out some tests to run.
+We can create unit tests for our JavaScript which will be run in our Github Actions.
+
+- Puppeteer:
+Together with Jest, we can use this to create UI Tests on our components.
 
 - JSDoc: 
 This will automatically create a document that details what’s going on in our JavaScript files. By starting comments with /** JSDoc will create an already formatted document depending on what we put, 
@@ -30,7 +33,8 @@ We use this Github Kanban board as our backlog to keep track tasks that our team
 
 ## Diagram:
 
-![CI_diagram](https://user-images.githubusercontent.com/46361434/118563702-e34aca80-b723-11eb-88a5-eb6ef18ab365.png)
+
+![CI_diagram](./phase1.png)
 
 
 ## Demo:
