@@ -1,7 +1,7 @@
 let form = document.querySelector('form');
 let text_box = document.querySelector('#text-box1');
 //load Task:
-window.onload = function(event){
+window.onload = function(){
     fetch('/getFutureTask', {  
         method: 'POST',
         headers: {
@@ -61,7 +61,7 @@ window.onload = function(event){
         .catch((error) => {
         console.error('Error:', error);
         });
-}
+
 
 
   var i; 
@@ -188,3 +188,4 @@ window.onload = function(event){
         }
       }
   }
+}
