@@ -93,7 +93,7 @@ Deleting.addEventListener("click", ()=>{
 
 
             }else{
-                alert("Task didn't Deleted");
+               // alert("Task didn't Deleted");
             }
         })
         .catch((error) => {
@@ -191,7 +191,7 @@ window.onload = function(event){
                 });
 
             }else{
-                alert("Task didn't added");
+                //("Task didn't added");
             }
         })
         .catch((error) => {
@@ -304,7 +304,7 @@ form.addEventListener("submit",(event)=>{
                     Adding.click();
 
                 }else{
-                    alert("Task didn't added");
+                    //alert("Task didn't added");
                 }
             })
             .catch((error) => {
@@ -343,7 +343,7 @@ form.addEventListener("submit",(event)=>{
                     Updating.click();
 
                 }else{
-                    alert("Task didn't added");
+                    //alert("Task didn't added");
                 }
             })
             .catch((error) => {

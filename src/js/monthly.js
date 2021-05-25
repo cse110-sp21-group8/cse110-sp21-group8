@@ -41,7 +41,7 @@ addButton.addEventListener('click', ()=> {
                     if(data["status"]==200){
                         let newTask = data["task"];
                     }else{
-                        alert("Goal didn't add");
+                        //alert("Goal didn't add");
                     }
                 })
                 .catch((error) => {
@@ -68,7 +68,7 @@ addButton.addEventListener('click', ()=> {
                     if(data["status"]==200){
                         let newTask = data["task"];
                     }else{
-                        alert("Goal didn't add");
+                        //alert("Goal didn't add");
                     }
                 })
                 .catch((error) => {
@@ -100,7 +100,7 @@ addButton.addEventListener('click', ()=> {
                     if(data["status"]==200){
                         let newTask = data["task"];
                     }else{
-                        alert("Task didn't added");
+                        //alert("Task didn't added");
                     }
                 })
                 .catch((error) => {
@@ -203,7 +203,7 @@ window.onload = function() {
                                 if(data["status"]==200){
                                     let newTask = data["task"];
                                 }else{
-                                    alert("Task didn't added");
+                                    //alert("Task didn't added");
                                 }
                             })
                             .catch((error) => {
@@ -214,7 +214,7 @@ window.onload = function() {
                     text_box.appendChild(task);
                 });
             }else{
-                alert("Task didn't added");
+               // alert("Task didn't added");
             }
         })
         .catch((error) => {

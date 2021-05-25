@@ -62,7 +62,7 @@ addButton.addEventListener('click', ()=> {
                     if(data["status"]==200){
                         let newTask = data["task"];
                     }else{
-                        alert("Task didn't added");
+                        //alert("Task didn't added");
                     }
                 })
                 .catch((error) => {
@@ -89,7 +89,7 @@ addButton.addEventListener('click', ()=> {
                     if(data["status"]==200){
                         let newTask = data["task"];
                     }else{
-                        alert("Task didn't added");
+                        //("Task didn't added");
                     }
                 })
                 .catch((error) => {
@@ -124,7 +124,7 @@ addButton.addEventListener('click', ()=> {
                     if(data["status"]==200){
                         let newTask = data["task"];
                     }else{
-                        alert("Task didn't added");
+                       // alert("Task didn't added");
                     }
                 })
                 .catch((error) => {
@@ -161,7 +161,7 @@ addButton.addEventListener('click', ()=> {
                 if(data["status"]==200){
                     let newTask = data["task"];
                 }else{
-                    alert("Task didn't added");
+                   // alert("Task didn't added");
                 }
             })
             .catch((error) => {
@@ -231,7 +231,7 @@ window.onload = function(event){
                                 if(data["status"]==200){
                                     let newTask = data["task"];
                                 }else{
-                                    alert("Task didn't added");
+                                   // alert("Task didn't added");
                                 }
                             })
                             .catch((error) => {
@@ -244,7 +244,7 @@ window.onload = function(event){
                 });
 
             }else{
-                alert("Task didn't added");
+               // alert("Task didn't added");
             }
         })
         .catch((error) => {
