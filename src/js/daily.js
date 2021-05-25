@@ -38,7 +38,7 @@ addButton.addEventListener('click', ()=> {
         }
     })
 
-    taskInput.addEventListener('focusout', (event)=> {
+    taskInput.addEventListener('change', (event)=> {
         if(task.isNew){
             console.log('focus out');
             event.preventDefault();
@@ -264,7 +264,7 @@ window.onload = function(event){
                         }
                     })
 
-                    taskInput.addEventListener('focusout', (event)=> {
+                    taskInput.addEventListener('change', (event)=> {
                         event.preventDefault();
                         let index = Array.prototype.indexOf.call(text_box.children, task);
                         let oldData = data.task[index];
@@ -336,6 +336,11 @@ window.onload = function(event){
         .catch((error) => {
         console.error('Error:', error);
         });
+
+    //fetch data for daily reflection here
+        //change the value of reflection.value = to the saved data
+        //set isReflectionNew = false;
+    
 }
 //upload picture:
 let upload = document.getElementById('tracker-form');
@@ -363,6 +368,21 @@ upload.addEventListener("submit", (event)=>{
 });
 
 
+//reflection section
+let reflection = document.getElementById('reflection');
+let reflectionForm = document.querySelector('#reflect-box form')
+let isReflectionNew = true;
+
+reflection.addEventListener('change', ()=> {
+    if(isReflectionNew == true){
+        //create new reflection on back end
+        console.log('reflection created by change');
+        isReflectionNew = false;
+    } else {
+        //update reflection on back end 
+        console.log('reflection updated by change');
+    }
+})
 
 
 
