@@ -196,6 +196,8 @@ let User = mongoose.model('User', UserSchema);
 //user signup
 //assumpt that the database has the collections of User to store user information
 function createUser(data,res){
+  //Remote Cloud Database address:
+  //Url:mongodb+srv://CSE110:CSE110@cluster0.1sq34.mongodb.net/cse110_group8?retryWrites=true&w=majority
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -249,6 +251,7 @@ let TaskSchema = new mongoose.Schema({
   content: String,
   date:String,
   user: String,
+  tag: String,
 });
 let Task = mongoose.model('Task', TaskSchema);
 
