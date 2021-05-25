@@ -1,6 +1,6 @@
 let form = document.querySelector('form');
 let text_box = document.querySelector('#text-box1');
-
+ 
 document.addEventListener('DOMContentLoaded', () => {
 
   var i; 

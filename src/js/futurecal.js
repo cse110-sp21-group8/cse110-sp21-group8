@@ -1,4 +1,4 @@
-
+ 
 /* Declaring date variables for each of the boxes */
 const date = new Date();
 const date2 = new Date(date.getFullYear(), date.getMonth()+1, 1);
