@@ -1,6 +1,6 @@
 name: Test JS files using Jest
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   eslint:
