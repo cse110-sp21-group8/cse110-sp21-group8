@@ -55,27 +55,69 @@ document.addEventListener('keydown', function(e){
             let task = document.activeElement;
             let subTask = document.createElement('task-list');
             subTask.className = 'subtask';
-            let content = subTask.shadowRoot.querySelector('#tasks').value;
+            let subTaskInput = subTask.shadowRoot.querySelector('#tasks');
+            let subTaskForm = subTask.shadowRoot.querySelector('#form');
+            subTask.isNew = true;
 
-            data = {status:"daily",type:"task", content:content,date:date.toDateString(), task_id: task.task_id };
-            fetch('/addSubTask', {  
-                method: 'POST',
-                headers: {
-                  "Content-Type": "application/json"
-                }, 
-                body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if(data["status"]==200){
-                        let newTask = data["task"];
-                    }else{
-                       // alert("Task didn't added");
-                    }
-                })
-                .catch((error) => {
-                console.error('Error:', error);
-                });
+
+            subTaskInput.addEventListener('change', ()=>{
+                if(subTask.isNew == true){
+                    data = {status:"daily",type:"task", content:subTaskInput.value ,date:date.toDateString(), task_id: task.task_id };
+                    fetch('/addSubTask', {  
+                        method: 'POST',
+                        headers: {
+                          "Content-Type": "application/json"
+                        }, 
+                        body: JSON.stringify(data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data["status"]==200){
+                                let newTask = data["task"];
+                            }else{
+                               // alert("Task didn't added");
+                            }
+                        })
+                        .catch((error) => {
+                        console.error('Error:', error);
+                        });
+                    subTask.isNew = false;
+                } else {
+                    //update task here
+                }
+            });
+
+            subTaskForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                if(subTask.isNew == true){
+                    data = {status:"daily",type:"task", content:subTaskInput.value ,date:date.toDateString(), task_id: task.task_id };
+                    fetch('/addSubTask', {  
+                        method: 'POST',
+                        headers: {
+                          "Content-Type": "application/json"
+                        }, 
+                        body: JSON.stringify(data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data["status"]==200){
+                                let newTask = data["task"];
+                            }else{
+                               // alert("Task didn't added");
+                            }
+                        })
+                        .catch((error) => {
+                        console.error('Error:', error);
+                        });
+                    subTask.isNew = false;
+                } else {
+                    //update task here
+
+                }
+                document.activeElement.blur();
+                
+            })
+
             subTask.task_id = task.task_id;
             task.shadowRoot.querySelector('#subtask-box').append(subTask);
             subTask.shadowRoot.querySelector('#tasks').focus();
@@ -442,7 +484,25 @@ window.onload = function(event){
                                 console.log(subdata);
                                 let subtasks = subdata["task"];
                                 subtasks.forEach((subTemp) => {
-                                    
+                                    let subTask = document.createElement('task-list');
+                                    let subTaskInput = subTask.shadowRoot.querySelector('#tasks');
+                                    let subTaskForm = subTask.shadowRoot.querySelector('#form');
+                                    subTask.className = 'subtask';
+                                    subTaskInput.value = subTemp.content;
+                                    subTask.task_id = task.task_id;
+                                    task.shadowRoot.querySelector('#subtask-box').append(subTask);
+                                    subTask.isNew = false;
+
+
+                                    subTaskInput.addEventListener('change', ()=>{
+                                        //update task here in backend
+                                    });
+                        
+                                    subTaskForm.addEventListener('submit', (event) => {
+                                        event.preventDefault();
+                                        //update task gere in backend
+                                        document.activeElement.blur();                     
+                                    })
                                 })
                             }
                         })
