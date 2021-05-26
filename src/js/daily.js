@@ -1,5 +1,47 @@
 let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
+let reflect_btn = document.querySelector('#add-reflection');
+
+
+/* Custom Tag Script */ 
+let addTagButton = document.getElementById('add-tag').firstElementChild;
+let tagTracker = document.getElementById('tracker-box');
+
+let customTag;
+let customForm;
+let customInput;
+let newTag = false;
+
+addTagButton.addEventListener('click', ()=>{
+  console.log("clicked yay");
+  customTag = document.createElement('custom-tag');
+  tagTracker.appendChild(customTag);
+
+  customForm = customTag.shadowRoot.getElementById('custom-form');
+  customInput = customTag.shadowRoot.querySelector("#custom-tags");
+  let setTag = function(event) {
+    event.preventDefault();
+    newTag = true;
+    customTag.id = customInput.value;
+    console.log(customTag.id);
+    let tagList = document.getElementById('text-box').childNodes;
+    
+    console.log(tagList);
+    for(let i = 1; i < tagList.length; i++){
+      newTag = false;
+      console.log(i);
+      let choices = new Option(`${customTag.id}`, `${customTag.id}`);
+      console.log(choices);
+      if(tagList[i].nodeName == "TASK-LIST"){
+        tagList[i].shadowRoot.getElementById('tag-select').add(choices);
+      }
+    }
+    
+  }
+  customForm.addEventListener('submit', setTag);
+});
+/* */
+
 
 document.addEventListener('keydown', function(e){
     if(e.key == 'Tab'){
@@ -22,11 +64,40 @@ document.addEventListener('keydown', function(e){
 addButton.addEventListener('click', ()=> {
     console.log('click')
     let task = document.createElement('task-list');
-    text_box.append(task);
+
+    /* Custom Tag Script */ 
+    let tagList = document.getElementById('text-box').childNodes;
+    if(tagList[0].nodeName == "TASK-LIST"){
+      let opts = tagList[1].shadowRoot.getElementById('tag-select').options;
+
+      for(let i = 4; i < opts.length; i++){
+        let choices = new Option(`${opts[i].value}`, `${opts[i].value}`);
+        task.shadowRoot.getElementById('tag-select').add(choices);
+      }
+
+      if(newTag == true){
+        let tagList = document.getElementById('text-box').childNodes;
+
+        for(let i = 1; i < tagList.length; i++){
+          newTag = false;
+          let choices = new Option(`${customTag.id}`, `${customTag.id}`);
+          if(tagList[i].nodeName == "TASK-LIST"){
+            tagList[i].shadowRoot.getElementById('tag-select').add(choices);
+          }
+        }
+      }
+    }
+    else {
+      let choices = new Option(`${customTag.id}`, `${customTag.id}`);
+      task.shadowRoot.getElementById('tag-select').add(choices);
+    }
+    /* */
+
+    text_box.prepend(task);
     console.log(task.shadowRoot);
     let taskInput = task.shadowRoot.querySelector('#tasks');
     let selection = task.shadowRoot.querySelector('#checklist-select');
-    console.log(taskInput); 
+
 
     selection.addEventListener('change', () => {
         if(selection.value == "Task"){
@@ -368,11 +439,76 @@ window.onload = function(event){
         console.error('Error:', error);
         });
 
+    //load reflection
+    fetch('/getDailyTask', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({date: new Date().toDateString()})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data["status"]  == 200) {
+            let tasks = data["task"];
+            let content = document.getElementById("reflection-content");
+    
+            tasks.forEach((tmp) => {
+                if (tmp["type"] === "reflection") {
+                    content.append(tmp["content"]);
+                }
+            });
+            if (document.getElementById("reflection-content").innerHTML.length > 0) {
+                document.getElementById("add-reflection").disabled = true;
+            }
+        }
+    });
+}
+
+reflect_btn.addEventListener('click', (event) => {
+    const content = document.getElementById('reflection').value;
+    document.getElementById('reflection-content').append(content);
+
+    event.preventDefault();
+
+    let date = new Date();
+    data = { content: content, date: date.toDateString(), type: "reflection" };
+    console.log(data);
+    fetch('/addDailyTask', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data["status"] == 200) {
+            let newReflection = data["reflection"];
+        }
+        else {
+            alert("Reflection didn't add");
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+    if (document.getElementById("reflection-content").innerHTML.length > 0) {
+        document.getElementById("add-reflection").disabled = true;
+    }
+});
+
+
+
+
+
+
+
+
     //fetch data for daily reflection here
         //change the value of reflection.value = to the saved data
         //set isReflectionNew = false;
     
-}
 /*upload picture:
 let upload = document.getElementById('tracker-form');
 upload.addEventListener("submit", (event)=>{

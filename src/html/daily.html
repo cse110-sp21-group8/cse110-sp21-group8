@@ -56,21 +56,26 @@
           </div>
         </div>
         <!--Tracker. Containing tracker box and input area-->
-        <div class="widget" id="trackers">
+        <div id="trackers">
+          <div class="header">
+            <h2>Custom Tag</h2>
+            <div id="add-tag">
+              <a><span>&#43;</span></a>
+            </div>
+          </div>
           <!--Tracker box for formatting-->
           <div id="tracker-box">
-            <form id="tracker-form" action="/uploadImg" enctype="multipart/form-data" method="post">
-            <input type="file" id="tracker" placeholder="Trackers are here!" name="file-to-upload"><br>
-            <input type="submit" value="Upload">
-            </form>
-            <img class="tracker-image">
+            <!-- <input type="file" id="tracker" placeholder="Trackers are here!"><br> --> 
           </div>
         </div>
-      </div>
+        </div>
     </div>
     <script src="../js/daily.js"></script>
+
   <!--Daily Log Calendar Script-->
     <script src="../js/dailycal.js"></script>   
     <script src="../js/tasklist.js" type="module"></script>
+    <script src="../js/customtag.js" type="module"></script>
+    <!-- <script src="../js/customaddtag.js" type="module"></script> -->
   </body>
 </html>
