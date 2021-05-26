@@ -1,3 +1,5 @@
+//const { nodeInternals } = require("stack-utils");
+
 let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
 
@@ -80,6 +82,30 @@ for(i = 1; i < 5; i++){
                }
                
             });
+
+            del.addEventListener('click', () =>{
+                delete_data = data;
+                fetch('/deleteTask', {  
+                    method: 'POST',
+                    headers: {
+                    "Content-Type": "application/json"
+                    }, 
+                    body: JSON.stringify(delete_data)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data["status"]==200){
+                            let newTask = data["task"];
+                        }else{
+                            alert("Task didn't added");
+                        }
+                    })
+                    .catch((error) => {
+                    console.error('Error:', error);
+                });
+                box.remove();
+                del.remove();
+            })
 
         })
     }
@@ -330,8 +356,60 @@ window.onload = function() {
                         note.value = tmp['content']; 
                         let info = tmp['tag'].split("_");
                         let numId = "#" + info[0];
-                        let appendNum = document.querySelector(numId).children[info[1]]; 
+                        let appendNum = document.querySelector(numId).children[info[1]];
+                        let del = document.createElement('button'); 
                         appendNum.append(note);
+                        appendNum.append(del);
+                        note.addEventListener('focusout', (event)=> {
+                            let oldData = tmp;
+                            let newData = {status:"monthly",type:"note", content:note.value,date:date.getMonth(), tag: data['tag']};
+                            send_data = {old:oldData, new:newData}; 
+                            fetch('/updateTask', {  
+                                method: 'POST',
+                                headers: {
+                                  "Content-Type": "application/json"
+                                }, 
+                                body: JSON.stringify(send_data)
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if(data["status"]==200){
+                                        let newTask = data["task"];
+                                    }else{
+                                        alert("Task didn't added");
+                                    }
+                                })
+                                .catch((error) => {
+                                console.error('Error:', error);
+                            });
+                        })
+
+                        del.addEventListener('click', () => {
+                            delete_data = tmp;
+                            fetch('/deleteTask', {  
+                                method: 'POST',
+                                headers: {
+                                "Content-Type": "application/json"
+                                }, 
+                                body: JSON.stringify(delete_data)
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if(data["status"]==200){
+                                        let newTask = data["task"];
+                                    }else{
+                                        alert("Task didn't added");
+                                    }
+                                })
+                                .catch((error) => {
+                                console.error('Error:', error);
+                            });
+                            note.remove();
+                            del.remove();
+                            
+                        })
+
+
                     }
                 });
                 

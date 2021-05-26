@@ -141,7 +141,8 @@ addButton.addEventListener('click', ()=> {
 
     deleteButton.addEventListener('click', () => {
         //task.remove();
-        // delete back end code here      
+        // delete back end code here  
+         console.log(task);    
          let index = Array.prototype.indexOf.call(text_box.children, task);
          if(typeof(data.task) === 'undefined'){
              delete_data = data;

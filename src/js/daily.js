@@ -13,7 +13,6 @@ let customInput;
 let newTag = false;
 
 addTagButton.addEventListener('click', ()=>{
-  console.log("clicked yay");
   customTag = document.createElement('custom-tag');
   tagTracker.appendChild(customTag);
 
@@ -55,32 +54,99 @@ document.addEventListener('keydown', function(e){
             let task = document.activeElement;
             let subTask = document.createElement('task-list');
             subTask.className = 'subtask';
-            let content = subTask.shadowRoot.querySelector('#tasks').value;
-
-            data = {status:"daily",type:"task", content:content,date:date.toDateString(), task_id: task.task_id };
-            fetch('/addSubTask', {  
-                method: 'POST',
-                headers: {
-                  "Content-Type": "application/json"
-                }, 
-                body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if(data["status"]==200){
-                        let newTask = data["task"];
-                    }else{
-                       // alert("Task didn't added");
-                    }
-                })
-                .catch((error) => {
-                console.error('Error:', error);
-                });
             subTask.task_id = task.task_id;
+            subTask.isNew = true;
+            
             task.shadowRoot.querySelector('#subtask-box').append(subTask);
             subTask.shadowRoot.querySelector('#tasks').focus();
-        }
+            let selection = subTask.shadowRoot.querySelector('#checklist-select');
+            let input = subTask.shadowRoot.querySelector('#tasks');
 
+            selection.addEventListener('change', () => {
+                if(selection.value == "Task"){
+                    input.value = "● ";
+                } else if (selection.value == "Note"){
+                    input.value = "- ";
+                } else {
+                    input.value = "⚬ ";
+                }
+            })
+
+
+            subTask.addEventListener('focusout', (event)=> {
+                if(subTask.isNew) {
+                    let content = subTask.shadowRoot.querySelector('#tasks').value;
+                    data = {status:"daily",type:"task", content:content,date:date.toDateString(), task_id: task.task_id };
+                    fetch('/addSubTask', {  
+                        method: 'POST',
+                        headers: {
+                        "Content-Type": "application/json"
+                        }, 
+                        body: JSON.stringify(data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data["status"]==200){
+                                let newTask = data["task"];
+                            }else{
+                            // alert("Task didn't added");
+                            }
+                        })
+                        .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                    subTask.isNew = false;
+                } else { 
+                    let content = subTask.shadowRoot.querySelector('#tasks').value;
+                    let oldData = data;
+                    newData = {status:"daily",type:"task", content:content,date:date.toDateString(), task_id: task.task_id };
+                    send_data = {old:oldData, new:newData}; 
+                    fetch('/updateSubTask', {  
+                        method: 'POST',
+                        headers: {
+                          "Content-Type": "application/json"
+                        }, 
+                        body: JSON.stringify(send_data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data["status"]==200){
+                                let newTask = data["task"];
+                            }else{
+                               // alert("Task didn't added");
+                            }
+                        })
+                        .catch((error) => {
+                        console.error('Error:', error);
+                    });
+
+                }
+            })
+
+            let del = subTask.shadowRoot.querySelector('#delete');
+            del.addEventListener('click',()=> { 
+                delete_data = data;
+                fetch('/deleteSubTask', {  
+                    method: 'POST',
+                    headers: {
+                      "Content-Type": "application/json"
+                    }, 
+                    body: JSON.stringify(delete_data)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data["status"]==200){
+                            let newTask = data["task"];
+                        }else{
+                            //alert("Task didn't added");
+                        }
+                    })
+                    .catch((error) => {
+                    console.error('Error:', error);
+                });   
+            })
+            
+        }
     } 
    // if(document.activeElement)
 });
@@ -120,7 +186,7 @@ addButton.addEventListener('click', ()=> {
    /* */
 
     //adding task to document
-    text_box.prepend(task);
+    text_box.append(task);
 
     //elements of task 
     let taskInput = task.shadowRoot.querySelector('#tasks');
@@ -137,7 +203,7 @@ addButton.addEventListener('click', ()=> {
         }
     })
 
-    taskInput.addEventListener('change', (event)=> {
+    taskInput.addEventListener('focusout', (event)=> {
         if(task.isNew){
             console.log('focus out');
             event.preventDefault();
@@ -404,7 +470,6 @@ window.onload = function(event){
                     deleteButton.addEventListener('click', () => {
                         let index = Array.prototype.indexOf.call(text_box.children, task);
                         delete_data = data.task[index];
-                        console.log(data);
                         fetch('/deleteTask', {  
                             method: 'POST',
                             headers: {

@@ -494,7 +494,7 @@ let SubTask = mongoose.model('SubTask', SubTaskSchema);
 app.post('/getSubTask', function (req, res) {
     let data= req.body;//get the form data
     data["user"] = currentUser["_id"].toString();
-   console.log('Got Sub task body:', data);
+    console.log('Got Sub task body:', data);
    getSubTask(data,res);
 })
 
