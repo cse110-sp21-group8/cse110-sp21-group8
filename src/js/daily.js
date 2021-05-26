@@ -17,16 +17,16 @@ addTagButton.addEventListener('click', ()=>{
   customTag = document.createElement('custom-tag');
   tagTracker.appendChild(customTag);
 
-  customForm = customTag.shadowRoot.getElementById('custom-form');
+  customForm = customTag.shadowRoot.getElementById('custom-form'); 
+  let customSubmit = customTag.shadowRoot.getElementById('submit');
   customInput = customTag.shadowRoot.querySelector("#custom-tags");
-  let setTag = function(event) {
+  customSubmit.addEventListener('click', (event) =>{
     event.preventDefault();
     newTag = true;
     customTag.id = customInput.value;
     console.log(customTag.id);
     let tagList = document.getElementById('text-box').childNodes;
     
-    console.log(tagList);
     for(let i = 1; i < tagList.length; i++){
       newTag = false;
       console.log(i);
@@ -36,9 +36,11 @@ addTagButton.addEventListener('click', ()=>{
         tagList[i].shadowRoot.getElementById('tag-select').add(choices);
       }
     }
-    
-  }
-  customForm.addEventListener('submit', setTag);
+  });
+
+  customForm.addEventListener('submit', (event) =>{
+    event.preventDefault();
+  });
 });
 /* */
 
@@ -53,10 +55,32 @@ document.addEventListener('keydown', function(e){
             let task = document.activeElement;
             let subTask = document.createElement('task-list');
             subTask.className = 'subtask';
-            task.after(subTask);
+            let content = subTask.shadowRoot.querySelector('#tasks').value;
+
+            data = {status:"daily",type:"task", content:content,date:date.toDateString(), task_id: task.task_id };
+            fetch('/addSubTask', {  
+                method: 'POST',
+                headers: {
+                  "Content-Type": "application/json"
+                }, 
+                body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data["status"]==200){
+                        let newTask = data["task"];
+                    }else{
+                       // alert("Task didn't added");
+                    }
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+                });
+            subTask.task_id = task.task_id;
+            task.shadowRoot.querySelector('#subtask-box').append(subTask);
             subTask.shadowRoot.querySelector('#tasks').focus();
         }
-        console.log(document.activeElement);
+
     } 
    // if(document.activeElement)
 });
@@ -68,7 +92,7 @@ addButton.addEventListener('click', ()=> {
     /* Custom Tag Script */ 
     let tagList = document.getElementById('text-box').childNodes;
     if(tagList[0].nodeName == "TASK-LIST"){
-      let opts = tagList[1].shadowRoot.getElementById('tag-select').options;
+      let opts = tagList[0].shadowRoot.getElementById('tag-select').options;
 
       for(let i = 4; i < opts.length; i++){
         let choices = new Option(`${opts[i].value}`, `${opts[i].value}`);
@@ -88,13 +112,17 @@ addButton.addEventListener('click', ()=> {
       }
     }
     else {
-      let choices = new Option(`${customTag.id}`, `${customTag.id}`);
-      task.shadowRoot.getElementById('tag-select').add(choices);
+      if(customTag != null){
+        let choices = new Option(`${customTag.id}`, `${customTag.id}`);
+        task.shadowRoot.getElementById('tag-select').add(choices);
+      }
     }
-    /* */
+   /* */
 
+    //adding task to document
     text_box.prepend(task);
-    console.log(task.shadowRoot);
+
+    //elements of task 
     let taskInput = task.shadowRoot.querySelector('#tasks');
     let selection = task.shadowRoot.querySelector('#checklist-select');
 
@@ -130,6 +158,7 @@ addButton.addEventListener('click', ()=> {
                 })
                 .then(response => response.json())
                 .then(data => {
+                    task.task_id = data.task._id;
                     if(data["status"]==200){
                         let newTask = data["task"];
                     }else{
@@ -139,6 +168,7 @@ addButton.addEventListener('click', ()=> {
                 .catch((error) => {
                 console.error('Error:', error);
                 });
+            
             task.isNew = false;
         } else {
             
@@ -193,6 +223,7 @@ addButton.addEventListener('click', ()=> {
                 })
                 .then(response => response.json())
                 .then(data => {
+                    task.task_id = data.task._id;
                     if(data["status"]==200){
                         let newTask = data["task"];
                     }else{
@@ -231,41 +262,6 @@ addButton.addEventListener('click', ()=> {
         }
         document.activeElement.blur();
     });
-
-    /*
-    let deleteButton = task.shadowRoot.querySelector('#delete');
-
-    deleteButton.addEventListener('click', () => {
-              
-         let index = Array.prototype.indexOf.call(text_box.children, task);
-         if(typeof(data.task) === 'undefined'){
-             delete_data = data;
-         } else {
-            delete_data = data.task[index];
-         }
-
-         fetch('/deleteTask', {  
-            method: 'POST',
-            headers: {
-              "Content-Type": "application/json"
-            }, 
-            body: JSON.stringify(delete_data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data["status"]==200){
-                    let newTask = data["task"];
-                }else{
-                    alert("Task didn't added");
-                }
-            })
-            .catch((error) => {
-            console.error('Error:', error);
-        });
-
-        task.remove();
-        
-    });*/
 
     let deleteButton = task.shadowRoot.querySelector('#delete');
 
@@ -306,24 +302,24 @@ window.onload = function(event){
     //added by Jinhao Zhou
     //get the user image of that day
     
-    fetch('/getImg', {  
-        method: 'GET',
-        headers: {
-          "Content-Type": "application/json"
-        }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data["status"]==200){
-                let image = document.querySelector(".tracker-image");
-                image.src = data["src"];
-            }else{
-                alert("no image data exist");
-            }
-        })
-        .catch((error) => {
-        console.error('Error:', error);
-    });
+    // fetch('/getImg', {  
+    //     method: 'GET',
+    //     headers: {
+    //       "Content-Type": "application/json"
+    //     }
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         if(data["status"]==200){
+    //             let image = document.querySelector(".tracker-image");
+    //             image.src = data["src"];
+    //         }else{
+    //             alert("no image data exist");
+    //         }
+    //     })
+    //     .catch((error) => {
+    //     console.error('Error:', error);
+    // });
 
 
     fetch('/getDailyTask', {  
@@ -338,6 +334,7 @@ window.onload = function(event){
             if(data["status"]==200){
                 //obtains the task list
                 let tasks = data["task"];
+                console.log(tasks);
                 let text_box = document.getElementById("text-box");
                 //add each task into the box
                 tasks.forEach((tmp)=>{
@@ -345,6 +342,7 @@ window.onload = function(event){
                     let task = document.createElement('task-list');
                     let taskInput = task.shadowRoot.querySelector('#tasks');
                     let taskForm = task.shadowRoot.querySelector('#form');
+                    task.task_id = tmp._id;
                     taskInput.value = tmp["content"];
                     task.isNew = false;
 
@@ -428,7 +426,26 @@ window.onload = function(event){
 
                         task.remove();
                     });
-                    
+
+
+                    //append subtask;
+                    fetch('/getSubTask', {  
+                        method: 'POST',
+                        headers: {
+                          "Content-Type": "application/json"
+                        }, 
+                        body: JSON.stringify({task_id: task.task_id})
+                        })
+                        .then(response => response.json())
+                        .then(subdata => {
+                            if(subdata["status"]==200){
+                                console.log(subdata);
+                                let subtasks = subdata["task"];
+                                subtasks.forEach((subTemp) => {
+                                    
+                                })
+                            }
+                        })
                 });
 
             }else{
@@ -436,67 +453,67 @@ window.onload = function(event){
             }
         })
         .catch((error) => {
-        console.error('Error:', error);
+            console.error('Error:', error);
         });
 
     //load reflection
-    fetch('/getDailyTask', {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({date: new Date().toDateString()})
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data["status"]  == 200) {
-            let tasks = data["task"];
-            let content = document.getElementById("reflection-content");
+    // fetch('/getDailyTask', {
+    //     method: 'POST',
+    //     headers: {
+    //         "Content-Type": "application/json"
+    //     },
+    //     body: JSON.stringify({date: new Date().toDateString()})
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+    //     // if(data["status"]  == 200) {
+    //     //     let tasks = data["task"];
+    //     //     let content = document.getElementById("reflection-content");
     
-            tasks.forEach((tmp) => {
-                if (tmp["type"] === "reflection") {
-                    content.append(tmp["content"]);
-                }
-            });
-            if (document.getElementById("reflection-content").innerHTML.length > 0) {
-                document.getElementById("add-reflection").disabled = true;
-            }
-        }
-    });
+    //     //     tasks.forEach((tmp) => {
+    //     //         if (tmp["type"] === "reflection") {
+    //     //             content.append(tmp["content"]);
+    //     //         }
+    //     //     });
+    //     //     if (document.getElementById("reflection").innerHTML.length > 0) {
+    //     //         document.getElementById("add-reflection").disabled = true;
+    //     //     }
+    //     // }
+    // });
 }
 
-reflect_btn.addEventListener('click', (event) => {
-    const content = document.getElementById('reflection').value;
-    document.getElementById('reflection-content').append(content);
+// reflect_btn.addEventListener('click', (event) => {
+//     const content = document.getElementById('reflection').value;
+//     document.getElementById('reflection-content').append(content);
 
-    event.preventDefault();
+//     event.preventDefault();
 
-    let date = new Date();
-    data = { content: content, date: date.toDateString(), type: "reflection" };
-    console.log(data);
-    fetch('/addDailyTask', {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data["status"] == 200) {
-            let newReflection = data["reflection"];
-        }
-        else {
-            alert("Reflection didn't add");
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-    if (document.getElementById("reflection-content").innerHTML.length > 0) {
-        document.getElementById("add-reflection").disabled = true;
-    }
-});
+//     let date = new Date();
+//     data = { content: content, date: date.toDateString(), type: "reflection" };
+//     console.log(data);
+//     fetch('/addDailyTask', {
+//         method: 'POST',
+//         headers: {
+//             "Content-Type": "application/json"
+//         },
+//         body: JSON.stringify(data)
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         if(data["status"] == 200) {
+//             let newReflection = data["reflection"];
+//         }
+//         else {
+//             alert("Reflection didn't add");
+//         }
+//     })
+//     .catch((error) => {
+//         console.error('Error:', error);
+//     });
+//     if (document.getElementById("reflection-content").innerHTML.length > 0) {
+//         document.getElementById("add-reflection").disabled = true;
+//     }
+// });
 
 
 
