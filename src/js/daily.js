@@ -507,7 +507,25 @@ window.onload = function(event){
                                 console.log(subdata);
                                 let subtasks = subdata["task"];
                                 subtasks.forEach((subTemp) => {
-                                    
+                                    let subTask = document.createElement('task-list');
+                                    let subTaskInput = subTask.shadowRoot.querySelector('#tasks');
+                                    let subTaskForm = subTask.shadowRoot.querySelector('#form');
+                                    subTask.className = 'subtask';
+                                    subTaskInput.value = subTemp.content;
+                                    subTask.task_id = task.task_id;
+                                    task.shadowRoot.querySelector('#subtask-box').append(subTask);
+                                    subTask.isNew = false;
+
+
+                                    subTaskInput.addEventListener('change', ()=>{
+                                        //update task here in backend
+                                    });
+                        
+                                    subTaskForm.addEventListener('submit', (event) => {
+                                        event.preventDefault();
+                                        //update task gere in backend
+                                        document.activeElement.blur();                     
+                                    })
                                 })
                             }
                         })
