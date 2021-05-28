@@ -73,7 +73,7 @@ describe('Test: add Subtasks', () => {
     });
   });
 });
-/*
+
 describe('Test: fetch/get tasks', () => {
     test('User login successfully with correct password and username', done =>{
         //send the request
@@ -99,12 +99,12 @@ describe('Test: fetch/get tasks', () => {
         });
     });
 
-    /*
+    
     test('User get their own future task', done =>{
         //send the request
         sendData = {status:"future"};
         request(app)
-        .post("/getDailyTask").send(sendData)
+        .post("/getFutureTask").send(sendData)
         .set('Accept', 'application/json')
         .then(response => {
           expect(response.body.status).toEqual(200);
@@ -116,12 +116,24 @@ describe('Test: fetch/get tasks', () => {
         //send the request
         sendData = {status:"monthly"};
         request(app)
-        .post("/getDailyTask").send(sendData)
+        .post("/getMonthlyTask").send(sendData)
         .set('Accept', 'application/json')
         .then(response => {
           expect(response.body.status).toEqual(200);
           done();
         });
+    });
+
+    test('User get their own Custom task', done =>{
+      //send the request
+      sendData = {};
+      request(app)
+      .post("/getCustomTask").send(sendData)
+      .set('Accept', 'application/json')
+      .then(response => {
+        expect(response.body.status).toEqual(200);
+        done();
+      });
     });
 });
 
@@ -174,6 +186,19 @@ describe('Test: add tasks', () => {
     });
   });
 
+  test('User add their own custom task', done =>{
+    //send the request
+    sendData = {sections:"monthly",title:"custome test",color:"Blue",tags:"important",date:new Date().toDateString(),content:"test content"};
+    request(app)
+    .post("/addCustomTask").send(sendData)
+    .set('Accept', 'application/json')
+    .then(response => {
+      expect(response.body.status).toEqual(200);
+      done();
+    });
+  });
+
+
 });
 
 
@@ -214,6 +239,8 @@ describe('Test: edit tasks', () => {
           expect(response.body.status).toEqual(200);
           done();
         });
+    });
+
     test('User edit their own future task', done =>{
       //send the request
       sendData = { old:{status:"future",type:"task",date:new Date().toDateString(),content:"test content"},new:{
@@ -241,7 +268,20 @@ describe('Test: edit tasks', () => {
         done();
       });
     });
-});*/
+
+    test('User edit their own custom task', done =>{
+      //send the request
+      sendData = {old:{sections:"monthly",title:"custome test",color:"Blue",tags:"important",date:new Date().toDateString(),content:"test content"},
+        new:{sections:"Daily",title:"custome test 2",color:"Blue",tags:"important",date:new Date().toDateString(),content:"test content"}};
+      request(app)
+      .post("/UpdateCustomTask").send(sendData)
+      .set('Accept', 'application/json')
+      .then(response => {
+        expect(response.body.status).toEqual(200);
+        done();
+      });
+    });
+});
 
 
 describe('Test: delete tasks', () => {
@@ -291,5 +331,16 @@ describe('Test: delete tasks', () => {
       done();
     });
   });
+  test('User delete their own custom task', done =>{
+    //send the request
+    sendData = {sections:"Daily",title:"custome test 2",color:"Blue",tags:"important",date:new Date().toDateString(),content:"test content"};
+    request(app)
+    .post("/DeleteCustomTask").send(sendData)
+    .set('Accept', 'application/json')
+    .then(response => {
+      expect(response.body.status).toEqual(200);
+      done();
+    });
+  })
+})
 
-});

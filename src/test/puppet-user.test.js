@@ -148,10 +148,10 @@ describe('Home Page Navigation testing', ()=>{
     });
 
 
-     // User click the Home button and would go back to the home page from Custom log:
-    it('Test11: User click the Home button and go back to the home page from Custom log:', async () => {
+     // User click the back button and would go back to the home page from Custom log:
+    it('Test11: User click back button and go back to the home page from Custom log:', async () => {
 
-      await page.click('.home-button button:nth-child(1)');
+      await page.goBack();
 
       const title = await page.evaluate(() => {
         const elem = document.querySelector('title');
