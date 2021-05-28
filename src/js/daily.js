@@ -56,6 +56,7 @@ document.addEventListener('keydown', function(e){
             subTask.className = 'subtask';
             subTask.task_id = task.task_id;
             subTask.isNew = true;
+            subTask.isSubtask = true;
             
             task.shadowRoot.querySelector('#subtask-box').append(subTask);
             subTask.shadowRoot.querySelector('#tasks').focus();
@@ -70,7 +71,8 @@ document.addEventListener('keydown', function(e){
                 } else {
                     input.value = "⚬ ";
                 }
-            })
+            });
+            input.value = "● ";
 
 
             subTask.addEventListener('focusout', (event)=> {
@@ -191,7 +193,7 @@ addButton.addEventListener('click', ()=> {
     //elements of task 
     let taskInput = task.shadowRoot.querySelector('#tasks');
     let selection = task.shadowRoot.querySelector('#checklist-select');
-
+    taskInput.value = "● ";
 
     selection.addEventListener('change', () => {
         if(selection.value == "Task"){
@@ -515,8 +517,8 @@ window.onload = function(event){
                                     subTask.task_id = task.task_id;
                                     task.shadowRoot.querySelector('#subtask-box').append(subTask);
                                     subTask.isNew = false;
-
-
+                                    subTask.isSubtask = true;
+                                    subTaskInput.value = "● ";
                                     subTaskInput.addEventListener('change', ()=>{
                                         //update task here in backend
                                     });
