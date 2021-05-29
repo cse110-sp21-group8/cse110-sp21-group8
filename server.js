@@ -232,7 +232,7 @@ function createUser(data,res,req){
       }else{
         newUser.save(function (err, result) {
           if (err) return console.error(err);
-          req.session.uid = one[0].toString();
+          req.session.uid = result["_id"].toString();
           console.log("User signup successfully");
           res.send({ user_status: 200 });
           mongoose_db.close();
@@ -252,7 +252,7 @@ function verifyUser(data,res, req){
       if (err) return console.error(err);
       console.log(one);
       if(one.length>0){
-        req.session.uid = one[0].toString();
+        req.session.uid = one[0]["_id"].toString();
         res.send({ user_status: 200 });
       }else{
         res.send({ user_status: 404 });
