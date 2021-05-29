@@ -4,13 +4,20 @@ const app = express();
 const port = 8080;
 const path = require('path');
 
+//session
+var session = require('express-session')
+var cookieParser = require('cookie-parser');
+app.use(cookieParser());
+app.use(session({secret: "Shh, its a secret!"}));
+
+
 // dealth with fetch post json data.
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 //used to store the data.
-let currentUser;
+//req.session.uid
 
 /*
 //Upload picture
@@ -37,7 +44,7 @@ app.use('/image',express.static(path.join(__dirname, 'uploads')));
 
 //the home page
 app.get('/', function (req, res) {
-    if(currentUser){
+    if(req.session.uid){
       res.sendFile(path.join(__dirname, 'src/html/index.html'));
     }else{
       res.sendFile(path.join(__dirname, 'src/html/login.html'));
@@ -45,28 +52,28 @@ app.get('/', function (req, res) {
 });
 //daily log
 app.get('/daily', function (req, res) {
-  if(currentUser){
+  if(req.session.uid){
     res.sendFile(path.join(__dirname, 'src/html/daily.html'));
   }else{
      res.sendFile(path.join(__dirname, 'src/html/login.html'));
   }
 });
 app.get('/future', function (req, res) {
-  if(currentUser){
+  if(req.session.uid){
     res.sendFile(path.join(__dirname, 'src/html/future.html'));
   }else{
     res.sendFile(path.join(__dirname, 'src/html/login.html'));
   }
 });
 app.get('/monthly', function (req, res) {
-  if(currentUser){
+  if(req.session.uid){
     res.sendFile(path.join(__dirname, 'src/html/monthly.html'));
   }else{
     res.sendFile(path.join(__dirname, 'src/html/login.html'));
   }
 });
 app.get('/custom', function (req, res) {
-  if(currentUser){
+  if(req.session.uid){
     res.sendFile(path.join(__dirname, 'src/html/custom.html'));
   }else{
     res.sendFile(path.join(__dirname, 'src/html/login.html'));
@@ -98,46 +105,48 @@ app.get('/getImg', function (req, res) {
 
 //user login
 app.post('/user_login', function (req, res) {
+  console.log(req.session.uid);
   let data= req.body;//get the form data
   console.log('Got body:', data);
-  verifyUser(data, res);
+  verifyUser(data, res, req);
 })
 
 //user signup
 app.post('/user_signup', function (req, res) {
   let data= req.body;//get the form data
   console.log('Got body:', data);
-  createUser(data,res);
+  createUser(data,res,req);
 })
 
 
 //other request
 app.post('/getDailyTask', function (req, res) {
   let data= req.body;//get the form data
-   data["user"] = currentUser["_id"].toString();
+  console.log("uid:",req.session.uid);
+   data["user"] = req.session.uid;
    console.log('Got body:', data);
-   getDailyTask(data,res);
+   getDailyTask(data,res,req);
 })
 
 app.post('/getMonthlyTask', function (req, res) {
   let data= req.body;//get the form data
-  data["user"] = currentUser["_id"].toString();
+  data["user"] = req.session.uid;
   console.log('Got body:', data);
-  getMonthlyTask(data,res);
+  getMonthlyTask(data,res,req);
 })
 
 //get Custom tasks request
 app.post('/getCustomTask', function (req, res) {
   let data= req.body;//get the form data
    console.log('Got body:', data);
-   getCustomTask(data,res);
+   getCustomTask(data,res,req);
 })
 
 app.post('/getFutureTask', function (req, res) {
   let data= req.body;//get the form data
-   data["user"] = currentUser["_id"].toString();
+   data["user"] = req.session.uid;
    console.log('Got body:', data);
-   getDailyTask(data,res);
+   getDailyTask(data,res,req);
 })
 
 //adding task
@@ -145,7 +154,7 @@ app.post('/addTask', function (req, res) {
   let data= req.body;//get the form data
   console.log('Got body:', data);
   //insert data into the database:
-  addTask(data,res);
+  addTask(data,res,req);
 })
 
 //adding task
@@ -153,7 +162,7 @@ app.post('/updateTask', function (req, res) {
   let data= req.body;//get the form data
   console.log('Got body:', data);
   //insert data into the database:
-  UpdateTask(data,res);
+  UpdateTask(data,res,req);
 })
 
 //adding task
@@ -161,7 +170,7 @@ app.post('/deleteTask', function (req, res) {
   let data= req.body;//get the form data
   console.log('Got body:', data);
   //insert data into the database:
-  DeleteTask(data,res);
+  DeleteTask(data,res,req);
 })
 
 //adding Custom task
@@ -169,7 +178,7 @@ app.post('/addCustomTask', function (req, res) {
   let data= req.body;//get the form data
   console.log('Got body:', data);
   //insert data into the database:
-  addCustomTask(data,res);
+  addCustomTask(data,res,req);
 })
 
 //adding Custom task
@@ -177,7 +186,7 @@ app.post('/UpdateCustomTask', function (req, res) {
   let data= req.body;//get the form data
   console.log('Got body:', data);
   //insert data into the database:
-  UpdateCustomTask(data,res);
+  UpdateCustomTask(data,res,req);
 })
 
 //deleting Custom task
@@ -185,7 +194,7 @@ app.post('/DeleteCustomTask', function (req, res) {
   let data= req.body;//get the form data
   console.log('Got body:', data);
   //insert data into the database:
-  DeleteCustomTask(data,res);
+  DeleteCustomTask(data,res,req);
 })
 
 
@@ -203,7 +212,7 @@ let UserSchema = new mongoose.Schema({
 let User = mongoose.model('User', UserSchema);
 //user signup
 //assumpt that the database has the collections of User to store user information
-function createUser(data,res){
+function createUser(data,res,req){
   //Remote Cloud Database address:
   //Url:mongodb+srv://CSE110:CSE110@cluster0.1sq34.mongodb.net/cse110_group8?retryWrites=true&w=majority
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -223,7 +232,7 @@ function createUser(data,res){
       }else{
         newUser.save(function (err, result) {
           if (err) return console.error(err);
-          currentUser = newUser;
+          req.session.uid = one[0].toString();
           console.log("User signup successfully");
           res.send({ user_status: 200 });
           mongoose_db.close();
@@ -233,7 +242,7 @@ function createUser(data,res){
   });
 }
 
-function verifyUser(data,res){
+function verifyUser(data,res, req){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -243,7 +252,7 @@ function verifyUser(data,res){
       if (err) return console.error(err);
       console.log(one);
       if(one.length>0){
-        currentUser = one[0];
+        req.session.uid = one[0].toString();
         res.send({ user_status: 200 });
       }else{
         res.send({ user_status: 404 });
@@ -263,14 +272,14 @@ let TaskSchema = new mongoose.Schema({
 });
 let Task = mongoose.model('Task', TaskSchema);
 
-function addTask(data,res){
+function addTask(data,res,req){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
     // insert new task into the database
     //add the user id into the data
-    data["user"] = currentUser["_id"].toString();
+    data["user"] = req.session.uid;
     console.log(data);
     let newTask = new Task(data);
     newTask.save(function (err, result) {
@@ -284,7 +293,7 @@ function addTask(data,res){
 
 //data formate: {old:old_data,new:new_data}
 //Call the UpdateCustomTask functions to update the tasks list
-function UpdateTask(data,res){
+function UpdateTask(data,res,req){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -294,7 +303,7 @@ function UpdateTask(data,res){
     let old_data = data["old"];
     let new_data = data["new"];
 
-    old_data["user"] = currentUser["_id"].toString();
+    old_data["user"] = req.session.uid;
 
     Task.updateOne(old_data,new_data,function (err, result) {
       if (err) return console.error(err);
@@ -306,14 +315,14 @@ function UpdateTask(data,res){
 }
 
 //Call the DeleteTask functions to delete the tasks list
-function DeleteTask(data,res){
+function DeleteTask(data,res,req){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
     // insert new task into the database
     //add the user id into the data
-    data["user"] = currentUser["_id"].toString();
+    data["user"] =req.session.uid;
     Task.deleteOne(data, function (err, result) {
       if (err) return console.error(err);
       console.log("Tasks list deleted successfully");
@@ -326,7 +335,7 @@ function DeleteTask(data,res){
 //get tasks:
 //data: specify which date is it:
 //for example: {date: 'Sun May 16 2021' }
-function getDailyTask(data,res){
+function getDailyTask(data,res,req){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -345,7 +354,7 @@ function getDailyTask(data,res){
   });
 }
 
-function getMonthlyTask(data,res){
+function getMonthlyTask(data,res,req){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -364,7 +373,7 @@ function getMonthlyTask(data,res){
   });
 }
 
-function getFutureTask(data,res){
+function getFutureTask(data,res,req){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -397,14 +406,14 @@ let CustomSchema = new mongoose.Schema({
 let Custom = mongoose.model('Custom', CustomSchema);
 
 //Call the addCustomTask functions to add the custom logs
-function addCustomTask(data,res){
+function addCustomTask(data,res,req){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
     // insert new task into the database
     //add the user id into the data
-    data["user"] = currentUser["_id"];
+    data["user"] = req.session.uid;
     let newCustom = new Custom(data);
     newCustom.save(function (err, result) {
       if (err) return console.error(err);
@@ -416,14 +425,14 @@ function addCustomTask(data,res){
 }
 
 //Call the delete CustomTask functions to delete the custom logs
-function DeleteCustomTask(data,res){
+function DeleteCustomTask(data,res,req){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
     // insert new task into the database
     //add the user id into the data
-    data["user"] = currentUser["_id"];
+    data["user"] = req.session.uid;
     Custom.deleteOne(data, function (err, result) {
       if (err) return console.error(err);
       console.log("Custom Log deleted successfully");
@@ -434,7 +443,7 @@ function DeleteCustomTask(data,res){
 }
 
 //Call the UpdateCustomTask functions to update the custom logs
-function UpdateCustomTask(data,res){
+function UpdateCustomTask(data,res,req){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -443,7 +452,7 @@ function UpdateCustomTask(data,res){
     //add the user id into the data
     let old_data = data["old"];
     let new_data = data["new"];
-    old_data["user"] = currentUser["_id"];
+    old_data["user"] = req.session.uid;
 
     Custom.updateOne(old_data,new_data,function (err, result) {
       if (err) return console.error(err);
@@ -457,13 +466,13 @@ function UpdateCustomTask(data,res){
 //get tasks:
 //data: specify which date is it:
 //for example: {date: 'Sun May 16 2021' }
-function getCustomTask(data,res){
+function getCustomTask(data,res,req){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
     // insert the ner user or user signup
-    data["user"] = currentUser["_id"];
+    data["user"] = req.session.uid;
     Custom.find(data, function (err, result) {
       if (err) return console.error(err);
       console.log(result);
@@ -493,7 +502,7 @@ let SubTask = mongoose.model('SubTask', SubTaskSchema);
 //get Subtask
 app.post('/getSubTask', function (req, res) {
     let data= req.body;//get the form data
-    data["user"] = currentUser["_id"].toString();
+    data["user"] = req.session.uid;
     console.log('Got Sub task body:', data);
    getSubTask(data,res);
 })
@@ -501,10 +510,10 @@ app.post('/getSubTask', function (req, res) {
 //adding Subtask
 app.post('/addSubTask', function (req, res) {
   let data= req.body;//get the form data
-  data["user"] = currentUser["_id"].toString();
+  data["user"] = req.session.uid;
   console.log('Got Sub task body:', data);
   //insert data into the database:
-  addSubTask(data,res);
+  addSubTask(data,res,req);
 })
 
 //update Subtask
@@ -512,20 +521,20 @@ app.post('/updateSubTask', function (req, res) {
   let data= req.body;//get the form data
   console.log('Got Sub task body:', data);
   //insert data into the database:
-  UpdateSubTask(data,res);
+  UpdateSubTask(data,res,req);
 })
 
 //delete Subtask
 app.post('/deleteSubTask', function (req, res) {
   let data= req.body;//get the form data
-  data["user"] = currentUser["_id"].toString();
+  data["user"] = req.session.uid;
   console.log('Got Sub task body:', data);
   //insert data into the database:
-  DeleteSubTask(data,res);
+  DeleteSubTask(data,res,req);
 })
 
 
-function addSubTask(data,res){
+function addSubTask(data,res,req){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -546,7 +555,7 @@ function addSubTask(data,res){
 //get tasks:
 //data: specify which date is it:
 //for example: {date: 'Sun May 16 2021' }
-function getSubTask(data,res){
+function getSubTask(data,res,req){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -569,7 +578,7 @@ function getSubTask(data,res){
 
 //data formate: {old:old_data,new:new_data}
 //Call the UpdateSubTask functions to update the sub tasks list
-function UpdateSubTask(data,res){
+function UpdateSubTask(data,res,req){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -579,7 +588,7 @@ function UpdateSubTask(data,res){
     let old_data = data["old"];
     let new_data = data["new"];
 
-    old_data["user"] = currentUser["_id"].toString();
+    old_data["user"] = req.session.uid;
 
     SubTask.updateOne(old_data,new_data,function (err, result) {
       if (err) return console.error(err);
@@ -592,7 +601,7 @@ function UpdateSubTask(data,res){
 
 
 //Call the DeleteTask functions to delete the tasks list
-function DeleteSubTask(data,res){
+function DeleteSubTask(data,res,req){
   mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -609,4 +618,4 @@ function DeleteSubTask(data,res){
 }
 
 //export the module function for testing
-module.exports = {app:app,currentUser:currentUser};
+module.exports = {app:app};

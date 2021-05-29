@@ -56,6 +56,7 @@ document.addEventListener('keydown', function(e){
             subTask.className = 'subtask';
             subTask.task_id = task.task_id;
             subTask.isNew = true;
+            subTask.isSubtask = true;
             
             task.shadowRoot.querySelector('#subtask-box').append(subTask);
             subTask.shadowRoot.querySelector('#tasks').focus();
@@ -70,7 +71,8 @@ document.addEventListener('keydown', function(e){
                 } else {
                     input.value = "⚬ ";
                 }
-            })
+            });
+            input.value = "● ";
 
 
             subTask.addEventListener('focusout', (event)=> {
@@ -191,7 +193,7 @@ addButton.addEventListener('click', ()=> {
     //elements of task 
     let taskInput = task.shadowRoot.querySelector('#tasks');
     let selection = task.shadowRoot.querySelector('#checklist-select');
-
+    taskInput.value = "● ";
 
     selection.addEventListener('change', () => {
         if(selection.value == "Task"){
@@ -520,6 +522,8 @@ window.onload = function(event){
                                     let subDelete = subTask.shadowRoot.querySelector("#delete");
 
 
+                                    subTask.isSubtask = true;
+                                    subTaskInput.value = "● ";
                                     subTaskInput.addEventListener('change', ()=>{
                                         let oldData = subTemp;
                                         newData = {status:"daily",type:"task", content:content,date:date.toDateString(), task_id: subTask.task_id };
