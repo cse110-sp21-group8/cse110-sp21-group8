@@ -2,6 +2,115 @@ let form = document.querySelector('form');
 let text_box = document.querySelector('#text-box1');
  
 document.addEventListener('DOMContentLoaded', () => {
+
+    document.addEventListener('keydown', function(e){
+        if(e.key == 'Tab'){
+            e.preventDefault();
+            console.log("tab key pressed");
+            console.log(document.activeElement.nodeName);
+            if(document.activeElement.nodeName == "TASK-LIST"){
+                console.log('tasklist selected and pressed tab');
+                let task = document.activeElement;
+                let subTask = document.createElement('task-list');
+                subTask.className = 'subtask';
+                subTask.task_id = task.task_id;
+                subTask.isNew = true;
+                subTask.isSubtask = true;
+                
+                task.shadowRoot.querySelector('#subtask-box').append(subTask);
+                subTask.shadowRoot.querySelector('#tasks').focus();
+                let selection = subTask.shadowRoot.querySelector('#checklist-select');
+                let input = subTask.shadowRoot.querySelector('#tasks');
+    
+                selection.addEventListener('change', () => {
+                    if(selection.value == "Task"){
+                        input.value = "● ";
+                    } else if (selection.value == "Note"){
+                        input.value = "- ";
+                    } else {
+                        input.value = "⚬ ";
+                    }
+                });
+                input.value = "● ";
+    
+    
+                subTask.addEventListener('focusout', (event)=> {
+                    if(subTask.isNew) {
+                        let content = subTask.shadowRoot.querySelector('#tasks').value;
+                        data = {status:"future",type:"task", content:content,date:date.toDateString(), task_id: task.task_id };
+                        fetch('/addSubTask', {  
+                            method: 'POST',
+                            headers: {
+                            "Content-Type": "application/json"
+                            }, 
+                            body: JSON.stringify(data)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if(data["status"]==200){
+                                    let newTask = data["task"];
+                                }else{
+                                // alert("Task didn't added");
+                                }
+                            })
+                            .catch((error) => {
+                            console.error('Error:', error);
+                        });
+                        subTask.isNew = false;
+                    } else { 
+                        let content = subTask.shadowRoot.querySelector('#tasks').value;
+                        let oldData = data;
+                        newData = {status:"future",type:"task", content:content,date:date.toDateString(), task_id: task.task_id };
+                        send_data = {old:oldData, new:newData}; 
+                        fetch('/updateSubTask', {  
+                            method: 'POST',
+                            headers: {
+                              "Content-Type": "application/json"
+                            }, 
+                            body: JSON.stringify(send_data)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if(data["status"]==200){
+                                    let newTask = data["task"];
+                                }else{
+                                   // alert("Task didn't added");
+                                }
+                            })
+                            .catch((error) => {
+                            console.error('Error:', error);
+                        });
+    
+                    }
+                })
+    
+                let del = subTask.shadowRoot.querySelector('#delete');
+                del.addEventListener('click',()=> { 
+                    delete_data = data;
+                    fetch('/deleteSubTask', {  
+                        method: 'POST',
+                        headers: {
+                          "Content-Type": "application/json"
+                        }, 
+                        body: JSON.stringify(delete_data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data["status"]==200){
+                                let newTask = data["task"];
+                            }else{
+                                //alert("Task didn't added");
+                            }
+                        })
+                        .catch((error) => {
+                        console.error('Error:', error);
+                    });   
+                })
+                
+            }
+        } 
+       // if(document.activeElement)
+    });
     
   var i; 
   for(i = 1; i<7; i++){
@@ -185,7 +294,90 @@ window.onload = function(event){
                         task.remove();
                     });
 
-                    
+                    fetch('/getSubTask', {  
+                        method: 'POST',
+                        headers: {
+                          "Content-Type": "application/json"
+                        }, 
+                        body: JSON.stringify({task_id: task.task_id})
+                        })
+                        .then(response => response.json())
+                        .then(subdata => {
+                            if(subdata["status"]==200){
+                                console.log(subdata);
+                                let subtasks = subdata["task"];
+                                subtasks.forEach((subTemp) => {
+                                    let subTask = document.createElement('task-list');
+                                    let subTaskInput = subTask.shadowRoot.querySelector('#tasks');
+                                    let subTaskForm = subTask.shadowRoot.querySelector('#form');
+                                    subTask.className = 'subtask';
+                                    subTaskInput.value = subTemp.content;
+                                    subTask.task_id = task.task_id;
+                                    task.shadowRoot.querySelector('#subtask-box').append(subTask);
+                                    subTask.isNew = false;
+                                    let subDelete = subTask.shadowRoot.querySelector("#delete");
+
+
+                                    subTask.isSubtask = true;
+                                    //subTaskInput.value = "● ";
+                                    subTaskInput.addEventListener('change', ()=>{
+                                        let oldData = subTemp;
+                                        newData = {status:"future",type:"task", content:content,date:date.toDateString(), task_id: subTask.task_id };
+                                        send_data = {old:oldData, new:newData}; 
+                                        fetch('/updateSubTask', {  
+                                            method: 'POST',
+                                            headers: {
+                                              "Content-Type": "application/json"
+                                            }, 
+                                            body: JSON.stringify(send_data)
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if(data["status"]==200){
+                                                    let newTask = data["task"];
+                                                }else{
+                                                   // alert("Task didn't added");
+                                                }
+                                            })
+                                            .catch((error) => {
+                                            console.error('Error:', error);
+                                        });
+                                    });
+                        
+                                    subTaskForm.addEventListener('submit', (event) => {
+                                        event.preventDefault();
+                                        //update task gere in backend
+                                        document.activeElement.blur();                     
+                                    })
+
+                                    subDelete.addEventListener('click',() => {
+                                        delete_data = subTemp;
+                                        fetch('/deleteSubTask', {  
+                                            method: 'POST',
+                                            headers: {
+                                              "Content-Type": "application/json"
+                                            }, 
+                                            body: JSON.stringify(delete_data)
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if(data["status"]==200){
+                                                    let newTask = data["task"];
+                                                }else{
+                                                    //alert("Task didn't added");
+                                                }
+                                            })
+                                            .catch((error) => {
+                                            console.error('Error:', error);
+                                        });
+
+                                        subTask.remove();
+
+                                    })
+                                    
+                                })
+                            }
+                        })
                 });
 
             }else{
