@@ -490,6 +490,8 @@ window.onload = function(event){
                         });
 
                         task.remove();
+
+                        // need to delete all of the subtasks from the database
                     });
 
 
@@ -515,10 +517,31 @@ window.onload = function(event){
                                     subTask.task_id = task.task_id;
                                     task.shadowRoot.querySelector('#subtask-box').append(subTask);
                                     subTask.isNew = false;
+                                    let subDelete = subTask.shadowRoot.querySelector("#delete");
 
 
                                     subTaskInput.addEventListener('change', ()=>{
-                                        //update task here in backend
+                                        let oldData = subTemp;
+                                        newData = {status:"daily",type:"task", content:content,date:date.toDateString(), task_id: subTask.task_id };
+                                        send_data = {old:oldData, new:newData}; 
+                                        fetch('/updateSubTask', {  
+                                            method: 'POST',
+                                            headers: {
+                                              "Content-Type": "application/json"
+                                            }, 
+                                            body: JSON.stringify(send_data)
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if(data["status"]==200){
+                                                    let newTask = data["task"];
+                                                }else{
+                                                   // alert("Task didn't added");
+                                                }
+                                            })
+                                            .catch((error) => {
+                                            console.error('Error:', error);
+                                        });
                                     });
                         
                                     subTaskForm.addEventListener('submit', (event) => {
@@ -526,6 +549,32 @@ window.onload = function(event){
                                         //update task gere in backend
                                         document.activeElement.blur();                     
                                     })
+
+                                    subDelete.addEventListener('click',() => {
+                                        delete_data = subTemp;
+                                        fetch('/deleteSubTask', {  
+                                            method: 'POST',
+                                            headers: {
+                                              "Content-Type": "application/json"
+                                            }, 
+                                            body: JSON.stringify(delete_data)
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if(data["status"]==200){
+                                                    let newTask = data["task"];
+                                                }else{
+                                                    //alert("Task didn't added");
+                                                }
+                                            })
+                                            .catch((error) => {
+                                            console.error('Error:', error);
+                                        });
+
+                                        subTask.remove();
+
+                                    })
+                                    
                                 })
                             }
                         })
