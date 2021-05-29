@@ -2,7 +2,7 @@ let form = document.querySelector('form');
 let text_box = document.querySelector('#text-box1');
  
 document.addEventListener('DOMContentLoaded', () => {
-
+    
   var i; 
   for(i = 1; i<7; i++){
       var j; 
@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             .then(data => {
                                 if(data["status"]==200){
                                     let newTask = data["task"];
+                                    task.task_id = data.task._id;
                                 }else{
                                     alert("Task didn't added");
                                 }
@@ -126,7 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
       }
-  }})
+    }
+})
 
   //load Task:
 window.onload = function(event){
@@ -192,5 +194,5 @@ window.onload = function(event){
         })
         .catch((error) => {
         console.error('Error:', error);
-        });
+    });
 }

@@ -30,6 +30,9 @@ class TaskList extends HTMLElement {
           <input type="text" id="tasks" size="100" placeholder="Click to add tasks!"><br>
         </form>
       </div>
+      <div class="break"></div> 
+      <div id="subtask-box">
+      </div>
     </div>
     `;
     this.attachShadow({ mode: 'open' });
@@ -37,5 +40,11 @@ class TaskList extends HTMLElement {
   }
 
   isNew = true; 
+  task_id = '';
+
+  /*set isSubtask(value){
+    this.shadowRoot.querySelector('#tag-select').style.display = 'none';
+    console.log(this.shadowRoot.querySelector('#tag-select'));
+  }*/
 }
 customElements.define('task-list', TaskList);

@@ -494,6 +494,7 @@ window.onload = function(event){
                         task.remove();
 
                         // need to delete all of the subtasks from the database
+                        // get subtask based on idea, for each subtask delete from database
                     });
 
 
@@ -582,7 +583,7 @@ window.onload = function(event){
                                 })
                             }
                         })
-                });
+                    });
 
             }else{
                 //alert("Task didn't added");

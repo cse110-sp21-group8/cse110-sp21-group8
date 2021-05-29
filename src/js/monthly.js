@@ -3,6 +3,111 @@
 let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
 
+document.addEventListener('keydown', function(e){
+    if(e.key == 'Tab'){
+        e.preventDefault();
+        console.log(document.activeElement.nodeName);
+        if(document.activeElement.nodeName == "TASK-LIST"){
+            let task = document.activeElement;
+            let subTask = document.createElement('task-list');
+            subTask.className = 'subtask';
+            subTask.task_id = task.task_id;
+            subTask.isNew = true;
+            subTask.isSubtask = true;
+
+            task.shadowRoot.querySelector('#subtask-box').append(subTask);
+            subTask.shadowRoot.querySelector('#tasks').focus();
+            let selection = subTask.shadowRoot.querySelector('#checklist-select');
+            let input = subTask.shadowRoot.querySelector('#tasks');
+
+            selection.addEventListener('change', () => {
+                if(selection.value == "Task"){
+                    input.value = "● ";
+                } else if (selection.value == "Note"){
+                    input.value = "- ";
+                } else {
+                    input.value = "⚬ ";
+                }
+            });
+            input.value = "● ";
+
+            subTask.addEventListener('focusout', (event)=> {
+                if(subTask.isNew) {
+                    let content = subTask.shadowRoot.querySelector('#tasks').value;
+                    data = {status:"monthly",type:"goal", content:content,date:date.toDateString(), task_id: task.task_id };
+                    fetch('/addSubTask', {  
+                        method: 'POST',
+                        headers: {
+                        "Content-Type": "application/json"
+                        }, 
+                        body: JSON.stringify(data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data["status"]==200){
+                                let newTask = data["task"];
+                            }else{
+                            // alert("Task didn't added");
+                            }
+                        })
+                        .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                    subTask.isNew = false;
+                } else { 
+                    let content = subTask.shadowRoot.querySelector('#tasks').value;
+                    let oldData = data;
+                    newData = {status:"monthly",type:"goal", content:content,date:date.getMonth(), task_id: task.task_id };
+                    send_data = {old:oldData, new:newData}; 
+                    fetch('/updateSubTask', {  
+                        method: 'POST',
+                        headers: {
+                          "Content-Type": "application/json"
+                        }, 
+                        body: JSON.stringify(send_data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data["status"]==200){
+                                let newTask = data["task"];
+                            }else{
+                               // alert("Task didn't added");
+                            }
+                        })
+                        .catch((error) => {
+                        console.error('Error:', error);
+                    });
+
+                }
+            })
+
+            let del = subTask.shadowRoot.querySelector('#delete');
+            del.addEventListener('click',()=> { 
+                delete_data = data;
+                fetch('/deleteSubTask', {  
+                    method: 'POST',
+                    headers: {
+                      "Content-Type": "application/json"
+                    }, 
+                    body: JSON.stringify(delete_data)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data["status"]==200){
+                            let newTask = data["task"];
+                        }else{
+                            //alert("Task didn't added");
+                        }
+                    })
+                    .catch((error) => {
+                    console.error('Error:', error);
+                });   
+            })
+            
+
+        }
+    }
+})
 
 var i;
 for(i = 1; i < 5; i++){
@@ -141,7 +246,6 @@ addButton.addEventListener('click', ()=> {
             console.log(content);
             //type: task, events, reminders.
             data = {status:"monthly", type:"goal", content:content, date:date.getMonth()};
-            console.log(date.getMonth());
             fetch('/addTask', {  
                 method: 'POST',
                 headers: {
@@ -151,6 +255,7 @@ addButton.addEventListener('click', ()=> {
                 })
                 .then(response => response.json())
                 .then(data => {
+                    task.task_id = data.task._id;
                     if(data["status"]==200){
                         let newTask = data["task"];
                     }else{
@@ -210,6 +315,7 @@ addButton.addEventListener('click', ()=> {
                 })
                 .then(response => response.json())
                 .then(data => {
+                    task.task_id = data.task._id;
                     if(data["status"]==200){
                         let newTask = data["task"];
                     }else{
@@ -278,8 +384,10 @@ window.onload = function() {
                         let taskForm = task.shadowRoot.querySelector('#form');     
                         taskInput.value = tmp["content"];
                         task.isNew = false;
+                        text_box.append(task);
                         let selection = task.shadowRoot.querySelector('#checklist-select');
-                        console.log(taskInput); 
+                        task.task_id = tmp._id; 
+
                     
                         selection.addEventListener('change', () => {
                             if(selection.value == "Task"){
@@ -324,6 +432,7 @@ window.onload = function() {
                             //update task code here
                             document.activeElement.blur();
                         })
+
                         let deleteButton = task.shadowRoot.querySelector('#delete');
                         deleteButton.addEventListener('click', () => {
                             let index = Array.prototype.indexOf.call(text_box.children, task);
@@ -347,8 +456,96 @@ window.onload = function() {
                                 console.error('Error:', error);
                             });
                             task.remove();
+                            //need to delete the subtasks from database
                         });
-                        text_box.appendChild(task);
+
+                        let id_data = {task_id: task.task_id};
+                        fetch('/getSubTask', {  
+                            method: 'POST',
+                            headers: {
+                              "Content-Type": "application/json"
+                            }, 
+                            body: JSON.stringify(id_data)
+                        })
+                        .then(response => response.json())
+                        .then(subdata => {
+                            if(subdata["status"]==200){
+                                console.log(subdata);
+                                let subtasks = subdata["task"];
+                                subtasks.forEach((subTemp) => {
+                                    let subTask = document.createElement('task-list');
+                                    let subTaskInput = subTask.shadowRoot.querySelector('#tasks');
+                                    let subTaskForm = subTask.shadowRoot.querySelector('#form');
+                                    subTask.className = 'subtask';
+                                    subTaskInput.value = subTemp.content;
+                                    subTask.task_id = task.task_id;
+                                    task.shadowRoot.querySelector('#subtask-box').append(subTask);
+                                    subTask.isNew = false;
+                                    let subDelete = subTask.shadowRoot.querySelector("#delete");
+                                    
+
+                                    subTask.isSubtask = true;
+                                    //subTaskInput.value = "● ";
+                                    subTaskInput.addEventListener('change', ()=>{
+                                        let oldData = subTemp;
+                                        newData = {status:"monthly",type:"goal", content:subTaskInput.value,date:date.toDateString(), task_id: subTask.task_id };
+                                        send_data = {old:oldData, new:newData}; 
+                                        fetch('/updateSubTask', {  
+                                            method: 'POST',
+                                            headers: {
+                                              "Content-Type": "application/json"
+                                            }, 
+                                            body: JSON.stringify(send_data)
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if(data["status"]==200){
+                                                    let newTask = data["task"];
+                                                }else{
+                                                   // alert("Task didn't added");
+                                                }
+                                            })
+                                            .catch((error) => {
+                                            console.error('Error:', error);
+                                        });
+                                    });
+                        
+                                    subTaskForm.addEventListener('submit', (event) => {
+                                        event.preventDefault();
+                                        //update task gere in backend
+                                        document.activeElement.blur();                     
+                                    })
+
+                                    subDelete.addEventListener('click',() => {
+                                        delete_data = subTemp;
+                                        fetch('/deleteSubTask', {  
+                                            method: 'POST',
+                                            headers: {
+                                              "Content-Type": "application/json"
+                                            }, 
+                                            body: JSON.stringify(delete_data)
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if(data["status"]==200){
+                                                    let newTask = data["task"];
+                                                }else{
+                                                    //alert("Task didn't added");
+                                                }
+                                            })
+                                            .catch((error) => {
+                                            console.error('Error:', error);
+                                        });
+
+                                        subTask.remove();
+
+                                    })
+                                    
+                                })
+                            }
+                        })
+     
+                        
                     } else { 
                         let note = document.createElement('input');
                         note.type =  "text"; 
@@ -411,6 +608,8 @@ window.onload = function() {
 
 
                     }
+
+                    
                 });
                 
             }else{
