@@ -16,6 +16,13 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+// MONGODB URI
+  //Local Url: mongodb://localhost/cse110
+  //Remote Jinhao Url: mongodb+srv://CSE110:CSE110@cluster0.1sq34.mongodb.net/cse110_group8?retryWrites=true&w=majority
+  //Remote Bao Url: mongodb+srv://flatearthBujo:cse110-sp21-group8@8bujo.4m4yq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority,
+const MONGODB_URI =
+  'mongodb+srv://flatearthBujo:cse110-sp21-group8@8bujo.4m4yq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+
 //used to store the data.
 //req.session.uid
 
@@ -213,9 +220,10 @@ let User = mongoose.model('User', UserSchema);
 //user signup
 //assumpt that the database has the collections of User to store user information
 function createUser(data,res,req){
-  //Remote Cloud Database address:
-  //Url:mongodb+srv://CSE110:CSE110@cluster0.1sq34.mongodb.net/cse110_group8?retryWrites=true&w=majority
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -243,7 +251,7 @@ function createUser(data,res,req){
 }
 
 function verifyUser(data,res, req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -273,7 +281,7 @@ let TaskSchema = new mongoose.Schema({
 let Task = mongoose.model('Task', TaskSchema);
 
 function addTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -294,7 +302,7 @@ function addTask(data,res,req){
 //data formate: {old:old_data,new:new_data}
 //Call the UpdateCustomTask functions to update the tasks list
 function UpdateTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -316,7 +324,7 @@ function UpdateTask(data,res,req){
 
 //Call the DeleteTask functions to delete the tasks list
 function DeleteTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -336,7 +344,7 @@ function DeleteTask(data,res,req){
 //data: specify which date is it:
 //for example: {date: 'Sun May 16 2021' }
 function getDailyTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -355,7 +363,7 @@ function getDailyTask(data,res,req){
 }
 
 function getMonthlyTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -374,7 +382,7 @@ function getMonthlyTask(data,res,req){
 }
 
 function getFutureTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -407,7 +415,7 @@ let Custom = mongoose.model('Custom', CustomSchema);
 
 //Call the addCustomTask functions to add the custom logs
 function addCustomTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -426,7 +434,7 @@ function addCustomTask(data,res,req){
 
 //Call the delete CustomTask functions to delete the custom logs
 function DeleteCustomTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -444,7 +452,7 @@ function DeleteCustomTask(data,res,req){
 
 //Call the UpdateCustomTask functions to update the custom logs
 function UpdateCustomTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -467,7 +475,7 @@ function UpdateCustomTask(data,res,req){
 //data: specify which date is it:
 //for example: {date: 'Sun May 16 2021' }
 function getCustomTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -535,7 +543,7 @@ app.post('/deleteSubTask', function (req, res) {
 
 
 function addSubTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -556,7 +564,7 @@ function addSubTask(data,res,req){
 //data: specify which date is it:
 //for example: {date: 'Sun May 16 2021' }
 function getSubTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -579,7 +587,7 @@ function getSubTask(data,res,req){
 //data formate: {old:old_data,new:new_data}
 //Call the UpdateSubTask functions to update the sub tasks list
 function UpdateSubTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -602,7 +610,7 @@ function UpdateSubTask(data,res,req){
 
 //Call the DeleteTask functions to delete the tasks list
 function DeleteSubTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
