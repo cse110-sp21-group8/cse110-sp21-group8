@@ -2,7 +2,7 @@
   "name": "cse110-sp21-group8",
   "version": "1.0.0",
   "description": "Bullet Journal for the Flat Earthers",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "test": "jest --detectOpenHandles --coverage",

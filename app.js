@@ -1,9 +1,9 @@
 const server = require('./server.js');
 let app = server["app"];
-const port = 8080;
+const PORT = process.env.PORT || 8080;
 
 //listening to the port to let the server start up
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+app.listen(PORT, () => {
+    console.log(`App listening on ${PORT}`)
 })
   
