@@ -331,6 +331,7 @@ describe('Test: delete tasks', () => {
       done();
     });
   });
+
   test('User delete their own custom task', done =>{
     //send the request
     sendData = {sections:"Daily",title:"custome test 2",color:"Blue",tags:"important",date:new Date().toDateString(),content:"test content"};
@@ -344,3 +345,28 @@ describe('Test: delete tasks', () => {
   })
 })
 
+describe('Test: Custom Tags', () => {
+  test('User create custom tags', done =>{
+      //send the request
+      let sendData={name:"love"};
+      request(app)
+      .post("/addCustomTag").send(sendData)
+      .set('Accept', 'application/json')
+      .then(response => {
+        expect(response.body.user_status).toEqual(200);
+        done();
+      });
+  });
+
+  test('User get their custom tags', done =>{
+    //send the request
+    let sendData={};
+    request(app)
+    .post("/addCustomTag").send(sendData)
+    .set('Accept', 'application/json')
+    .then(response => {
+      expect(response.body.user_status).toEqual(200);
+      done();
+    });
+});
+});
