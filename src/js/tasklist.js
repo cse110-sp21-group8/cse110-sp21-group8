@@ -94,6 +94,7 @@ class TaskList extends HTMLElement {
 
   isNew = true; 
   task_id = '';
+  task_tag = '';
 
   set isSubtask(value){
     this.shadowRoot.querySelector('#tag-select').style.display = 'none';

@@ -9,7 +9,7 @@ class CustomTag extends HTMLElement {
     <div> 
       <form id="custom-form">
         <button id="submit"> Submit </button>
-        <button id="delete"></button>
+        <button id="delete"> Delete </button>
         <input type="text" id="custom-tags" placeholder="Click to add your own tags!"><br>
       </form>
     </div>

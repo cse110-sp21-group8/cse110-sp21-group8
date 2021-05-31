@@ -23,14 +23,11 @@ addTagButton.addEventListener('click', ()=>{
     event.preventDefault();
     newTag = true;
     customTag.id = customInput.value;
-    console.log(customTag.id);
     let tagList = document.getElementById('text-box').childNodes;
     
     for(let i = 1; i < tagList.length; i++){
       newTag = false;
-      console.log(i);
       let choices = new Option(`${customTag.id}`, `${customTag.id}`);
-      console.log(choices);
       if(tagList[i].nodeName == "TASK-LIST"){
         tagList[i].shadowRoot.getElementById('tag-select').add(choices);
       }
@@ -41,6 +38,47 @@ addTagButton.addEventListener('click', ()=>{
     event.preventDefault();
   });
 });
+
+let selectedTask;
+//let selectOpt = task.shadowRoot.querySelector(".tag-select");
+document.addEventListener('click', (event) => {
+  selectedTask = event.path[0];
+  selectedTask.addEventListener('focusout', () => {
+    if(selectedTask.id == "tag-select"){
+      console.log("hola");
+      let tagType = selectedTask.value;
+      selectedTask.task_tag = tagType;
+      
+      let data;
+      let oldData = data;
+      let content = selectedTask.parentElement.querySelector('#tasks').value;
+      let date = new Date();
+      data = {status:"daily",type:"task", content:content,date:date.toDateString(), tag:selectedTask.task_tag};
+      let newData = data;
+      send_data = {old:oldData, new:newData}; 
+      console.log(newData);
+      fetch('/updateTask', {  
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          }, 
+          body: JSON.stringify(send_data)
+          })
+          .then(response => response.json())
+          .then(data => {
+              if(data["status"]==200){
+                  let newTask = data["task"];
+              }else{
+                  // alert("Task didn't added");
+              }
+          })
+          .catch((error) => {
+          console.error('Error:', error);
+      });
+    }
+  })
+});
+
 /* */
 
 
@@ -205,6 +243,7 @@ addButton.addEventListener('click', ()=> {
         }
     })
 
+
     taskInput.addEventListener('focusout', (event)=> {
         if(task.isNew){
             console.log('focus out');
@@ -266,6 +305,7 @@ addButton.addEventListener('click', ()=> {
             });
 
         }
+
     });
 
     let taskForm = task.shadowRoot.querySelector('#form');
