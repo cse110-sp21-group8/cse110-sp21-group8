@@ -10,6 +10,9 @@ var cookieParser = require('cookie-parser');
 app.use(cookieParser());
 app.use(session({secret: "Shh, its a secret!"}));
 
+//MD5 Encoding
+var Hashes = require('jshashes')
+var MD5 = new Hashes.MD5
 
 // dealth with fetch post json data.
 var bodyParser = require('body-parser');
@@ -105,17 +108,16 @@ app.get('/getImg', function (req, res) {
 
 //user login
 app.post('/user_login', function (req, res) {
-  console.log(req.session.uid);
   let data= req.body;//get the form data
-  console.log('Got body:', data);
-  verifyUser(data, res, req);
+  let encodeData = {username:MD5.hex(data["username"]),password:MD5.hex(data["password"])}
+  verifyUser(encodeData, res, req);
 })
 
 //user signup
 app.post('/user_signup', function (req, res) {
   let data= req.body;//get the form data
-  console.log('Got body:', data);
-  createUser(data,res,req);
+  let encodeData = {name:data["name"],username:MD5.hex(data["username"]),password:MD5.hex(data["password"])}
+  createUser(encodeData,res,req);
 })
 
 
@@ -160,7 +162,7 @@ app.post('/addTask', function (req, res) {
 //adding task
 app.post('/updateTask', function (req, res) {
   let data= req.body;//get the form data
-  console.log('Got body:', data);
+  console.log('Got body update:', data);
   //insert data into the database:
   UpdateTask(data,res,req);
 })
@@ -204,6 +206,8 @@ app.post('/DeleteCustomTask', function (req, res) {
 //mongoose test
 //reference: https://mongoosejs.com/docs/index.html
 let mongoose = require('mongoose');
+const { kStringMaxLength } = require('buffer');
+const { encode } = require('punycode');
 let UserSchema = new mongoose.Schema({
   username: String,
   password: String,
@@ -616,6 +620,76 @@ function DeleteSubTask(data,res,req){
     });
   });
 }
+
+
+//##############################################################################
+//Tags:
+
+let CustomTagSchema = new mongoose.Schema({
+  name: String,
+  user: String,
+});
+let CustomTags = mongoose.model('CustomTags', CustomTagSchema);
+app.post('/getCustomTag', function (req, res) {
+  let data= req.body;//get the form data
+  data["user"] = req.session.uid;
+  console.log('Got Custom tag body:', data);
+  getCustomTag(data,res);
+})
+
+//adding Subtask
+app.post('/addCustomTag', function (req, res) {
+let data= req.body;//get the form data
+data["user"] = req.session.uid;
+console.log('Got Custom tag body:', data);
+//insert data into the database:
+  addCustomTag(data,res,req);
+})
+
+function getCustomTag(data,res,req){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let  mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert the ner user or user signup
+    CustomTags.find(data, function (err, result) {
+      if (err) return console.error(err);
+      if(result.length>0){
+        console.log(result);
+        res.send({ status: 200, tags:result });
+      }else{
+        res.send({ status: 404 });
+      }
+      mongoose_db.close();
+    });
+  });
+}
+
+function addCustomTag(data,res,req){
+  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
+  let mongoose_db = mongoose.connection;
+  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
+  mongoose_db.once('open', function(){
+    // insert new task into the database
+    //add the user id into the data
+    let newCustomTag = new CustomTags(data);
+    newCustomTag.save(function (err, result) {
+      if (err) return console.error(err);
+      console.log("SubTask added successfully");
+      res.send({ status: 200, tags: result});
+      mongoose_db.close();
+    });
+  });
+}
+
+
+
+
+
+
+
+
+
 
 //export the module function for testing
 module.exports = {app:app};
