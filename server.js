@@ -16,13 +16,6 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-// MONGODB URI
-  //Local Url: mongodb://localhost/cse110
-  //Remote Jinhao Url: mongodb+srv://CSE110:CSE110@cluster0.1sq34.mongodb.net/cse110_group8?retryWrites=true&w=majority
-  //Remote Bao Url: mongodb+srv://flatearthBujo:cse110-sp21-group8@8bujo.4m4yq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority,
-const MONGODB_URI =
-  'mongodb+srv://flatearthBujo:cse110-sp21-group8@8bujo.4m4yq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-
 //used to store the data.
 //req.session.uid
 
@@ -210,20 +203,31 @@ app.post('/DeleteCustomTask', function (req, res) {
 //database:
 //mongoose test
 //reference: https://mongoosejs.com/docs/index.html
+
+// Database URIs to connect
+//Local URI: mongodb://localhost/cse110
+//Remote Jinhao URI: mongodb+srv://CSE110:CSE110@cluster0.1sq34.mongodb.net/cse110_group8?retryWrites=true&w=majority
+//Remote Bao URI: mongodb+srv://flatearthBujo:cse110-sp21-group8@8bujo.4m4yq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority,
+const MONGODB_URI =
+  'mongodb+srv://flatearthBujo:cse110-sp21-group8@8bujo.4m4yq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+
 let mongoose = require('mongoose');
+
+// create Mongoose Schema
 let UserSchema = new mongoose.Schema({
   username: String,
   password: String,
   name: String,
 });
+
+// create Model out of Schema
 let User = mongoose.model('User', UserSchema);
+
 //user signup
 //assumpt that the database has the collections of User to store user information
 function createUser(data,res,req){
-  mongoose.connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  });
+  // connect to cloud database
+  mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -234,7 +238,6 @@ function createUser(data,res,req){
       if (err) return console.error(err);
       if (result.length > 0){
         console.log("User already exist");
-        exist = true;
         res.send({ user_status: 400 });
         mongoose_db.close();
       }else{
@@ -251,7 +254,9 @@ function createUser(data,res,req){
 }
 
 function verifyUser(data,res, req){
+  // connect to cloud database
   mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+  //console.log(mongoose.connection);
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
   mongoose_db.once('open', function(){
@@ -281,6 +286,7 @@ let TaskSchema = new mongoose.Schema({
 let Task = mongoose.model('Task', TaskSchema);
 
 function addTask(data,res,req){
+  // connect to cloud database
   mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -302,6 +308,7 @@ function addTask(data,res,req){
 //data formate: {old:old_data,new:new_data}
 //Call the UpdateCustomTask functions to update the tasks list
 function UpdateTask(data,res,req){
+  // connect to cloud database
   mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -324,6 +331,7 @@ function UpdateTask(data,res,req){
 
 //Call the DeleteTask functions to delete the tasks list
 function DeleteTask(data,res,req){
+  // connect to cloud database
   mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -344,6 +352,7 @@ function DeleteTask(data,res,req){
 //data: specify which date is it:
 //for example: {date: 'Sun May 16 2021' }
 function getDailyTask(data,res,req){
+  // connect to cloud database
   mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -363,6 +372,7 @@ function getDailyTask(data,res,req){
 }
 
 function getMonthlyTask(data,res,req){
+  // connect to cloud database
   mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -382,6 +392,7 @@ function getMonthlyTask(data,res,req){
 }
 
 function getFutureTask(data,res,req){
+  // connect to cloud database
   mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -415,6 +426,7 @@ let Custom = mongoose.model('Custom', CustomSchema);
 
 //Call the addCustomTask functions to add the custom logs
 function addCustomTask(data,res,req){
+  // connect to cloud database
   mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -434,6 +446,7 @@ function addCustomTask(data,res,req){
 
 //Call the delete CustomTask functions to delete the custom logs
 function DeleteCustomTask(data,res,req){
+  // connect to cloud database
   mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -452,6 +465,7 @@ function DeleteCustomTask(data,res,req){
 
 //Call the UpdateCustomTask functions to update the custom logs
 function UpdateCustomTask(data,res,req){
+  // connect to cloud database
   mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -475,6 +489,7 @@ function UpdateCustomTask(data,res,req){
 //data: specify which date is it:
 //for example: {date: 'Sun May 16 2021' }
 function getCustomTask(data,res,req){
+  // connect to cloud database
   mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -543,6 +558,7 @@ app.post('/deleteSubTask', function (req, res) {
 
 
 function addSubTask(data,res,req){
+  // connect to cloud database
   mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -564,6 +580,7 @@ function addSubTask(data,res,req){
 //data: specify which date is it:
 //for example: {date: 'Sun May 16 2021' }
 function getSubTask(data,res,req){
+  // connect to cloud database
   mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let  mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -587,6 +604,7 @@ function getSubTask(data,res,req){
 //data formate: {old:old_data,new:new_data}
 //Call the UpdateSubTask functions to update the sub tasks list
 function UpdateSubTask(data,res,req){
+  // connect to cloud database
   mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
@@ -610,6 +628,7 @@ function UpdateSubTask(data,res,req){
 
 //Call the DeleteTask functions to delete the tasks list
 function DeleteSubTask(data,res,req){
+  // connect to cloud database
   mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
   let mongoose_db = mongoose.connection;
   mongoose_db.on('error', console.error.bind(console, 'connection error:'));
