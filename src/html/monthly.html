@@ -9,13 +9,15 @@
   <link rel="stylesheet" href="../css/monthly.css">
 </head>
 <body>
-    <!-- home button -->
-    <div class="home-button">
+  <!-- home button -->
+  <div class="nav-bar">
+    <h1 class="log">Monthly Log</h1>
+    <div class="nav-buttons">
       <button onclick="location.href='./'">Home</button>
       <button onclick="location.href='./daily'">Daily Log</button>
       <button onclick="location.href='./future'">Future Log</button>
     </div>
-  <h1 class="log">Monthly Log</h1>
+  </div>
   <!-- section to split screen into two sections of log: left = calendar view, right = task-list --> 
   <section class = "container">
     <div class = "left">
@@ -90,11 +92,11 @@
       <div class="task">
         <div class = "label">
           <h1>Goals</h1>
-        </div>
-        <div class = "list">
           <div id="add">
             <a><span>&#43;</span></a>
           </div>
+        </div>
+        <div class = "list">
           <div id="text-box"></div>
         </div>
       </div>
