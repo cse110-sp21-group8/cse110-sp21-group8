@@ -19,6 +19,16 @@ document.addEventListener('keydown', function(e){
    // if(document.activeElement)
 });
 
+/* Custom Tag */ 
+document.addEventListener('click', function(e) {
+  if(document.activeElement.nodeName == "TASK-LIST"){
+    let selectedTask = document.activeElement;
+    let tagType = selectedTask.shadowRoot.querySelector('#tag-select').value;
+    selectedTask.task_tag = tagType;  
+  }
+});
+/* */ 
+
 addButton.addEventListener('click', ()=> {
     console.log('click')
     let task = document.createElement('task-list');
@@ -250,11 +260,58 @@ window.onload = function(event){
             }else{
                // alert("Task didn't added");
             }
+
+            /* Custom Tag */ 
+            let tmp = data["task"][0];
+            let task = document.createElement('task-list');
+            let taskInput = task.shadowRoot.querySelector('#tasks');
+            taskInput.value = tmp["content"];
+            let tagOpts = task.shadowRoot.querySelector('#tag-select').options;
+            let buttonDiv = document.getElementById('tag-button');
+            for (let i = 1; i < tagOpts.length; i++){
+              let button = document.createElement('button');
+              button.type = "button";
+              button.innerHTML = tagOpts[i].innerHTML;
+              buttonDiv.appendChild(button);
+              button.addEventListener('click', () => {
+                let collections = document.getElementById('tag-button');
+                  while (collections.firstChild) {
+                    collections.removeChild(collections.firstChild);
+                  }
+                  collections.className = 'show-tag';
+
+                  fetch('/getDailyTask', {  
+                    method: 'POST',
+                    headers: {
+                      "Content-Type": "application/json"
+                    }, 
+                    body: JSON.stringify({date: new Date().toDateString()})
+                  })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data["status"]==200){
+                            //obtains the task list
+                            let tasks = data["task"];
+                            tasks.forEach((tmp)=>{
+                              let task = document.createElement('task-list');
+                              let taskInput = task.shadowRoot.querySelector('#tasks');
+                              let taskForm = task.shadowRoot.querySelector('#form');
+                              taskInput.value = tmp["content"];
+                              task.isNew = false;
+                              console.log(task.task_tag);
+                            }); 
+                        }
+                    });
+
+              });
+            }
+            /* */
         })
         .catch((error) => {
         console.error('Error:', error);
         });
-}
+};      
+
 
 
 

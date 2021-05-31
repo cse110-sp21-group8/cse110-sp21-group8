@@ -20,64 +20,127 @@ h1 {
 .container {
     display: flex;
     flex-direction: row;
+    flex-grow: 1;
 }
 
 .left {
     width:70%;  /* left side takes up more space than right */
     text-align: center;
-    padding-right: 100px ;
+    box-sizing: border-box;
+    padding: 2rem;
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .right {
     background-color: #E9896A;
     border-radius: 50px;
-    margin-top: 50px;
+    margin: 2rem;
+    width: 30%;
+    box-sizing: border-box;
+    padding: 2rem;
 }
 
 /* align days and weeks of each calendar using grid */
 .week, .day1 {
     display: grid;
     grid-template-columns: repeat(7,40px);
-    justify-content: center;
-    grid-row-gap: 10px;
-    padding: 0 10px 20px;
-}
-.week, .day2 {
-    display: grid;
-    grid-template-columns: repeat(7,40px);
-    justify-content: center;
-    grid-row-gap: 10px;
-    padding: 0 10px 20px;
-}
-.week, .day3 {
-    display: grid;
-    grid-template-columns: repeat(7,40px);
-    justify-content: center;
-    grid-row-gap: 10px;
-    padding: 0 10px 20px;
-}
-.week, .day4 {
-    display: grid;
-    grid-template-columns: repeat(7,40px);
-    justify-content: center;
-    grid-row-gap: 10px;
-    padding: 0 10px 20px;
-}
-.week, .day5 {
-    display: grid;
-    grid-template-columns: repeat(7,40px);
-    justify-content: center;
-    grid-row-gap: 10px;
-    padding: 0 10px 20px;
-}
-.week, .day6 {
-    display: grid;
-    grid-template-columns: repeat(7,40px);
-    justify-content: center;
+    justify-content: space-evenly;
     grid-row-gap: 10px;
     padding: 0 10px 20px;
 }
 
+.day1 {
+    flex-grow: 1;
+    cursor: default;
+}
+
+.day1 *{
+    align-self: center;
+}
+.week, .day2 {
+    display: grid;
+    grid-template-columns: repeat(7,40px);
+    justify-content: space-evenly;
+    grid-row-gap: 10px;
+    padding: 0 10px 20px;
+}
+
+.day2 {
+    flex-grow: 1;
+    cursor: default;
+}
+
+.day2 *{
+    align-self: center;
+}
+
+.week, .day3 {
+    display: grid;
+    grid-template-columns: repeat(7,40px);
+    justify-content: space-evenly;
+    grid-row-gap: 10px;
+    padding: 0 10px 20px;
+}
+
+.day3 {
+    flex-grow: 1;
+    cursor: default;
+}
+
+.day3 *{
+    align-self: center;
+}
+.week, .day4 {
+    display: grid;
+    grid-template-columns: repeat(7,40px);
+    justify-content: space-evenly;
+    grid-row-gap: 10px;
+    padding: 0 10px 20px;
+}
+
+.day4 {
+    flex-grow: 1;
+    cursor: default;
+}
+
+.day4 *{
+    align-self: center;
+}
+.week, .day5 {
+    display: grid;
+    grid-template-columns: repeat(7,40px);
+    justify-content: space-evenly;
+    grid-row-gap: 10px;
+    padding: 0 10px 20px;
+}
+
+.day5 {
+    flex-grow: 1;
+    cursor: default;
+}
+
+.day5 *{
+    align-self: center;
+}
+
+.week, .day6 {
+    display: grid;
+    grid-template-columns: repeat(7,40px);
+    justify-content: space-evenly;
+    grid-row-gap: 10px;
+    padding: 0 10px 20px;
+}
+
+.day6 {
+    flex-grow: 1;
+    cursor: default;
+}
+
+.day6 *{
+    align-self: center;
+}
 
 /* background color and border for each calendars */
 .whole-cal1 {
@@ -85,6 +148,8 @@ h1 {
     border-radius: 40px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 .whole-cal2 {
@@ -92,6 +157,8 @@ h1 {
     border-radius: 40px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 .whole-cal3 {
@@ -99,6 +166,8 @@ h1 {
     border-radius: 40px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 .whole-cal4 {
@@ -106,6 +175,8 @@ h1 {
     border-radius: 40px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 .whole-cal5 {
@@ -113,6 +184,8 @@ h1 {
     border-radius: 40px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 .whole-cal6 {
@@ -120,22 +193,25 @@ h1 {
     border-radius: 40px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 /* align 6 calendars with 3 calendars (columns) per row */
 .calendars {
     display: grid;
     grid-template-columns: auto auto auto;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto ;
     grid-row-gap: 50px;
     grid-column-gap: 50px;
+    flex-grow: 1;
 }
 
 /* styling task list -- tentative */
 .right > p, 
 h2, 
 ul {
-    padding-left: 20px;
+    padding: 1rem;
 }
 
 /* shifts month header of each cal to the left*/
@@ -179,8 +255,8 @@ ul {
 #text-box1 {
     background: #E9896A;
     border-radius: 50px;
-    height: 70vh;
-    width: 40vw;
+    height: 100%;
+    width: 100%;
   }
 
 #form1 {
@@ -210,3 +286,45 @@ ul {
 .show{
     display:block;
   }
+
+  .log{
+    padding: 1rem;
+  }
+  
+  /* formatting for home button when hovered on  */
+  .nav-bar button:hover {
+    background: #5aa8979f;
+  }
+  
+  .nav-bar {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* formatting for home button itself */
+.nav-bar button {
+    border: none;
+    background: #5aa89742;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: .5rem;
+    margin-right: .5rem;
+  }
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+body {
+    display: flex;
+    flex-direction: column;
+}
