@@ -355,9 +355,48 @@ addButton.addEventListener('click', ()=> {
         });
 
         task.remove();
+        fetch('/getSubTask', {  
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json"
+            }, 
+            body: JSON.stringify({task_id: task.task_id})
+            })
+            .then(response => response.json())
+            .then(subdata => {
+             if(subdata["status"]==200){
+                let subtasks = subdata["task"];
+                subtasks.forEach((subTemp) => {
+                    delete_data = subTemp;
+                    fetch('/deleteSubTask', {  
+                        method: 'POST',
+                        headers: {
+                          "Content-Type": "application/json"
+                        }, 
+                        body: JSON.stringify(delete_data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data["status"]==200){
+                                let newTask = data["task"];
+                            }else{
+                                //alert("Task didn't added");
+                            }
+                        })
+                        .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                    
+                })
+
+             } 
+        })
+
+
     });
 
     taskInput.focus();
+    
 })
 
 
