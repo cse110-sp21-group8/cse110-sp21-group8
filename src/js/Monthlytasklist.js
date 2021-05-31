@@ -6,7 +6,7 @@ class TaskList extends HTMLElement {
     <style>
       .entry {
         display: grid;
-        grid-template-columns: 25% auto;
+        grid-template-columns: 25% 75%;
         width: 100%;
       }
       #text-box {
