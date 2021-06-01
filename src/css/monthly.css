@@ -208,7 +208,7 @@ body {
   display: grid;
   grid-column: auto;
   height:10px;
-  width: 40px;
+  width: 80px;
   font-size: 13px;
   align-content: center;
 }

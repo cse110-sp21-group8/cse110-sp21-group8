@@ -159,6 +159,7 @@ document.addEventListener('keydown', function(e){
                         .catch((error) => {
                         console.error('Error:', error);
                     });
+                    
 
                 }
             })
@@ -185,8 +186,35 @@ document.addEventListener('keydown', function(e){
                     console.error('Error:', error);
                 });   
             })
-            
+
+            let deleteButton = task.shadowRoot.querySelector('#delete');
+
+            deleteButton.addEventListener('click', () => {
+                delete_data = data;
+                fetch('/deleteTask', {  
+                    method: 'POST',
+                    headers: {
+                      "Content-Type": "application/json"
+                    }, 
+                    body: JSON.stringify(delete_data)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data["status"]==200){
+                            let newTask = data["task"];
+                        }else{
+                            alert("Task didn't added");
+                        }
+                    })
+                    .catch((error) => {
+                    console.error('Error:', error);
+                });
+        
+                task.remove();
+            })
+  
         }
+  
     } 
    // if(document.activeElement)
 });
@@ -445,30 +473,6 @@ let form = document.querySelector('form');
 
 //load Task:
 window.onload = function(event){
-
-    //added by Jinhao Zhou
-    //get the user image of that day
-    
-    // fetch('/getImg', {  
-    //     method: 'GET',
-    //     headers: {
-    //       "Content-Type": "application/json"
-    //     }
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         if(data["status"]==200){
-    //             let image = document.querySelector(".tracker-image");
-    //             image.src = data["src"];
-    //         }else{
-    //             alert("no image data exist");
-    //         }
-    //     })
-    //     .catch((error) => {
-    //     console.error('Error:', error);
-    // });
-
-
     fetch('/getDailyTask', {  
         method: 'POST',
         headers: {
@@ -572,8 +576,45 @@ window.onload = function(event){
 
                         task.remove();
 
-                        // need to delete all of the subtasks from the database
-                        // get subtask based on idea, for each subtask delete from database
+                        fetch('/getSubTask', {  
+                            method: 'POST',
+                            headers: {
+                              "Content-Type": "application/json"
+                            }, 
+                            body: JSON.stringify({task_id: task.task_id})
+                            })
+                            .then(response => response.json())
+                            .then(subdata => {
+                             if(subdata["status"]==200){
+                                let subtasks = subdata["task"];
+                                subtasks.forEach((subTemp) => {
+                                    delete_data = subTemp;
+                                    fetch('/deleteSubTask', {  
+                                        method: 'POST',
+                                        headers: {
+                                          "Content-Type": "application/json"
+                                        }, 
+                                        body: JSON.stringify(delete_data)
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if(data["status"]==200){
+                                                let newTask = data["task"];
+                                            }else{
+                                                //alert("Task didn't added");
+                                            }
+                                        })
+                                        .catch((error) => {
+                                        console.error('Error:', error);
+                                    });
+                                    
+                                })
+                
+                             }
+                        })
+                        
+
+                        
                     });
 
 
@@ -601,9 +642,9 @@ window.onload = function(event){
                                     subTask.isNew = false;
                                     let subDelete = subTask.shadowRoot.querySelector("#delete");
 
-
+                                    let content = subTemp.content;
                                     subTask.isSubtask = true;
-                                    subTaskInput.value = "● ";
+                                    //subTaskInput.value = "● ";
                                     subTaskInput.addEventListener('change', ()=>{
                                         let oldData = subTemp;
                                         newData = {status:"daily",type:"task", content:content,date:date.toDateString(), task_id: subTask.task_id };
