@@ -469,6 +469,7 @@ addButton.addEventListener('click', ()=> {
 
 
 let form = document.querySelector('form');
+let isReflectionNew = true;
 
 
 //load Task:
@@ -489,6 +490,10 @@ window.onload = function(event){
                 let text_box = document.getElementById("text-box");
                 //add each task into the box
                 tasks.forEach((tmp)=>{
+                    // skip reflections
+                    if (tmp["type"] === "reflection") {
+                        return;
+                    }
                     console.log(tmp);
                     let task = document.createElement('task-list');
                     let taskInput = task.shadowRoot.querySelector('#tasks');
@@ -714,29 +719,28 @@ window.onload = function(event){
         });
 
     //load reflection
-    // fetch('/getDailyTask', {
-    //     method: 'POST',
-    //     headers: {
-    //         "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify({date: new Date().toDateString()})
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //     // if(data["status"]  == 200) {
-    //     //     let tasks = data["task"];
-    //     //     let content = document.getElementById("reflection-content");
-    
-    //     //     tasks.forEach((tmp) => {
-    //     //         if (tmp["type"] === "reflection") {
-    //     //             content.append(tmp["content"]);
-    //     //         }
-    //     //     });
-    //     //     if (document.getElementById("reflection").innerHTML.length > 0) {
-    //     //         document.getElementById("add-reflection").disabled = true;
-    //     //     }
-    //     // }
-    // });
+    fetch('/getDailyTask', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({date: new Date().toDateString()})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data["status"] == 200) {
+            //obtains the task list
+            let tasks = data["task"];
+            let reflect_box = document.getElementById("reflect-box");
+            
+            tasks.forEach((tmp) => {
+                if(tmp["type"] === "reflection") {
+                    document.getElementById("reflection").append(tmp["content"]);
+                    isReflectionNew = false;
+                }
+            })
+        }
+    });
 }
 
 // reflect_btn.addEventListener('click', (event) => {
@@ -791,7 +795,6 @@ upload.addEventListener("submit", (event)=>{
     let input = document.querySelector('input[type="file"]')
     let data = new FormData()
     data.append('file-to-upload', input.files[0]);
-
     fetch('/uploadImg', {
     method: 'POST',
     body: data
@@ -812,18 +815,80 @@ upload.addEventListener("submit", (event)=>{
 //reflection section
 let reflection = document.getElementById('reflection');
 let reflectionForm = document.querySelector('#reflect-box form')
-let isReflectionNew = true;
 
 reflection.addEventListener('change', ()=> {
     if(isReflectionNew == true){
         //create new reflection on back end
+        let content = reflection.value;
+        let date = new Date();
+        data = {status: "daily", type: "reflection", content: content, date: date.toDateString()};
+        fetch('/addTask', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data["status"] == 200) {
+                let newReflection = data["reflection"];
+            }
+            else {
+                alert("Reflection didn't add");
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
         console.log('reflection created by change');
-        isReflectionNew = false;
     } else {
         //update reflection on back end 
-        console.log('reflection updated by change');
+        fetch('/getDailyTask', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({date: new Date().toDateString()})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data["status"] == 200) {
+                let tasks = data["task"];
+                let oldData;
+                tasks.forEach((tmp) => {
+                    if(tmp["type"] === "reflection") {
+                        oldData = tmp;
+                    }
+                });
+                let content = document.getElementById("reflection").value;
+                let date = new Date();
+                newData = {status: "daily", type: "reflection", content: content, date: date.toDateString()};
+                send_data = {old: oldData, new: newData};
+                fetch('/updateTask', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(send_data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data["status"]  == 200) {
+                        let newReflection = data["reflection"];
+                    }
+                    else {
+                        alert("Reflection didn't add");
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+                console.log('reflection updated by change');
+            }
+        })
     }
-})
+});
 
 
 
