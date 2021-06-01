@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 if(data["status"]==200){
                                     let newTask = data["task"];
                                 }else{
-                                // alert("Task didn't added");
+                                 alert("Task didn't added");
                                 }
                             })
                             .catch((error) => {
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 if(data["status"]==200){
                                     let newTask = data["task"];
                                 }else{
-                                   // alert("Task didn't added");
+                                    alert("Task didn't added");
                                 }
                             })
                             .catch((error) => {
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             if(data["status"]==200){
                                 let newTask = data["task"];
                             }else{
-                                //alert("Task didn't added");
+                                alert("Task didn't added");
                             }
                         })
                         .catch((error) => {
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     let newTask = data["task"];
                                     task.task_id = data.task._id;
                                 }else{
-                                    //alert("Task didn't added");
+                                    alert("Task didn't added");
                                 }
                             })
                             .catch((error) => {
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 if(data["status"]==200){
                                     let newTask = data["task"];
                                 }else{
-                                    //alert("Task didn't added");
+                                    alert("Task didn't added");
                                 }
                             })
                             .catch((error) => {
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 if(data["status"]==200){
                                     let newTask = data["task"];
                                 }else{
-                                   // alert("Task didn't added");
+                                   alert("Task didn't added");
                                 }
                             })
                             .catch((error) => {
@@ -284,7 +284,7 @@ window.onload = function(event){
                                 if(data["status"]==200){
                                     let newTask = data["task"];
                                 }else{
-                                    //alert("Task didn't added");
+                                    alert("Task didn't added");
                                 }
                             })
                             .catch((error) => {
@@ -317,7 +317,7 @@ window.onload = function(event){
                                             if(data["status"]==200){
                                                 let newTask = data["task"];
                                             }else{
-                                                //alert("Task didn't added");
+                                                alert("Task didn't added");
                                             }
                                         })
                                         .catch((error) => {
@@ -372,7 +372,7 @@ window.onload = function(event){
                                                 if(data["status"]==200){
                                                     let newTask = data["task"];
                                                 }else{
-                                                   // alert("Task didn't added");
+                                                   alert("Task didn't added");
                                                 }
                                             })
                                             .catch((error) => {
@@ -400,7 +400,7 @@ window.onload = function(event){
                                                 if(data["status"]==200){
                                                     let newTask = data["task"];
                                                 }else{
-                                                    //alert("Task didn't added");
+                                                    alert("Task didn't added");
                                                 }
                                             })
                                             .catch((error) => {
@@ -417,7 +417,7 @@ window.onload = function(event){
                 });
 
             }else{
-                alert("Task didn't added");
+                //alert("Task didn't added");
             }
         })
         .catch((error) => {

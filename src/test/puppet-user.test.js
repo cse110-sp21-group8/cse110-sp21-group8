@@ -76,8 +76,8 @@ describe('Home Page Navigation testing', ()=>{
     // User click the Home button and would go back to the home page from daily log:
     it('Test5: User click the Home button and go back to the home page from daily log:', async () => {
 
-      await page.click('.home-button button:nth-child(1)');
-
+      //await page.click('.home-button button:nth-child(1)');
+      await page.click('body > div.nav-bar > div > button:nth-child(1)');
       const title = await page.evaluate(() => {
         const elem = document.querySelector('title');
         return elem.innerText;
@@ -88,8 +88,8 @@ describe('Home Page Navigation testing', ()=>{
     // User click the Monthly Log button and go to the Monthly Log page:
     it('Test6: User click the Monthly Log button and go to the Monthly Log page:', async () => {
 
-      await page.click('.widget-content button:nth-child(2)');
-
+      //await page.click('.widget-content button:nth-child(2)');
+      await page.click('#index > div.widget-content > button:nth-child(2)');
       const title = await page.evaluate(() => {
         const elem = document.querySelector('title');
         return elem.innerText;
@@ -101,7 +101,7 @@ describe('Home Page Navigation testing', ()=>{
      // User click the Home button and would go back to the home page from monthly log:
     it('Test7: User click the Home button and go back to the home page from monthly log:', async () => {
 
-      await page.click('.home-button button:nth-child(1)');
+      await page.click('body > div.nav-bar > div > button:nth-child(1)');
 
       const title = await page.evaluate(() => {
         const elem = document.querySelector('title');
@@ -113,8 +113,8 @@ describe('Home Page Navigation testing', ()=>{
     // User click the Future Log button and go to the Future Log page:
     it('Test8: User click the Future Log button and go to the Future Log page:', async () => {
 
-      await page.click('.widget-content button:nth-child(3)');
-
+      //await page.click('.widget-content button:nth-child(3)');
+      await page.click('#index > div.widget-content > button:nth-child(3)');
       const title = await page.evaluate(() => {
         const elem = document.querySelector('title');
         return elem.innerText;
@@ -126,8 +126,8 @@ describe('Home Page Navigation testing', ()=>{
      // User click the Home button and would go back to the home page from Future Log:
     it('Test9: User click the Home button and go back to the home page from Future Log:', async () => {
 
-      await page.click('.home-button button:nth-child(1)');
-
+      //await page.click('.home-button button:nth-child(1)');
+      await page.click('body > div.nav-bar > div > button:nth-child(1)');
       const title = await page.evaluate(() => {
         const elem = document.querySelector('title');
         return elem.innerText;
@@ -138,7 +138,7 @@ describe('Home Page Navigation testing', ()=>{
     // User click the Custom log button and go to the Custom log page:
     it('Test10: User click the Custom log button and go to the Custom log page:', async () => {
 
-      await page.click('.widget-content button:nth-child(4)');
+      await page.click('#index > div.widget-content > button:nth-child(4)');
 
       const title = await page.evaluate(() => {
         const elem = document.querySelector('title');
