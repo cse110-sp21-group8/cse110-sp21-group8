@@ -251,7 +251,7 @@ window.onload = function(event){
 
                         task.remove();
                     });
-                    if(tmp["status"] == "daily"){
+                    if(tmp["status"] == "daily" && tmp["type"] != "reflection"){
                         text_box.append(task);
                     }
                     

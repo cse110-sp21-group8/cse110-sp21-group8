@@ -864,27 +864,51 @@ reflection.addEventListener('change', ()=> {
                 let content = document.getElementById("reflection").value;
                 let date = new Date();
                 newData = {status: "daily", type: "reflection", content: content, date: date.toDateString()};
-                send_data = {old: oldData, new: newData};
-                fetch('/updateTask', {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(send_data)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if(data["status"]  == 200) {
-                        let newReflection = data["reflection"];
-                    }
-                    else {
-                        alert("Reflection didn't add");
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
-                console.log('reflection updated by change');
+                if (newData["content"] === "") {
+                    delete_data = oldData;
+                    fetch('/deleteTask', {  
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json"
+                        }, 
+                        body: JSON.stringify(delete_data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data["status"]==200){
+                                let newReflection = data["reflection"];
+                            }else{
+                                alert("Task didn't added");
+                            }
+                        })
+                        .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                    console.log("successfully deleted reflection");
+                }
+                else {
+                    send_data = {old: oldData, new: newData};
+                    fetch('/updateTask', {
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(send_data)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data["status"]  == 200) {
+                            let newReflection = data["reflection"];
+                        }
+                        else {
+                            alert("Reflection didn't add");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                    console.log('reflection updated by change');
+                }
             }
         })
     }
@@ -931,4 +955,6 @@ reflection.addEventListener('change', ()=> {
 //         });
 //     form.reset();
 // });
+
+
 
