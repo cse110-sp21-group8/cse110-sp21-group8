@@ -1,6 +1,7 @@
 
 let today = new Date();
 let currentMonth = today.getMonth();
+let currentDay = parseInt(today.toDateString().slice(8,10));
 
 let months = [ "January", "February", "March", "April", "May", "June", 
 "July", "August", "September", "October", "November", "December" ];
@@ -33,10 +34,14 @@ for(let i = 1; i <= lastDay; i++){
 }
 
 let dayBtns = document.querySelectorAll(".day");
+dayBtns[currentDay + 6].style.background = "#5aa8979f";
 
+
+let curIdx = -1;
 for(let i = 7; i < dayBtns.length; i++) {
   dayBtns[i].addEventListener('click', () => {
     // change background color of selected day
+    curIdx = i;
     dayBtns[i].style.background = "#5aa8979f";
     for(let j = 7; j < dayBtns.length; j++) {
       if (j != i && dayBtns[j].style.background != "none") {
@@ -46,12 +51,13 @@ for(let i = 7; i < dayBtns.length; i++) {
 
     document.getElementById("text-box").innerHTML = "";
     document.getElementById("reflection").innerHTML = "";
+    let date = new Date(today.getFullYear(), today.getMonth(), i - 6);
     fetch('/getDailyTask', {  
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
       }, 
-      body: JSON.stringify({date: new Date().toDateString()})
+      body: JSON.stringify({date: date.toDateString()})
       })
       .then(response => response.json())
       .then(data => {
@@ -301,7 +307,7 @@ for(let i = 7; i < dayBtns.length; i++) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({date: new Date().toDateString()})
+        body: JSON.stringify({date: date.toDateString()})
       })
       .then(response => response.json())
       .then(data => {
@@ -327,6 +333,14 @@ for(let i = 7; i < dayBtns.length; i++) {
           }
       });
   });
+  dayBtns[i].addEventListener("mouseenter", () => {
+      dayBtns[i].style.background = "#5aa8979f";
+  });
+  dayBtns[i].addEventListener("mouseleave", () => {
+    if (curIdx != i) {
+        dayBtns[i].style.background = "none";
+    }
+});
   
 }
 
