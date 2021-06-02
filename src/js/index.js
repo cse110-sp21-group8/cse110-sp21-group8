@@ -272,6 +272,7 @@ window.onload = function(event){
               let button = document.createElement('button');
               button.type = "button";
               button.innerHTML = tagOpts[i].innerHTML;
+              button.value = tagOpts[i].innerHTML;
               buttonDiv.appendChild(button);
               button.addEventListener('click', () => {
                 let collections = document.getElementById('tag-button');
@@ -293,18 +294,56 @@ window.onload = function(event){
                             //obtains the task list
                             let tasks = data["task"];
                             tasks.forEach((tmp)=>{
+                             if(tmp.tag == button.value){
                               let task = document.createElement('task-list');
                               let taskInput = task.shadowRoot.querySelector('#tasks');
                               let taskForm = task.shadowRoot.querySelector('#form');
+                              let tag = task.shadowRoot.querySelector('#tag-select');
+                              task.task_id = tmp._id;
                               taskInput.value = tmp["content"];
                               task.isNew = false;
-                              console.log(task.task_tag);
+
+                              //Load in the right tag
+                              console.log(tmp.tag);
+                              for(let i = 1; i < tag.options.length; i++){
+                                if(tag.options[i].value == tmp.tag){
+                                  tag.selectedIndex = `${i}`;
+                                }
+                              }
+
+                              //Load in the right task type
+                              let taskType = task.shadowRoot.querySelector('#checklist-select');
+                              for(let i = 1; i < taskType.options.length; i++){
+                                if(taskType.options[i].value == tmp.type){
+                                  taskType.selectedIndex = `${i}`;
+                                }
+                              }
+                               collections.append(task);
+                             }
                             }); 
                         }
                     });
 
               });
             }
+
+            //Go Back to Collections
+            let header = document.getElementById('collect-h');
+            header.addEventListener('click', () => {
+              let collections = document.getElementById('tag-button');
+              while (collections.firstChild) {
+                collections.removeChild(collections.firstChild);
+              }
+              collections.className = 'widget-content';
+              for (let i = 1; i < tagOpts.length; i++){
+                let button = document.createElement('button');
+                button.type = "button";
+                button.innerHTML = tagOpts[i].innerHTML;
+                button.value = tagOpts[i].innerHTML;
+                buttonDiv.appendChild(button);
+              }
+
+            })
             /* */
         })
         .catch((error) => {

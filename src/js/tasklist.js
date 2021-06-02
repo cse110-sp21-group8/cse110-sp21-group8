@@ -71,9 +71,9 @@ class TaskList extends HTMLElement {
       </select>
       <select name="Tags" id="tag-select">
         <option value="">Tag</option>
-        <option value="Important"> Important </option>
-        <option value="Later"> Later </option>
-        <option value="Interesting"> Interesting </option>
+        <option value="Important">Important</option>
+        <option value="Later">Later</option>
+        <option value="Interesting">Interesting</option>
       </select>
       <div id="text-box">
         <form id='form'>
@@ -95,6 +95,7 @@ class TaskList extends HTMLElement {
   isNew = true; 
   task_id = '';
   task_tag = '';
+  task_date = '';
 
   set isSubtask(value){
     this.shadowRoot.querySelector('#tag-select').style.display = 'none';

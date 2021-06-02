@@ -40,7 +40,6 @@ addTagButton.addEventListener('click', ()=>{
 });
 
 let selectedTask;
-//let selectOpt = task.shadowRoot.querySelector(".tag-select");
 document.addEventListener('click', (event) => {
   selectedTask = event.path[0];
   selectedTask.addEventListener('focusout', () => {
@@ -49,14 +48,14 @@ document.addEventListener('click', (event) => {
       let tagType = selectedTask.value;
       selectedTask.task_tag = tagType;
       
-      let data;
-      let oldData = data;
-      let content = selectedTask.parentElement.querySelector('#tasks').value;
+
+      let parentTask = selectedTask.parentElement.querySelector('#tasks');
+      let oldData = {status:"daily",type:"task", content:parentTask.value,date:parentTask.date};
+      let content = parentTask.value;
       let date = new Date();
       data = {status:"daily",type:"task", content:content,date:date.toDateString(), tag:selectedTask.task_tag};
       let newData = data;
       send_data = {old:oldData, new:newData}; 
-      console.log(newData);
       fetch('/updateTask', {  
           method: 'POST',
           headers: {
@@ -68,6 +67,7 @@ document.addEventListener('click', (event) => {
           .then(data => {
               if(data["status"]==200){
                   let newTask = data["task"];
+                  console.log(newTask);
               }else{
                   // alert("Task didn't added");
               }
@@ -104,10 +104,13 @@ document.addEventListener('keydown', function(e){
             selection.addEventListener('change', () => {
                 if(selection.value == "Task"){
                     input.value = "● ";
+                    change = "● ";
                 } else if (selection.value == "Note"){
                     input.value = "- ";
+                    change = "- ";
                 } else {
                     input.value = "⚬ ";
+                    change = "⚬ ";
                 }
             });
             input.value = "● ";
@@ -230,16 +233,22 @@ addButton.addEventListener('click', ()=> {
 
     //elements of task 
     let taskInput = task.shadowRoot.querySelector('#tasks');
-    let selection = task.shadowRoot.querySelector('#checklist-select');
     taskInput.value = "● ";
+
+    let selection = task.shadowRoot.querySelector('#checklist-select');
+    let change;
+    console.log(taskInput); 
 
     selection.addEventListener('change', () => {
         if(selection.value == "Task"){
             taskInput.value = "● ";
+            change = "● ";
         } else if (selection.value == "Note"){
             taskInput.value = "- ";
+            change = "- ";
         } else {
             taskInput.value = "⚬ ";
+            change = "⚬ ";
         }
     })
 
@@ -265,6 +274,7 @@ addButton.addEventListener('click', ()=> {
                 })
                 .then(response => response.json())
                 .then(data => {
+                    task.date = data.date;
                     task.task_id = data.task._id;
                     if(data["status"]==200){
                         let newTask = data["task"];
@@ -331,6 +341,7 @@ addButton.addEventListener('click', ()=> {
                 })
                 .then(response => response.json())
                 .then(data => {
+                    task.date = data.date;
                     task.task_id = data.task._id;
                     if(data["status"]==200){
                         let newTask = data["task"];
@@ -446,30 +457,80 @@ window.onload = function(event){
                 let text_box = document.getElementById("text-box");
                 //add each task into the box
                 tasks.forEach((tmp)=>{
-                    console.log(tmp);
                     let task = document.createElement('task-list');
                     let taskInput = task.shadowRoot.querySelector('#tasks');
                     let taskForm = task.shadowRoot.querySelector('#form');
+                    let tag = task.shadowRoot.querySelector('#tag-select');
                     task.task_id = tmp._id;
                     taskInput.value = tmp["content"];
                     task.isNew = false;
+
+                    //Load in the right tag
+                    console.log(tmp.tag);
+                    for(let i = 1; i < tag.options.length; i++){
+                      if(tag.options[i].value == tmp.tag){
+                        tag.selectedIndex = `${i}`;
+                      }
+                    }
+
+                    //Load in the right task type
+                    let taskType = task.shadowRoot.querySelector('#checklist-select');
+                    for(let i = 1; i < taskType.options.length; i++){
+                      if(taskType.options[i].value == tmp.type){
+                        taskType.selectedIndex = `${i}`;
+                      }
+                    }
 
                     //fixed bug where future and monthly tasks were getting mixed up
                     if(tmp["status"] == "daily"){
                         text_box.append(task);
                     }
 
+
                     let selection = task.shadowRoot.querySelector('#checklist-select');
                     console.log(taskInput); 
                 
+                    let change;
                     selection.addEventListener('change', () => {
                         if(selection.value == "Task"){
                             taskInput.value = "● ";
+                            change = "● ";
                         } else if (selection.value == "Note"){
                             taskInput.value = "- ";
+                            change = "- ";
                         } else {
                             taskInput.value = "⚬ ";
+                            change = "⚬ ";
                         }
+
+                        //Update the task type
+                        /*let index = Array.prototype.indexOf.call(text_box.children, task);
+                        let oldData = data.task[index];
+                        //let inputArr = taskInput.value.split(" ");
+                        taskInput.value[0] = change;
+                        let content = taskInput.value; //.replace(inputArr[0], change);
+                        let date = new Date();
+                        //TODO: fix the bug that content isnt fully showing
+                        let newData = {status:"daily", type:`${selection.value}`, content:content,date:date.toDateString()};
+                        send_data = {old:oldData, new:newData}; 
+                        fetch('/updateTask', {  
+                            method: 'POST',
+                            headers: {
+                              "Content-Type": "application/json"
+                            }, 
+                            body: JSON.stringify(send_data)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if(data["status"]==200){
+                                    let newTask = data["task"];
+                                }else{
+                                    //alert("Task didn't added");
+                                }
+                            })
+                            .catch((error) => {
+                            console.error('Error:', error);
+                        });*/
                     })
 
                     taskInput.addEventListener('change', (event)=> {
@@ -478,7 +539,7 @@ window.onload = function(event){
                         let oldData = data.task[index];
                         let content = taskInput.value;
                         let date = new Date();
-                        let newData = {status:"daily", type:"task", content:content,date:date.toDateString()};
+                        let newData = {status:"daily", type:`${selection.value}`, content:content,date:date.toDateString()};
                         send_data = {old:oldData, new:newData}; 
                         fetch('/updateTask', {  
                             method: 'POST',
