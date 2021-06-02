@@ -74,7 +74,7 @@ describe('Monthly page tests:', () => {
             elem.selectedIndex = 2; //Task type to be Note
             
             const elem2 = document.querySelector("task-list:nth-child("+lists+")").shadowRoot.querySelector(".entry #tag-select");
-            elem2.selectedIndex = 2; //Tag to be Later
+            elem2.selectedIndex = 2; //Tag to be Later*/
 
             const elem3 = document.querySelector("task-list:nth-child("+lists+")").shadowRoot.querySelector(".entry #tasks");
             elem3.value = "test homepage";
@@ -83,11 +83,15 @@ describe('Monthly page tests:', () => {
             
             await page.click('.nav-buttons > button:nth-child(1)');
             await new Promise((r) => setTimeout(r,10000));
-            const notes = await page.evaluate(() => {
-            const cotents = document.getElementById('#tasks');
-            return cotents.innerText;
-            })
-            expect(notes).toBe("test homepage");
+            const actual_task_text = await page.evaluate(() => {
+                let lists = document.getElementsByTagName("task-list").length;
+                const elem = document.querySelector("task-list:nth-child("+lists+")").shadowRoot.querySelector(".entry #tasks");
+                elem.value = "test homepage";
+                elem.blur();
+                return elem.value;
+              });
+      
+            expect(actual_task_text).toBe("test homepage");
 
 
         })
