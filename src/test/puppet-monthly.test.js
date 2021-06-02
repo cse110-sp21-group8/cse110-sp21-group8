@@ -231,7 +231,7 @@ describe('Monthly page tests:', () => {
 //trace
 //running forever
 
-    describe('Future Page Navigation Test',()=>{
+    describe('Monthly Page Navigation Test',()=>{
 
         it('Test1: User click the Home button and go to the Home page:',async () => {
             
@@ -271,7 +271,6 @@ describe('Monthly page tests:', () => {
 
         it('Test4: User click the Monthly Log button and go back to the Mongthly page:', async() => {
 
-            //await page.click('body > div.nav-bar > div > button:nth-child(2)');
             await page.goBack();
             const title = await page.evaluate(() => {
             const elem = document.querySelector('title');
@@ -286,7 +285,7 @@ describe('Monthly page tests:', () => {
             await page.click('body > div > div > button:nth-child(3)');
       
             const title = await page.evaluate(() => {
-            const elem = document.querySelector('title');
+            const elem = document.querySelector('head > title');
             return elem.innerText;
             });
             expect(title).toBe('Future Log');

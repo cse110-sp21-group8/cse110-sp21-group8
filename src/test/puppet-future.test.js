@@ -1,5 +1,6 @@
 /* global test, expect */
 //Puppeter End to End User test.
+
 /*helper array to get months*/
 const months = [
     "January",
@@ -17,30 +18,24 @@ const months = [
 ];
 /* */
 
-/* helper function to get current month*/
-var getDaysInMonth = function(month,year) {
-
-   return new Date(year, month, 0).getDate();
-
-  };
-/* */ 
-
 describe('Future page tests:', () => {
     beforeAll(async () => {
-      jest.setTimeout(35000);
-      await page.goto('http://localhost:8080');
-      const username = await page.$('#email');
-      await username.type('test');
-
-      const password = await page.$('#password');
-      await password.type('123');
-      await page.click('button[type="submit"]');
-      await page.click('#index > div.widget-content > button:nth-child(3)');
+        jest.setTimeout(50000);
+        await page.goto('http://localhost:8080');
+        const username = await page.$('#email');
+        await username.type('test');
+        
+        const password = await page.$('#password');
+        await password.type('123');
+        await page.click('button[type="submit"]');
+        await page.click('#index > div.widget-content > button:nth-child(3)');
     });
 
-    // User login and go to daily log page. Verify it is in daily log page
+    
+    
     describe('Testing if the user go to the future page correctly',()=>{
         it('Test1: User login and go to future log page. Verify it is in future log page', async () => {
+            
 
             const title = await page.evaluate(() => {
             const elem = document.querySelector('title');
@@ -50,7 +45,7 @@ describe('Future page tests:', () => {
         });
     })
 
-    // stay on that page and check if each block is showing the correct content
+    
     describe('Testing if the month names are showing correctly',()=>{
         it('Test1: Check if the the 1st month block is showing correctly', async () => {
             const monthnum = await page.evaluate(() => {
@@ -284,11 +279,12 @@ describe('Future page tests:', () => {
             const new_entries = await page.$$('task-list');
             const new_length = new_entries.length;
             expect(new_length).toBe(expected_length);
-        })*/
-        
+        })
+  */      
     });
+/*
+    describe('Future Page Navigation Test',()=>{
 
-    /*describe('Future Page Navigation Test',()=>{
         it('Test1: User click the Home button and go to the Home page:', async () => {
 
             await page.click('body > div.nav-bar > div > button:nth-child(1)');
@@ -298,6 +294,7 @@ describe('Future page tests:', () => {
             return elem.innerText;
             });
             expect(title).toBe('Home Page');
+            
         });
 
         it('Test2: User click the back button and go back to the Future page:', async () => {
@@ -309,6 +306,7 @@ describe('Future page tests:', () => {
             return elem.innerText;
             });
             expect(title).toBe('Future Log');
+            
         });
 
         it('Test3: User click the Daily Log button and go to the Daily Log page:', async () => {
@@ -320,6 +318,7 @@ describe('Future page tests:', () => {
             return elem.innerText;
             });
             expect(title).toBe('Daily Log');
+            
         });
 
         it('Test4: User click the back button and go back to the Future page:', async () => {
@@ -331,6 +330,7 @@ describe('Future page tests:', () => {
             return elem.innerText;
             });
             expect(title).toBe('Future Log');
+           
         });
 
         it('Test5: User click the Monthly Log button and go to the Monthly page:', async () => {
@@ -342,6 +342,7 @@ describe('Future page tests:', () => {
             return elem.innerText;
             });
             expect(title).toBe('Monthly Log');
+            
         });
 
         it('Test6: User click the back button and go back to the Future page:', async () => {
@@ -353,6 +354,7 @@ describe('Future page tests:', () => {
             return elem.innerText;
             });
             expect(title).toBe('Future Log');
+            
         });
     })*/
 });
