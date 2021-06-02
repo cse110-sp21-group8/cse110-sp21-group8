@@ -162,6 +162,7 @@ document.addEventListener('keydown', function(e){
                         .catch((error) => {
                         console.error('Error:', error);
                     });
+                    
 
                 }
             })
@@ -188,8 +189,35 @@ document.addEventListener('keydown', function(e){
                     console.error('Error:', error);
                 });   
             })
-            
+
+            let deleteButton = task.shadowRoot.querySelector('#delete');
+
+            deleteButton.addEventListener('click', () => {
+                delete_data = data;
+                fetch('/deleteTask', {  
+                    method: 'POST',
+                    headers: {
+                      "Content-Type": "application/json"
+                    }, 
+                    body: JSON.stringify(delete_data)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data["status"]==200){
+                            let newTask = data["task"];
+                        }else{
+                            alert("Task didn't added");
+                        }
+                    })
+                    .catch((error) => {
+                    console.error('Error:', error);
+                });
+        
+                task.remove();
+            })
+  
         }
+  
     } 
    // if(document.activeElement)
 });
@@ -406,41 +434,57 @@ addButton.addEventListener('click', ()=> {
         });
 
         task.remove();
+        fetch('/getSubTask', {  
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json"
+            }, 
+            body: JSON.stringify({task_id: task.task_id})
+            })
+            .then(response => response.json())
+            .then(subdata => {
+             if(subdata["status"]==200){
+                let subtasks = subdata["task"];
+                subtasks.forEach((subTemp) => {
+                    delete_data = subTemp;
+                    fetch('/deleteSubTask', {  
+                        method: 'POST',
+                        headers: {
+                          "Content-Type": "application/json"
+                        }, 
+                        body: JSON.stringify(delete_data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data["status"]==200){
+                                let newTask = data["task"];
+                            }else{
+                                //alert("Task didn't added");
+                            }
+                        })
+                        .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                    
+                })
+
+             } 
+        })
+
+
     });
 
     taskInput.focus();
+    
 })
 
 
 let form = document.querySelector('form');
+let isReflectionNew = true;
 
 
 //load Task:
 window.onload = function(event){
-
-    //added by Jinhao Zhou
-    //get the user image of that day
-    
-    // fetch('/getImg', {  
-    //     method: 'GET',
-    //     headers: {
-    //       "Content-Type": "application/json"
-    //     }
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         if(data["status"]==200){
-    //             let image = document.querySelector(".tracker-image");
-    //             image.src = data["src"];
-    //         }else{
-    //             alert("no image data exist");
-    //         }
-    //     })
-    //     .catch((error) => {
-    //     console.error('Error:', error);
-    // });
-
-
     fetch('/getDailyTask', {  
         method: 'POST',
         headers: {
@@ -457,6 +501,11 @@ window.onload = function(event){
                 let text_box = document.getElementById("text-box");
                 //add each task into the box
                 tasks.forEach((tmp)=>{
+                    // skip reflections
+                    if (tmp["type"] === "reflection") {
+                        return;
+                    }
+                    console.log(tmp);
                     let task = document.createElement('task-list');
                     let taskInput = task.shadowRoot.querySelector('#tasks');
                     let taskForm = task.shadowRoot.querySelector('#form');
@@ -594,8 +643,45 @@ window.onload = function(event){
 
                         task.remove();
 
-                        // need to delete all of the subtasks from the database
-                        // get subtask based on idea, for each subtask delete from database
+                        fetch('/getSubTask', {  
+                            method: 'POST',
+                            headers: {
+                              "Content-Type": "application/json"
+                            }, 
+                            body: JSON.stringify({task_id: task.task_id})
+                            })
+                            .then(response => response.json())
+                            .then(subdata => {
+                             if(subdata["status"]==200){
+                                let subtasks = subdata["task"];
+                                subtasks.forEach((subTemp) => {
+                                    delete_data = subTemp;
+                                    fetch('/deleteSubTask', {  
+                                        method: 'POST',
+                                        headers: {
+                                          "Content-Type": "application/json"
+                                        }, 
+                                        body: JSON.stringify(delete_data)
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if(data["status"]==200){
+                                                let newTask = data["task"];
+                                            }else{
+                                                //alert("Task didn't added");
+                                            }
+                                        })
+                                        .catch((error) => {
+                                        console.error('Error:', error);
+                                    });
+                                    
+                                })
+                
+                             }
+                        })
+                        
+
+                        
                     });
 
 
@@ -623,9 +709,9 @@ window.onload = function(event){
                                     subTask.isNew = false;
                                     let subDelete = subTask.shadowRoot.querySelector("#delete");
 
-
+                                    let content = subTemp.content;
                                     subTask.isSubtask = true;
-                                    subTaskInput.value = "● ";
+                                    //subTaskInput.value = "● ";
                                     subTaskInput.addEventListener('change', ()=>{
                                         let oldData = subTemp;
                                         newData = {status:"daily",type:"task", content:content,date:date.toDateString(), task_id: subTask.task_id };
@@ -695,29 +781,28 @@ window.onload = function(event){
         });
 
     //load reflection
-    // fetch('/getDailyTask', {
-    //     method: 'POST',
-    //     headers: {
-    //         "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify({date: new Date().toDateString()})
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //     // if(data["status"]  == 200) {
-    //     //     let tasks = data["task"];
-    //     //     let content = document.getElementById("reflection-content");
-    
-    //     //     tasks.forEach((tmp) => {
-    //     //         if (tmp["type"] === "reflection") {
-    //     //             content.append(tmp["content"]);
-    //     //         }
-    //     //     });
-    //     //     if (document.getElementById("reflection").innerHTML.length > 0) {
-    //     //         document.getElementById("add-reflection").disabled = true;
-    //     //     }
-    //     // }
-    // });
+    fetch('/getDailyTask', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({date: new Date().toDateString()})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data["status"] == 200) {
+            //obtains the task list
+            let tasks = data["task"];
+            let reflect_box = document.getElementById("reflect-box");
+            
+            tasks.forEach((tmp) => {
+                if(tmp["type"] === "reflection") {
+                    document.getElementById("reflection").append(tmp["content"]);
+                    isReflectionNew = false;
+                }
+            })
+        }
+    });
 }
 
 // reflect_btn.addEventListener('click', (event) => {
@@ -772,7 +857,6 @@ upload.addEventListener("submit", (event)=>{
     let input = document.querySelector('input[type="file"]')
     let data = new FormData()
     data.append('file-to-upload', input.files[0]);
-
     fetch('/uploadImg', {
     method: 'POST',
     body: data
@@ -793,18 +877,104 @@ upload.addEventListener("submit", (event)=>{
 //reflection section
 let reflection = document.getElementById('reflection');
 let reflectionForm = document.querySelector('#reflect-box form')
-let isReflectionNew = true;
 
 reflection.addEventListener('change', ()=> {
     if(isReflectionNew == true){
         //create new reflection on back end
+        let content = reflection.value;
+        let date = new Date();
+        data = {status: "daily", type: "reflection", content: content, date: date.toDateString()};
+        fetch('/addTask', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data["status"] == 200) {
+                let newReflection = data["reflection"];
+            }
+            else {
+                alert("Reflection didn't add");
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
         console.log('reflection created by change');
-        isReflectionNew = false;
     } else {
         //update reflection on back end 
-        console.log('reflection updated by change');
+        fetch('/getDailyTask', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({date: new Date().toDateString()})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data["status"] == 200) {
+                let tasks = data["task"];
+                let oldData;
+                tasks.forEach((tmp) => {
+                    if(tmp["type"] === "reflection") {
+                        oldData = tmp;
+                    }
+                });
+                let content = document.getElementById("reflection").value;
+                let date = new Date();
+                newData = {status: "daily", type: "reflection", content: content, date: date.toDateString()};
+                if (newData["content"] === "") {
+                    delete_data = oldData;
+                    fetch('/deleteTask', {  
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json"
+                        }, 
+                        body: JSON.stringify(delete_data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data["status"]==200){
+                                let newReflection = data["reflection"];
+                            }else{
+                                alert("Task didn't added");
+                            }
+                        })
+                        .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                    console.log("successfully deleted reflection");
+                }
+                else {
+                    send_data = {old: oldData, new: newData};
+                    fetch('/updateTask', {
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(send_data)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data["status"]  == 200) {
+                            let newReflection = data["reflection"];
+                        }
+                        else {
+                            alert("Reflection didn't add");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                    console.log('reflection updated by change');
+                }
+            }
+        })
     }
-})
+});
 
 
 
@@ -847,4 +1017,6 @@ reflection.addEventListener('change', ()=> {
 //         });
 //     form.reset();
 // });
+
+
 

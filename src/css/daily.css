@@ -10,6 +10,8 @@ html,
 body {
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 /*Aligning the month on calendar*/
 #cal {
@@ -33,13 +35,22 @@ body {
   text-align: center;
 }
 
+.cal-body .day {
+  background: none;
+  border: none;
+}
+
+.cal-body .day:hover {
+  background: #5aa8979f;
+}
+
 /*Wrapper for all components*/
 #daily-tasks-wrapper {
   align-items: center;
   display: grid;
   grid-template-columns: 70% auto;
   grid-template-rows: 100%;
-  height: 95%;
+  flex-grow: 1;
   min-height: 700px;
   min-width: 900px;
 }
@@ -137,26 +148,31 @@ body {
 }
 
 /* formatting for home button itself */
-.home-button button {
+.nav-bar button {
   border: none;
   background: #5aa89742;
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 5px;
   padding-bottom: 5px;
-  margin: .5rem;
-  margin-left: 2rem;
+  margin-left: .5rem;
+  margin-right: .5rem;
+}
+
+.log{
+  padding: 1rem;
 }
 
 /* formatting for home button when hovered on  */
-.home-button button:hover {
+.nav-bar button:hover {
   background: #5aa8979f;
 }
 
-.home-button {
-  height: 5%;
+.nav-bar {
   display: flex;
-  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .header {

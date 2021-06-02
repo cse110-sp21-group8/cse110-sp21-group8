@@ -22,7 +22,7 @@ describe('Test: add Subtasks', () => {
   test('User add their own Sub task', done =>{
     //send the request
     //task_id: parent task id
-    sendData = {status:"daily", content:"SubTask Content", date:new Date().toDateString(),type:"task",task_id:"60aad95c93b4e511484c5333"};
+    sendData = {status:"daily", content:"SubTask Content", date:new Date().toDateString(),type:"task",task_id:"60aad95c93b4e511484c5333"};// "60aad95c93b4e511484c5333"
     request(app)
     .post("/addSubTask").send(sendData)
     .set('Accept', 'application/json')
@@ -89,7 +89,7 @@ describe('Test: fetch/get tasks', () => {
 
     test('User get their own daily task', done =>{
         //send the request
-        sendData = {status:"daily", date:"Sat May 22 2021"};
+        sendData = {status:"daily", date:"Sun May 30 2021"};
         request(app)
         .post("/getDailyTask").send(sendData)
         .set('Accept', 'application/json')
@@ -102,7 +102,7 @@ describe('Test: fetch/get tasks', () => {
     
     test('User get their own future task', done =>{
         //send the request
-        sendData = {status:"future"};
+        sendData = {status:"future", date:"Sun May 30 2021"};
         request(app)
         .post("/getFutureTask").send(sendData)
         .set('Accept', 'application/json')
@@ -114,7 +114,7 @@ describe('Test: fetch/get tasks', () => {
 
     test('User get their own monthly task', done =>{
         //send the request
-        sendData = {status:"monthly"};
+        sendData = {status:"monthly", date:new Date().getMonth()};
         request(app)
         .post("/getMonthlyTask").send(sendData)
         .set('Accept', 'application/json')
@@ -126,7 +126,7 @@ describe('Test: fetch/get tasks', () => {
 
     test('User get their own Custom task', done =>{
       //send the request
-      sendData = {};
+      sendData = {status:"monthly", date:"Sun May 30 2021"};
       request(app)
       .post("/getCustomTask").send(sendData)
       .set('Accept', 'application/json')
@@ -331,6 +331,7 @@ describe('Test: delete tasks', () => {
       done();
     });
   });
+
   test('User delete their own custom task', done =>{
     //send the request
     sendData = {sections:"Daily",title:"custome test 2",color:"Blue",tags:"important",date:new Date().toDateString(),content:"test content"};
@@ -344,3 +345,28 @@ describe('Test: delete tasks', () => {
   })
 })
 
+describe('Test: Custom Tags', () => {
+  test('User create custom tags', done =>{
+      //send the request
+      let sendData={name:"love"};
+      request(app)
+      .post("/addCustomTag").send(sendData)
+      .set('Accept', 'application/json')
+      .then(response => {
+        expect(response.body.user_status).toEqual(200);
+        done();
+      });
+  });
+
+  test('User get their custom tags', done =>{
+    //send the request
+    let sendData={};
+    request(app)
+    .post("/addCustomTag").send(sendData)
+    .set('Accept', 'application/json')
+    .then(response => {
+      expect(response.body.user_status).toEqual(200);
+      done();
+    });
+});
+});
