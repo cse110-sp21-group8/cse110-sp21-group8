@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "test": "jest --detectOpenHandles --coverage",
+    "test:integration": "jest -c jest-integration.config.js",
     "lint": "eslint ./src ",
     "doc": "jsdoc -c jsdoc.json"
   },
