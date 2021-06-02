@@ -35,7 +35,7 @@ describe('Future page tests:', () => {
       const password = await page.$('#password');
       await password.type('123');
       await page.click('button[type="submit"]');
-      await page.click('.widget-content button:nth-child(3)');
+      await page.click('#index > div.widget-content > button:nth-child(3)');
     });
 
     // User login and go to daily log page. Verify it is in daily log page
@@ -288,7 +288,7 @@ describe('Future page tests:', () => {
         
     });
 
-    describe('Future Page Navigation Test',()=>{
+    /*describe('Future Page Navigation Test',()=>{
         it('Test1: User click the Home button and go to the Home page:', async () => {
 
             await page.click('body > div.nav-bar > div > button:nth-child(1)');
@@ -354,5 +354,5 @@ describe('Future page tests:', () => {
             });
             expect(title).toBe('Future Log');
         });
-    })
+    })*/
 });
