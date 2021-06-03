@@ -40,10 +40,6 @@ body {
   border: none;
 }
 
-.cal-body .day:hover {
-  background: #5aa8979f;
-}
-
 /*Wrapper for all components*/
 #daily-tasks-wrapper {
   align-items: center;
