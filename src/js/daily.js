@@ -243,7 +243,7 @@ addButton.addEventListener('click', () => {
 
   /* Custom Tag Script */
   let tagList = document.getElementById('text-box').childNodes;
-  if (tagList[0].nodeName == 'TASK-LIST') {
+  if (tagList[0]&&tagList[0].nodeName == 'TASK-LIST') {
     let opts = tagList[0].shadowRoot.getElementById('tag-select').options;
 
     for (let i = 4; i < opts.length; i++) {
