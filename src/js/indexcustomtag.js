@@ -10,9 +10,8 @@ class ShowTag extends HTMLElement {
     </style> 
     <task-list></task-list>
     `;
-    this.attachShadow({ mode: 'open' });
+    this.attachShadow({mode: 'open'});
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
-
 }
 customElements.define('show-tag', ShowTag);
