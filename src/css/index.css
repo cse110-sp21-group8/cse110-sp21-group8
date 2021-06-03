@@ -239,6 +239,11 @@ p {
 
 }
 
+.cal-body .day {
+  background: none;
+  border: none;
+}
+
 /*Coral border on calendar*/
 #month {
   justify-content:space-evenly;

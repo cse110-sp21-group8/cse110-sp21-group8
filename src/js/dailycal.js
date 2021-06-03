@@ -37,10 +37,12 @@ let dayBtns = document.querySelectorAll(".day");
 dayBtns[currentDay + 6].style.background = "#5aa8979f";
 
 
-let curIdx = -1;
+let curIdx = currentDay + 6;
+let clickedBefore = false;
 for(let i = 7; i < dayBtns.length; i++) {
   dayBtns[i].addEventListener('click', () => {
     // change background color of selected day
+    clickedBefore = true;
     curIdx = i;
     dayBtns[i].style.background = "#5aa8979f";
     for(let j = 7; j < dayBtns.length; j++) {
