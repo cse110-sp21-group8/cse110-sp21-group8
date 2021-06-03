@@ -192,176 +192,164 @@ let form = document.querySelector('form');
 
 //load Task:
 window.onload = function(event){
-    fetch('/getDailyTask', {  
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"
-        }, 
-        body: JSON.stringify({date: new Date().toDateString()})
-        })
-        .then(response => response.json())
-        .then(data => {
+  fetch('/getDailyTask', {  
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json"
+    }, 
+    body: JSON.stringify({date: new Date().toDateString()})
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data["status"]==200){
+          //obtains the task list
+          let tasks = data["task"];
+          let text_box = document.getElementById("text-box");
+          //add each task into the box
+          tasks.forEach((tmp)=>{
+              console.log(tmp);
+              let task = document.createElement('task-list');
+              let taskInput = task.shadowRoot.querySelector('#tasks');
+              let taskForm = task.shadowRoot.querySelector('#form');
+              taskInput.value = tmp["content"];
+              task.isNew = false;
+
+              taskInput.addEventListener('focusout', (event)=> {
+                  event.preventDefault();
+                  //update task code here
+              });
+
+              taskForm.addEventListener('submit', (event)=>{
+                  event.preventDefault();
+                  //update task code here
+                  document.activeElement.blur();
+              })
+
+              let deleteButton = task.shadowRoot.querySelector('#delete');
+
+              deleteButton.addEventListener('click', () => {
+                  let index = Array.prototype.indexOf.call(text_box.children, task);
+                  delete_data = data.task[index];
+                  fetch('/deleteTask', {  
+                      method: 'POST',
+                      headers: {
+                        "Content-Type": "application/json"
+                      }, 
+                      body: JSON.stringify(delete_data)
+                      })
+                      .then(response => response.json())
+                      .then(data => {
+                          if(data["status"]==200){
+                              let newTask = data["task"];
+                          }else{
+                              // alert("Task didn't added");
+                          }
+                      })
+                      .catch((error) => {
+                      console.error('Error:', error);
+                  });
+
+                  task.remove();
+              });
+              if(tmp["status"] == "daily" && tmp["type"] != "reflection"){
+                  text_box.append(task);
+              }
+              
+          })
+
+      }else{
+          // alert("Task didn't added");
+      }
+
+      /* Custom Tag */ 
+      let tmp = data["task"][0];
+      let task = document.createElement('task-list');
+      let taskInput = task.shadowRoot.querySelector('#tasks');
+      taskInput.value = tmp["content"];
+      let tagOpts = task.shadowRoot.querySelector('#tag-select').options;
+      let buttonDiv = document.getElementById('tag-button');
+      for (let i = 1; i < tagOpts.length; i++){
+        let button = document.createElement('button');
+        button.type = "button";
+        button.innerHTML = tagOpts[i].innerHTML;
+        button.value = tagOpts[i].innerHTML;
+        buttonDiv.appendChild(button);
+        button.addEventListener('click', () => {
+          let collections = document.getElementById('tag-button');
+          while (collections.firstChild) {
+            collections.removeChild(collections.firstChild);
+          }
+          collections.className = 'show-tag';
+
+          fetch('/getDailyTask', {  
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json"
+            }, 
+            body: JSON.stringify({date: new Date().toDateString()})
+          })
+          .then(response => response.json())
+          .then(data => {
             if(data["status"]==200){
-                //obtains the task list
-                let tasks = data["task"];
-                let text_box = document.getElementById("text-box");
-                //add each task into the box
-                tasks.forEach((tmp)=>{
-                    console.log(tmp);
-                    let task = document.createElement('task-list');
-                    let taskInput = task.shadowRoot.querySelector('#tasks');
-                    let taskForm = task.shadowRoot.querySelector('#form');
-                    taskInput.value = tmp["content"];
-                    task.isNew = false;
+              //obtains the task list
+              let tasks = data["task"];
+              tasks.forEach((tmp)=>{
+                if(tmp.tag == button.value){
+                  let task = document.createElement('task-list');
+                  let taskInput = task.shadowRoot.querySelector('#tasks');
+                  let taskForm = task.shadowRoot.querySelector('#form');
+                  let tag = task.shadowRoot.querySelector('#tag-select');
+                  task.task_id = tmp._id;
+                  taskInput.value = tmp["content"];
+                  task.isNew = false;
 
-                    taskInput.addEventListener('focusout', (event)=> {
-                        event.preventDefault();
-                        //update task code here
-                    });
-
-                    taskForm.addEventListener('submit', (event)=>{
-                        event.preventDefault();
-                        //update task code here
-                        document.activeElement.blur();
-                    })
-
-                    let deleteButton = task.shadowRoot.querySelector('#delete');
-
-                    deleteButton.addEventListener('click', () => {
-                        let index = Array.prototype.indexOf.call(text_box.children, task);
-                        delete_data = data.task[index];
-                        fetch('/deleteTask', {  
-                            method: 'POST',
-                            headers: {
-                              "Content-Type": "application/json"
-                            }, 
-                            body: JSON.stringify(delete_data)
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if(data["status"]==200){
-                                    let newTask = data["task"];
-                                }else{
-                                   // alert("Task didn't added");
-                                }
-                            })
-                            .catch((error) => {
-                            console.error('Error:', error);
-                        });
-
-                        task.remove();
-                    });
-                    if(tmp["status"] == "daily" && tmp["type"] != "reflection"){
-                        text_box.append(task);
+                  //Load in the right tag
+                  console.log(tmp.tag);
+                  for(let i = 1; i < tag.options.length; i++){
+                    if(tag.options[i].value == tmp.tag){
+                      tag.selectedIndex = `${i}`;
                     }
-                    
-                });
-
-            }else{
-               // alert("Task didn't added");
-            }
-
-            /* Custom Tag */ 
-            let tmp = data["task"][0];
-            let task = document.createElement('task-list');
-            let taskInput = task.shadowRoot.querySelector('#tasks');
-            taskInput.value = tmp["content"];
-            let tagOpts = task.shadowRoot.querySelector('#tag-select').options;
-            let buttonDiv = document.getElementById('tag-button');
-            for (let i = 1; i < tagOpts.length; i++){
-              let button = document.createElement('button');
-              button.type = "button";
-              button.innerHTML = tagOpts[i].innerHTML;
-              button.value = tagOpts[i].innerHTML;
-              buttonDiv.appendChild(button);
-              button.addEventListener('click', () => {
-                let collections = document.getElementById('tag-button');
-                  while (collections.firstChild) {
-                    collections.removeChild(collections.firstChild);
                   }
-                  collections.className = 'show-tag';
 
-                  fetch('/getDailyTask', {  
-                    method: 'POST',
-                    headers: {
-                      "Content-Type": "application/json"
-                    }, 
-                    body: JSON.stringify({date: new Date().toDateString()})
-                  })
-                    .then(response => response.json())
-                    .then(data => {
-                        if(data["status"]==200){
-                            //obtains the task list
-                            let tasks = data["task"];
-                            tasks.forEach((tmp)=>{
-                             if(tmp.tag == button.value){
-                              let task = document.createElement('task-list');
-                              let taskInput = task.shadowRoot.querySelector('#tasks');
-                              let taskForm = task.shadowRoot.querySelector('#form');
-                              let tag = task.shadowRoot.querySelector('#tag-select');
-                              task.task_id = tmp._id;
-                              taskInput.value = tmp["content"];
-                              task.isNew = false;
-
-                              //Load in the right tag
-                              console.log(tmp.tag);
-                              for(let i = 1; i < tag.options.length; i++){
-                                if(tag.options[i].value == tmp.tag){
-                                  tag.selectedIndex = `${i}`;
-                                }
-                              }
-
-                              //Load in the right task type
-                              let taskType = task.shadowRoot.querySelector('#checklist-select');
-                              for(let i = 1; i < taskType.options.length; i++){
-                                if(taskType.options[i].value == tmp.type){
-                                  taskType.selectedIndex = `${i}`;
-                                }
-                              }
-                               collections.append(task);
-                             }
-                            }); 
-                        }
-                    });
-
-                    });
+                  //Load in the right task type
+                  let taskType = task.shadowRoot.querySelector('#checklist-select');
+                  for(let i = 1; i < taskType.options.length; i++){
+                    if(taskType.options[i].value == tmp.type){
+                      taskType.selectedIndex = `${i}`;
+                    }
+                  }
+                  collections.append(task);
                 }
+              }); 
             }
+          });
 
-            //Go Back to Collections
-            let header = document.getElementById('collect-h');
-            header.addEventListener('click', () => {
-              let collections = document.getElementById('tag-button');
-              while (collections.firstChild) {
-                collections.removeChild(collections.firstChild);
-              }
-              collections.className = 'widget-content';
-              for (let i = 1; i < tagOpts.length; i++){
-                let button = document.createElement('button');
-                button.type = "button";
-                button.innerHTML = tagOpts[i].innerHTML;
-                button.value = tagOpts[i].innerHTML;
-                buttonDiv.appendChild(button);
-              }
-
-            })
-            /* */
+          //});
         })
-        .catch((error) => {
-        console.error('Error:', error);
+      }
+
+      //Go Back to Collections
+      let header = document.getElementById('collect-h');
+      header.addEventListener('click', () => {
+        let collections = document.getElementById('tag-button');
+        while (collections.firstChild) {
+          collections.removeChild(collections.firstChild);
+        }
+        collections.className = 'widget-content';
+        for (let i = 1; i < tagOpts.length; i++){
+          let button = document.createElement('button');
+          button.type = "button";
+          button.innerHTML = tagOpts[i].innerHTML;
+          button.value = tagOpts[i].innerHTML;
+          buttonDiv.appendChild(button);
+        }
+      });
+      /* */
+    })
+    .catch((error) => {
+      console.error('Error:', error);
     });
-};      
-
-
-
-
-
-
-
-
-
-
-
+};
 
 //add tasks:
 // form.addEventListener('submit', (event)=>{
