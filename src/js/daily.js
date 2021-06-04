@@ -34,9 +34,6 @@ addTagButton.addEventListener('click', ()=>{
     }
   });
 
-  customForm.addEventListener('submit', (event) =>{
-    event.preventDefault();
-  });
 });
 
 let selectedTask;
@@ -346,69 +343,6 @@ addButton.addEventListener('click', ()=> {
 
     });
 
-    let taskForm = task.shadowRoot.querySelector('#form');
-
-    taskForm.addEventListener('submit', (event)=>{
-        
-        event.preventDefault();
-        if(task.isNew){
-            console.log('focus out');
-            //Put task, event, note drop down menu
-            let content = taskInput.value;
-            let date = new Date();
-            console.log(date.toLocaleString());
-            console.log(content);
-            //type: task, events, reminders.
-            data = {status:"daily",type:"task", content:content,date:date.toDateString()};
-            fetch('/addTask', {  
-                method: 'POST',
-                headers: {
-                  "Content-Type": "application/json"
-                }, 
-                body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    task.date = data.date;
-                    task.task_id = data.task._id;
-                    if(data["status"]==200){
-                        let newTask = data["task"];
-                    }else{
-                        alert("Task didn't added");
-                    }
-                })
-                .catch((error) => {
-                console.error('Error:', error);
-                });
-            task.isNew = false;
-        } else {
-            let oldData = data;
-            let content = taskInput.value;
-            let date = new Date();
-            data = {status:"daily",type:"task", content:content,date:date.toDateString()};
-            let newData = data;
-            send_data = {old:oldData, new:newData}; 
-            fetch('/updateTask', {  
-                method: 'POST',
-                headers: {
-                  "Content-Type": "application/json"
-                }, 
-                body: JSON.stringify(send_data)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if(data["status"]==200){
-                        let newTask = data["task"];
-                    }else{
-                       // alert("Task didn't added");
-                    }
-                })
-                .catch((error) => {
-                console.error('Error:', error);
-            });
-        }
-        document.activeElement.blur();
-    });
 
     let deleteButton = task.shadowRoot.querySelector('#delete');
 
@@ -582,7 +516,7 @@ window.onload = function(event){
                         });*/
                     })
 
-                    taskInput.addEventListener('change', (event)=> {
+                    taskInput.addEventListener('focusout', (event)=> {
                         event.preventDefault();
                         let index = Array.prototype.indexOf.call(text_box.children, task);
                         let oldData = data.task[index];
@@ -611,11 +545,6 @@ window.onload = function(event){
 
                     });
 
-                    taskForm.addEventListener('submit', (event)=>{
-                        event.preventDefault();
-                        //update task code here
-                        document.activeElement.blur();
-                    })
 
                     let deleteButton = task.shadowRoot.querySelector('#delete');
 
@@ -712,7 +641,7 @@ window.onload = function(event){
                                     let content = subTemp.content;
                                     subTask.isSubtask = true;
                                     //subTaskInput.value = "● ";
-                                    subTaskInput.addEventListener('change', ()=>{
+                                    subTaskInput.addEventListener('focusout', ()=>{
                                         let oldData = subTemp;
                                         newData = {status:"daily",type:"task", content:content,date:date.toDateString(), task_id: subTask.task_id };
                                         send_data = {old:oldData, new:newData}; 
@@ -736,11 +665,6 @@ window.onload = function(event){
                                         });
                                     });
                         
-                                    subTaskForm.addEventListener('submit', (event) => {
-                                        event.preventDefault();
-                                        //update task gere in backend
-                                        document.activeElement.blur();                     
-                                    })
 
                                     subDelete.addEventListener('click',() => {
                                         delete_data = subTemp;

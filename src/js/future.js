@@ -356,7 +356,7 @@ window.onload = function(event){
 
                                     subTask.isSubtask = true;
                                     //subTaskInput.value = "● ";
-                                    subTaskInput.addEventListener('change', ()=>{
+                                    subTaskInput.addEventListener('focusout', ()=>{
                                         let oldData = subTemp;
                                         newData = {status:"future",type:"task", content:content,date:date.toDateString(), task_id: subTask.task_id };
                                         send_data = {old:oldData, new:newData}; 
@@ -380,11 +380,6 @@ window.onload = function(event){
                                         });
                                     });
                         
-                                    subTaskForm.addEventListener('submit', (event) => {
-                                        event.preventDefault();
-                                        //update task gere in backend
-                                        document.activeElement.blur();                     
-                                    })
 
                                     subDelete.addEventListener('click',() => {
                                         delete_data = subTemp;
