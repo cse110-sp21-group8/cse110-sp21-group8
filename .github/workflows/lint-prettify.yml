@@ -18,5 +18,9 @@ jobs:
     - name: Install modules
       run: yarn install
     - run: yarn lint --fix
+    - name: Auto-commit formatting results
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Auto-format according to coding guidelines
 
 
