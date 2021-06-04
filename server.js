@@ -1,3 +1,6 @@
+//get environment variables
+require('dotenv').config();
+
 //express server setup
 const express = require('express');
 const app = express();
@@ -219,27 +222,27 @@ let User = mongoose.model('User', UserSchema);
 function createUser(data,res,req){
   //Remote Cloud Database address:
   //Url:mongodb+srv://CSE110:CSE110@cluster0.1sq34.mongodb.net/cse110_group8?retryWrites=true&w=majority
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const Users = conn.model('User', UserSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert the ner user or user signup
-    let newUser = new User(data);
+    let newUser = new Users(data);
     //Find if there is any exist username
-    User.find({username:data['username']}, function (err, result) {
+    Users.find({username:data['username']}, function (err, result) {
       if (err) return console.error(err);
       if (result.length > 0){
         console.log("User already exist");
         exist = true;
         res.send({ user_status: 400 });
-        mongoose_db.close();
+        conn.close();
       }else{
         newUser.save(function (err, result) {
           if (err) return console.error(err);
           req.session.uid = result["_id"].toString();
           console.log("User signup successfully");
           res.send({ user_status: 200 });
-          mongoose_db.close();
+          conn.close();
         });
       }
     });
@@ -247,12 +250,12 @@ function createUser(data,res,req){
 }
 
 function verifyUser(data,res, req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let  mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const Users = conn.model('User', UserSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert the ner user or user signup
-    User.find(data, function (err, one) {
+    Users.find(data, function (err, one) {
       if (err) return console.error(err);
       console.log(one);
       if(one.length>0){
@@ -261,7 +264,7 @@ function verifyUser(data,res, req){
       }else{
         res.send({ user_status: 404 });
       }
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
@@ -277,20 +280,20 @@ let TaskSchema = new mongoose.Schema({
 let Task = mongoose.model('Task', TaskSchema);
 
 function addTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const Tasks = conn.model('Task', TaskSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert new task into the database
     //add the user id into the data
     data["user"] = req.session.uid;
     console.log(data);
-    let newTask = new Task(data);
+    let newTask = new Tasks(data);
     newTask.save(function (err, result) {
       if (err) return console.error(err);
       console.log("Task added successfully");
       res.send({ status: 200, task: result});
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
@@ -298,10 +301,10 @@ function addTask(data,res,req){
 //data formate: {old:old_data,new:new_data}
 //Call the UpdateCustomTask functions to update the tasks list
 function UpdateTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const Tasks = conn.model('Task', TaskSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert new task into the database
     //add the user id into the data
     let old_data = data["old"];
@@ -309,29 +312,29 @@ function UpdateTask(data,res,req){
 
     old_data["user"] = req.session.uid;
 
-    Task.updateOne(old_data,new_data,function (err, result) {
+    Tasks.updateOne(old_data,new_data,function (err, result) {
       if (err) return console.error(err);
       console.log("Task List Updated successfully");
       res.send({ status: 200, task: data});
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
 
 //Call the DeleteTask functions to delete the tasks list
 function DeleteTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const Tasks = conn.model('Task', TaskSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert new task into the database
     //add the user id into the data
     data["user"] =req.session.uid;
-    Task.deleteOne(data, function (err, result) {
+    Tasks.deleteOne(data, function (err, result) {
       if (err) return console.error(err);
       console.log("Tasks list deleted successfully");
       res.send({ status: 200});
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
@@ -340,12 +343,12 @@ function DeleteTask(data,res,req){
 //data: specify which date is it:
 //for example: {date: 'Sun May 16 2021' }
 function getDailyTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let  mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const Tasks = conn.model('Task', TaskSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert the ner user or user signup
-    Task.find(data, function (err, result) {
+    Tasks.find(data, function (err, result) {
       if (err) return console.error(err);
       console.log("get:",result);
       if(result.length>0){
@@ -353,18 +356,18 @@ function getDailyTask(data,res,req){
       }else{
         res.send({ status: 404 });
       }
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
 
 function getMonthlyTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let  mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const Tasks = conn.model('Task', TaskSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert the ner user or user signup
-    Task.find(data, function (err, result) {
+    Tasks.find(data, function (err, result) {
       if (err) return console.error(err);
       console.log("get:",result);
       if(result.length>0){
@@ -372,18 +375,18 @@ function getMonthlyTask(data,res,req){
       }else{
         res.send({ status: 404 });
       }
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
 
 function getFutureTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let  mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const Tasks = conn.model('Task', TaskSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert the ner user or user signup
-    Task.find(data, function (err, result) {
+    Tasks.find(data, function (err, result) {
       if (err) return console.error(err);
       console.log("get:",result);
       if(result.length>0){
@@ -391,7 +394,7 @@ function getFutureTask(data,res,req){
       }else{
         res.send({ status: 404 });
       }
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
@@ -411,58 +414,58 @@ let Custom = mongoose.model('Custom', CustomSchema);
 
 //Call the addCustomTask functions to add the custom logs
 function addCustomTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const Customs = conn.model('Custom', CustomSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert new task into the database
     //add the user id into the data
     data["user"] = req.session.uid;
-    let newCustom = new Custom(data);
+    let newCustom = new Customs(data);
     newCustom.save(function (err, result) {
       if (err) return console.error(err);
       console.log("Custom Log added successfully");
       res.send({ status: 200, task: data});
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
 
 //Call the delete CustomTask functions to delete the custom logs
 function DeleteCustomTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const Customs = conn.model('Custom', CustomSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert new task into the database
     //add the user id into the data
     data["user"] = req.session.uid;
-    Custom.deleteOne(data, function (err, result) {
+    Customs.deleteOne(data, function (err, result) {
       if (err) return console.error(err);
       console.log("Custom Log deleted successfully");
       res.send({ status: 200});
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
 
 //Call the UpdateCustomTask functions to update the custom logs
 function UpdateCustomTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const Customs = conn.model('Custom', CustomSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert new task into the database
     //add the user id into the data
     let old_data = data["old"];
     let new_data = data["new"];
     old_data["user"] = req.session.uid;
 
-    Custom.updateOne(old_data,new_data,function (err, result) {
+    Customs.updateOne(old_data,new_data,function (err, result) {
       if (err) return console.error(err);
       console.log("Custom Log Updated successfully");
       res.send({ status: 200, task: data});
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
@@ -471,13 +474,13 @@ function UpdateCustomTask(data,res,req){
 //data: specify which date is it:
 //for example: {date: 'Sun May 16 2021' }
 function getCustomTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let  mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const Customs = conn.model('Custom', CustomSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert the ner user or user signup
     data["user"] = req.session.uid;
-    Custom.find(data, function (err, result) {
+    Customs.find(data, function (err, result) {
       if (err) return console.error(err);
       console.log(result);
       if(result.length>0){
@@ -485,7 +488,7 @@ function getCustomTask(data,res,req){
       }else{
         res.send({ status: 404 });
       }
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
@@ -539,18 +542,18 @@ app.post('/deleteSubTask', function (req, res) {
 
 
 function addSubTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const SubTasks = conn.model('SubTask', SubTaskSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert new task into the database
     //add the user id into the data
-    let newSubTask = new SubTask(data);
+    let newSubTask = new SubTasks(data);
     newSubTask.save(function (err, result) {
       if (err) return console.error(err);
       console.log("SubTask added successfully");
       res.send({ status: 200, Subtask: data});
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
@@ -560,12 +563,12 @@ function addSubTask(data,res,req){
 //data: specify which date is it:
 //for example: {date: 'Sun May 16 2021' }
 function getSubTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let  mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const SubTasks = conn.model('SubTask', SubTaskSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert the ner user or user signup
-    SubTask.find(data, function (err, result) {
+    SubTasks.find(data, function (err, result) {
       if (err) return console.error(err);
       console.log("getSub tasks:",result);
       if(result.length>0){
@@ -574,7 +577,7 @@ function getSubTask(data,res,req){
       }else{
         res.send({ status: 404 });
       }
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
@@ -583,10 +586,10 @@ function getSubTask(data,res,req){
 //data formate: {old:old_data,new:new_data}
 //Call the UpdateSubTask functions to update the sub tasks list
 function UpdateSubTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const SubTasks = conn.model('SubTask', SubTaskSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert new task into the database
     //add the user id into the data
     let old_data = data["old"];
@@ -594,11 +597,11 @@ function UpdateSubTask(data,res,req){
 
     old_data["user"] = req.session.uid;
 
-    SubTask.updateOne(old_data,new_data,function (err, result) {
+    SubTasks.updateOne(old_data,new_data,function (err, result) {
       if (err) return console.error(err);
       console.log("SubTask List Updated successfully");
       res.send({ status: 200, task: data});
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
@@ -606,17 +609,17 @@ function UpdateSubTask(data,res,req){
 
 //Call the DeleteTask functions to delete the tasks list
 function DeleteSubTask(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const SubTasks = conn.model('SubTask', SubTaskSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert new task into the database
     //add the user id into the data
-    SubTask.deleteOne(data, function (err, result) {
+    SubTasks.deleteOne(data, function (err, result) {
       if (err) return console.error(err);
       console.log("SubTasks deleted successfully");
       res.send({ status: 200});
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
@@ -647,10 +650,10 @@ console.log('Got Custom tag body:', data);
 })
 
 function getCustomTag(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let  mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const CustomTags = conn.model('CustomTags', CustomTagSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert the ner user or user signup
     CustomTags.find(data, function (err, result) {
       if (err) return console.error(err);
@@ -660,16 +663,16 @@ function getCustomTag(data,res,req){
       }else{
         res.send({ status: 404 });
       }
-      mongoose_db.close();
+      conn.close();
     });
   });
 }
 
 function addCustomTag(data,res,req){
-  mongoose.connect('mongodb://localhost/cse110', {useNewUrlParser: true, useUnifiedTopology: true});
-  let mongoose_db = mongoose.connection;
-  mongoose_db.on('error', console.error.bind(console, 'connection error:'));
-  mongoose_db.once('open', function(){
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true,poolSize: 10});
+  const CustomTags = conn.model('CustomTags', CustomTagSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function(){
     // insert new task into the database
     //add the user id into the data
     let newCustomTag = new CustomTags(data);
@@ -677,7 +680,7 @@ function addCustomTag(data,res,req){
       if (err) return console.error(err);
       console.log("SubTask added successfully");
       res.send({ status: 200, tags: result});
-      mongoose_db.close();
+      conn.close();
     });
   });
 }

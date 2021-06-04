@@ -516,7 +516,7 @@ window.onload = function(event){
                         });*/
                     })
 
-                    taskInput.addEventListener('focusout', (event)=> {
+                    taskInput.addEventListener('change', (event)=> {
                         event.preventDefault();
                         let index = Array.prototype.indexOf.call(text_box.children, task);
                         let oldData = data.task[index];
@@ -641,7 +641,7 @@ window.onload = function(event){
                                     let content = subTemp.content;
                                     subTask.isSubtask = true;
                                     //subTaskInput.value = "● ";
-                                    subTaskInput.addEventListener('focusout', ()=>{
+                                    subTaskInput.addEventListener('change', ()=>{
                                         let oldData = subTemp;
                                         newData = {status:"daily",type:"task", content:content,date:date.toDateString(), task_id: subTask.task_id };
                                         send_data = {old:oldData, new:newData}; 
@@ -665,6 +665,7 @@ window.onload = function(event){
                                         });
                                     });
                         
+
 
                                     subDelete.addEventListener('click',() => {
                                         delete_data = subTemp;
