@@ -1,3 +1,5 @@
+/* global document, fetch, window */
+
 let Adding = document.getElementById('Adding');
 let Updating = document.getElementById('Updating');
 let Deleting = document.getElementById('Deleting');
@@ -99,7 +101,7 @@ Deleting.addEventListener('click', () => {
 });
 
 //load Task:
-window.onload = function (event) {
+window.onload = function () {
   fetch('/getCustomTask', {
     method: 'POST',
     headers: {
