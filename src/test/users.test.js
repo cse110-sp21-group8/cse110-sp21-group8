@@ -28,7 +28,7 @@ describe('Test user signup', () => {
 
   test('User sign up with existing username, should return status code 400', (done) => {
     //generating random data
-    let sendData = {username: 'admin@gmail.com', password: '123', name: 'test'};
+    let sendData = {username: 'test', password: '123', name: 'test'};
     //send the request
     request(app)
       .post('/user_signup')
@@ -44,7 +44,7 @@ describe('Test user signup', () => {
 describe('Test user Login', () => {
   test('User login successfully with correct password and username', (done) => {
     //send the request
-    let sendData = {username: 'admin@gmail.com', password: '123456'};
+    let sendData = {username: 'test', password: '123'};
     request(app)
       .post('/user_login')
       .send(sendData)
@@ -57,7 +57,7 @@ describe('Test user Login', () => {
 
   test('User sign in with incorrect username and password, should return status code 404', (done) => {
     //generating random data
-    let sendData = {username: 'adming@gmail.com', password: '12'};
+    let sendData = {username: 'test', password: '12'};
     //send the request
     request(app)
       .post('/user_login')

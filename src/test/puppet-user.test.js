@@ -2,8 +2,8 @@
 //Puppeter End to End User test.
 describe('User test:', () => {
   beforeAll(async () => {
-    jest.setTimeout(35000);
-    await page.goto('http://localhost:8080');
+    //jest.setTimeout(35000);
+    await page.goto('http://localhost:8080/login');
   });
   // User login by entering the correct password and password: verify by the home page title
   it('Test1: User login by entering the correct password and password', async () => {

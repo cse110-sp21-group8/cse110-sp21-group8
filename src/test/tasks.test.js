@@ -9,7 +9,7 @@ const request = require('supertest');
 describe('Test: add Subtasks', () => {
   test('User login successfully with correct password and username', (done) => {
     //send the request
-    let sendData = {username: 'admin@gmail.com', password: '123456'};
+    let sendData = {username: 'test', password: '123'};
     request(app)
       .post('/user_login')
       .send(sendData)
@@ -35,6 +35,20 @@ describe('Test: add Subtasks', () => {
       .set('Accept', 'application/json')
       .then((response) => {
         expect(response.body.status).toEqual(200);
+        done();
+      });
+  });
+  test('User get Sub task for one upper task', (done) => {
+    //send the request
+    sendData = {task_id: '60aad95c93b4e511484c5333'};
+    request(app)
+      .post('/getSubTask')
+      .send(sendData)
+      .set('Accept', 'application/json')
+      .then((response) => {
+        let tasks = response.body.task;
+        expect(response.body.status).toEqual(200);
+        expect(tasks.length).toEqual(3);
         done();
       });
   });
@@ -87,94 +101,11 @@ describe('Test: add Subtasks', () => {
         done();
       });
   });
-
-  test('User get Sub task for one upper task', (done) => {
-    //send the request
-    sendData = {task_id: '60aad95c93b4e511484c5333'};
-    request(app)
-      .post('/getSubTask')
-      .send(sendData)
-      .set('Accept', 'application/json')
-      .then((response) => {
-        let tasks = response.body.task;
-        expect(response.body.status).toEqual(200);
-        expect(tasks.length).toEqual(3);
-        done();
-      });
-  });
 });
-
-describe('Test: fetch/get tasks', () => {
-  test('User login successfully with correct password and username', (done) => {
-    //send the request
-    let sendData = {username: 'admin@gmail.com', password: '123456'};
-    request(app)
-      .post('/user_login')
-      .send(sendData)
-      .set('Accept', 'application/json')
-      .then((response) => {
-        expect(response.body.user_status).toEqual(200);
-        done();
-      });
-  });
-
-  test('User get their own daily task', (done) => {
-    //send the request
-    sendData = {status: 'daily', date: 'Sun May 30 2021'};
-    request(app)
-      .post('/getDailyTask')
-      .send(sendData)
-      .set('Accept', 'application/json')
-      .then((response) => {
-        expect(response.body.status).toEqual(200);
-        done();
-      });
-  });
-
-  test('User get their own future task', (done) => {
-    //send the request
-    sendData = {status: 'future', date: 'Sun May 30 2021'};
-    request(app)
-      .post('/getFutureTask')
-      .send(sendData)
-      .set('Accept', 'application/json')
-      .then((response) => {
-        expect(response.body.status).toEqual(200);
-        done();
-      });
-  });
-
-  test('User get their own monthly task', (done) => {
-    //send the request
-    sendData = {status: 'monthly', date: new Date().getMonth()};
-    request(app)
-      .post('/getMonthlyTask')
-      .send(sendData)
-      .set('Accept', 'application/json')
-      .then((response) => {
-        expect(response.body.status).toEqual(200);
-        done();
-      });
-  });
-
-  test('User get their own Custom task', (done) => {
-    //send the request
-    sendData = {status: 'monthly', date: 'Sun May 30 2021'};
-    request(app)
-      .post('/getCustomTask')
-      .send(sendData)
-      .set('Accept', 'application/json')
-      .then((response) => {
-        expect(response.body.status).toEqual(200);
-        done();
-      });
-  });
-});
-
 describe('Test: add tasks', () => {
   test('User login successfully with correct password and username', (done) => {
     //send the request
-    let sendData = {username: 'admin@gmail.com', password: '123456'};
+    let sendData = {username: 'test', password: '123'};
     request(app)
       .post('/user_login')
       .send(sendData)
@@ -225,7 +156,7 @@ describe('Test: add tasks', () => {
     sendData = {
       status: 'monthly',
       type: 'task',
-      date: new Date().toDateString(),
+      date: new Date().getMonth(),
       content: 'test content'
     };
     request(app)
@@ -259,10 +190,77 @@ describe('Test: add tasks', () => {
   });
 });
 
+describe('Test: fetch/get tasks', () => {
+  test('User login successfully with correct password and username', (done) => {
+    //send the request
+    let sendData = {username: 'test', password: '123'};
+    request(app)
+      .post('/user_login')
+      .send(sendData)
+      .set('Accept', 'application/json')
+      .then((response) => {
+        expect(response.body.user_status).toEqual(200);
+        done();
+      });
+  });
+
+  test('User get their own daily task', (done) => {
+    //send the request
+    sendData = {status: 'daily', date: new Date().toDateString()};
+    request(app)
+      .post('/getDailyTask')
+      .send(sendData)
+      .set('Accept', 'application/json')
+      .then((response) => {
+        expect(response.body.status).toEqual(200);
+        done();
+      });
+  });
+
+  test('User get their own future task', (done) => {
+    //send the request
+    sendData = {status: 'future', date: new Date().toDateString()};
+    request(app)
+      .post('/getFutureTask')
+      .send(sendData)
+      .set('Accept', 'application/json')
+      .then((response) => {
+        expect(response.body.status).toEqual(200);
+        done();
+      });
+  });
+
+  test('User get their own monthly task', (done) => {
+    //send the request
+    sendData = {status: 'monthly', date: new Date().getMonth()};
+    request(app)
+      .post('/getMonthlyTask')
+      .send(sendData)
+      .set('Accept', 'application/json')
+      .then((response) => {
+        expect(response.body.status).toEqual(200);
+        done();
+      });
+  });
+
+  test('User get their own Custom task', (done) => {
+    //send the request
+    sendData = {date: new Date().toDateString()};
+    request(app)
+      .post('/getCustomTask')
+      .send(sendData)
+      .set('Accept', 'application/json')
+      .then((response) => {
+        expect(response.body.status).toEqual(200);
+        done();
+      });
+  });
+});
+
 describe('Test: edit tasks', () => {
   test('User login successfully with correct password and username', (done) => {
     //send the request
-    let sendData = {username: 'admin@gmail.com', password: '123456'};
+    let sendData = {username: 'test', password: '123'};
     request(app)
       .post('/user_login')
       .send(sendData)
@@ -398,7 +396,7 @@ describe('Test: edit tasks', () => {
 describe('Test: delete tasks', () => {
   test('User login successfully with correct password and username', (done) => {
     //send the request
-    let sendData = {username: 'admin@gmail.com', password: '123456'};
+    let sendData = {username: 'test', password: '123'};
     request(app)
       .post('/user_login')
       .send(sendData)
@@ -483,6 +481,7 @@ describe('Test: delete tasks', () => {
   });
 });
 
+
 describe('Test: Custom Tags', () => {
   test('User create custom tags', (done) => {
     //send the request
@@ -492,7 +491,7 @@ describe('Test: Custom Tags', () => {
       .send(sendData)
       .set('Accept', 'application/json')
       .then((response) => {
-        expect(response.body.user_status).toEqual(200);
+        expect(response.body.status).toEqual(200);
         done();
       });
   });
@@ -505,7 +504,7 @@ describe('Test: Custom Tags', () => {
       .send(sendData)
       .set('Accept', 'application/json')
       .then((response) => {
-        expect(response.body.user_status).toEqual(200);
+        expect(response.body.status).toEqual(200);
         done();
       });
   });
