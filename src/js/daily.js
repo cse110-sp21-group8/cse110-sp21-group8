@@ -2,7 +2,6 @@ let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
 let reflect_btn = document.querySelector('#add-reflection');
 
-
 /* Custom Tag Script */ 
 let addTagButton = document.getElementById('add-tag').firstElementChild;
 let tagTracker = document.getElementById('tracker-box');
@@ -48,12 +47,22 @@ document.addEventListener('click', (event) => {
       console.log("hola");
       let tagType = selectedTask.value;
       selectedTask.task_tag = tagType;
+
+      let dayBtns = document.querySelectorAll(".day");
+      let curDay;
+      for (let i = 7; i < dayBtns.length; i++) {
+        if (dayBtns[i].style.background === "rgba(90, 168, 151, 0.624)") {
+            curDay = dayBtns[i].innerHTML;
+            break;
+        }
+      }
+      let date = new Date();
+      let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
       
       let data;
       let oldData = data;
       let content = selectedTask.parentElement.querySelector('#tasks').value;
-      let date = new Date();
-      data = {status:"daily",type:"task", content:content,date:date.toDateString(), tag:selectedTask.task_tag};
+      data = {status:"daily",type:"task", content:content,date:oldData["date"], tag:selectedTask.task_tag};
       let newData = data;
       send_data = {old:oldData, new:newData}; 
       console.log(newData);
@@ -225,7 +234,7 @@ addButton.addEventListener('click', ()=> {
 
     /* Custom Tag Script */ 
     let tagList = document.getElementById('text-box').childNodes;
-    if(tagList[0].nodeName == "TASK-LIST"){
+    if(tagList[0] !== undefined && tagList[0].nodeName == "TASK-LIST"){
       let opts = tagList[0].shadowRoot.getElementById('tag-select').options;
 
       for(let i = 4; i < opts.length; i++){
@@ -273,6 +282,18 @@ addButton.addEventListener('click', ()=> {
 
 
     taskInput.addEventListener('focusout', (event)=> {
+
+        let dayBtns = document.querySelectorAll(".day");
+        let curDay;
+        for (let i = 7; i < dayBtns.length; i++) {
+            if (dayBtns[i].style.background === "rgba(90, 168, 151, 0.624)") {
+                curDay = dayBtns[i].innerHTML;
+                break;
+            }
+        }
+        let date = new Date();
+        let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
+
         if(task.isNew){
             console.log('focus out');
             event.preventDefault();
@@ -282,8 +303,9 @@ addButton.addEventListener('click', ()=> {
             let date = new Date();
             console.log(date.toLocaleString());
             console.log(content);
+
             //type: task, events, reminders.
-            data = {status:"daily",type:"task", content:content,date:date.toDateString()};
+            data = {status:"daily",type:"task", content:content,date:curDate.toDateString()};
             fetch('/addTask', {  
                 method: 'POST',
                 headers: {
@@ -310,7 +332,7 @@ addButton.addEventListener('click', ()=> {
             let oldData = data;
             let content = taskInput.value;
             let date = new Date();
-            data = {status:"daily",type:"task", content:content,date:date.toDateString()};
+            data = {status:"daily",type:"task", content:content,date:curDate.toDateString()};
             let newData = data;
             send_data = {old:oldData, new:newData}; 
             fetch('/updateTask', {  
@@ -339,6 +361,17 @@ addButton.addEventListener('click', ()=> {
     let taskForm = task.shadowRoot.querySelector('#form');
 
     taskForm.addEventListener('submit', (event)=>{
+
+        let dayBtns = document.querySelectorAll(".day");
+        let curDay;
+        for (let i = 7; i < dayBtns.length; i++) {
+            if (dayBtns[i].style.background === "rgba(90, 168, 151, 0.624)") {
+                curDay = dayBtns[i].innerHTML;
+                break;
+            }
+        }
+        let date = new Date();
+        let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
         
         event.preventDefault();
         if(task.isNew){
@@ -349,7 +382,7 @@ addButton.addEventListener('click', ()=> {
             console.log(date.toLocaleString());
             console.log(content);
             //type: task, events, reminders.
-            data = {status:"daily",type:"task", content:content,date:date.toDateString()};
+            data = {status:"daily",type:"task", content:content,date:curDate.toDateString()};
             fetch('/addTask', {  
                 method: 'POST',
                 headers: {
@@ -374,7 +407,7 @@ addButton.addEventListener('click', ()=> {
             let oldData = data;
             let content = taskInput.value;
             let date = new Date();
-            data = {status:"daily",type:"task", content:content,date:date.toDateString()};
+            data = {status:"daily",type:"task", content:content,date:curDate.toDateString()};
             let newData = data;
             send_data = {old:oldData, new:newData}; 
             fetch('/updateTask', {  
@@ -717,6 +750,17 @@ window.onload = function(event){
         .catch((error) => {
             console.error('Error:', error);
         });
+    
+    let dayBtns = document.querySelectorAll(".day");
+    let curDay;
+    for (let i = 7; i < dayBtns.length; i++) {
+        if (dayBtns[i].style.background === "rgba(90, 168, 151, 0.624)") {
+            curDay = dayBtns[i].innerHTML;
+            break;
+        }
+     }
+    let date = new Date();
+    let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
 
     //load reflection
     fetch('/getDailyTask', {
@@ -724,7 +768,7 @@ window.onload = function(event){
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({date: new Date().toDateString()})
+        body: JSON.stringify({date: curDate.toDateString()})
     })
     .then(response => response.json())
     .then(data => {
@@ -817,11 +861,21 @@ let reflection = document.getElementById('reflection');
 let reflectionForm = document.querySelector('#reflect-box form')
 
 reflection.addEventListener('change', ()=> {
-    if(isReflectionNew == true){
+    let dayBtns = document.querySelectorAll(".day");
+    let curDay;
+    for (let i = 7; i < dayBtns.length; i++) {
+        if (dayBtns[i].style.background === "rgba(90, 168, 151, 0.624)") {
+            curDay = dayBtns[i].innerHTML;
+            break;
+        }
+    }
+    let date = new Date();
+    let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
+    if(document.getElementById("reflection").innerHTML === ""){
         //create new reflection on back end
         let content = reflection.value;
         let date = new Date();
-        data = {status: "daily", type: "reflection", content: content, date: date.toDateString()};
+        data = {status: "daily", type: "reflection", content: content, date: curDate.toDateString()};
         fetch('/addTask', {
             method: 'POST',
             headers: {
@@ -849,7 +903,7 @@ reflection.addEventListener('change', ()=> {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({date: new Date().toDateString()})
+            body: JSON.stringify({date: curDate.toDateString()})
         })
         .then(response => response.json())
         .then(data => {
@@ -863,7 +917,7 @@ reflection.addEventListener('change', ()=> {
                 });
                 let content = document.getElementById("reflection").value;
                 let date = new Date();
-                newData = {status: "daily", type: "reflection", content: content, date: date.toDateString()};
+                newData = {status: "daily", type: "reflection", content: content, date: curDate.toDateString()};
                 if (newData["content"] === "") {
                     delete_data = oldData;
                     fetch('/deleteTask', {  
