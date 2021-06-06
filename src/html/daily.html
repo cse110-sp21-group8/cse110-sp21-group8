@@ -5,6 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Log</title>
+    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+    rel = "stylesheet">
+  <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
     <link rel="stylesheet" href="../css/daily.css">
   </head>
 
@@ -41,6 +46,7 @@
         </div>
       </div>
 
+      <span id="dateSpan"></span>
       <!--Wrapper for calendar and tracker-->
       <div class='col' id="cal-tracker">
         <!--Calendar. Containg month title-->
@@ -76,6 +82,17 @@
         </div>
     </div>
     <script src="../js/daily.js"></script>
+
+    <script>
+      
+      $(function() {
+     $('#dateSpan').datepicker({onSelect: function(dateStr) { alert('selected ' + dateStr); }}).hide();
+     $('#dateButton').click(function() {
+           $('#dateSpan').toggle();
+     });
+    }); 
+    
+  </script>
 
   <!--Daily Log Calendar Script-->
     <script src="../js/dailycal.js"></script>   
