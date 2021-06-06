@@ -1,5 +1,3 @@
-/*global HTMLElement, document, customElements */
-
 class CustomTag extends HTMLElement {
   constructor() {
     super();

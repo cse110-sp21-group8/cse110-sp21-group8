@@ -1,5 +1,3 @@
-/* global document, fetch, window */
-
 let Adding = document.getElementById('Adding');
 let Updating = document.getElementById('Updating');
 let Deleting = document.getElementById('Deleting');

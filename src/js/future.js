@@ -93,6 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
 
+        let subForm = subTask.shadowRoot.querySelector('#form');
+
+        subForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            input.blur();
+        });
+
         let del = subTask.shadowRoot.querySelector('#delete');
         del.addEventListener('click', () => {
           delete_data = data;
@@ -117,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     }
-    // if(document.activeElement)
+
   });
 
   var i;
@@ -138,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
           text_box.append(task);
           console.log(task.shadowRoot);
           let taskInput = task.shadowRoot.querySelector('#tasks');
+          let taskForm = task.shadowRoot.querySelector('#form');
           let selection = task.shadowRoot.querySelector('#checklist-select');
           console.log(taskInput);
           let prefixed = text + ' ' + day.innerHTML + ': ';
@@ -151,6 +159,11 @@ document.addEventListener('DOMContentLoaded', () => {
               taskInput.value = prefixed + '⚬ ';
             }
           });
+
+          taskForm.addEventListener('submit', (event) =>{
+                event.preventDefault();
+                taskInput.blur();
+           })
 
           taskInput.addEventListener('focusout', (event) => {
             if (task.isNew) {
@@ -221,11 +234,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
+
             let deleteButton = task.shadowRoot.querySelector('#delete');
 
             deleteButton.addEventListener('click', () => {
-              let index = Array.prototype.indexOf.call(text_box.children, task);
-              delete_data = data.task[index];
+              delete_data = data;
               fetch('/deleteTask', {
                 method: 'POST',
                 headers: {
@@ -274,12 +287,53 @@ window.onload = function (event) {
           let task = document.createElement('task-list');
           let taskInput = task.shadowRoot.querySelector('#tasks');
           let taskForm = task.shadowRoot.querySelector('#form');
+          let selection = task.shadowRoot.querySelector('#checklist-select')
           taskInput.value = tmp['content'];
           task.isNew = false;
 
           if (tmp['status'] == 'future') {
             text_box.appendChild(task);
           }
+
+          taskInput.addEventListener('focusout', (event) => {
+            event.preventDefault();
+            let index = Array.prototype.indexOf.call(text_box.children, task);
+            let oldData = data.task[index];
+            let content = taskInput.value;
+            let date = new Date();
+            let newData = {
+                status: 'future',
+                type: `${selection.value}`,
+                content: content,
+                date: date.toDateString()
+            };
+
+            send_data = {old: oldData, new: newData};
+            fetch('/updateTask', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(send_data)
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data['status'] == 200) {
+                    let newTask = data['task'];
+                  } else {
+                    //alert("Task didn't added");
+                  }
+                })
+                .catch((error) => {
+                  console.error('Error:', error);
+                });
+         });
+
+         taskForm.addEventListener('submit', (event) => {
+             event.preventDefault();
+             taskInput.blur();
+         })
+
 
           let deleteButton = task.shadowRoot.querySelector('#delete');
 
@@ -367,7 +421,8 @@ window.onload = function (event) {
 
                   subTask.isSubtask = true;
                   //subTaskInput.value = "● ";
-                  subTaskInput.addEventListener('change', () => {
+                  subTaskInput.addEventListener('focusout', () => {
+                    let content = subTaskInput.value;
                     let oldData = subTemp;
                     newData = {
                       status: 'future',
@@ -399,8 +454,7 @@ window.onload = function (event) {
 
                   subTaskForm.addEventListener('submit', (event) => {
                     event.preventDefault();
-                    //update task gere in backend
-                    document.activeElement.blur();
+                    subTask.blur();
                   });
 
                   subDelete.addEventListener('click', () => {

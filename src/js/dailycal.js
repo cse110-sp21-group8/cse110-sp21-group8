@@ -44,11 +44,9 @@ let dayBtns = document.querySelectorAll('.day');
 dayBtns[currentDay + 6].style.background = '#5aa8979f';
 
 let curIdx = currentDay + 6;
-let clickedBefore = false;
 for (let i = 7; i < dayBtns.length; i++) {
   dayBtns[i].addEventListener('click', () => {
     // change background color of selected day
-    clickedBefore = true;
     curIdx = i;
     dayBtns[i].style.background = '#5aa8979f';
     for (let j = 7; j < dayBtns.length; j++) {
@@ -56,7 +54,6 @@ for (let i = 7; i < dayBtns.length; i++) {
         dayBtns[j].style.background = 'none';
       }
     }
-
     document.getElementById('text-box').innerHTML = '';
     document.getElementById('reflection').innerHTML = '';
     let date = new Date(today.getFullYear(), today.getMonth(), i - 6);
@@ -93,6 +90,24 @@ for (let i = 7; i < dayBtns.length; i++) {
             } else {
               curDay = i.toString() - 6;
             }
+            //fixed bug where future and monthly tasks were getting mixed up
+            if (tmp['status'] == 'daily' && tmp['date'].slice(8, 10) == curDay) {
+              console.log('in here!!!');
+              text_box.append(task);
+            }
+
+            let selection = task.shadowRoot.querySelector('#checklist-select');
+            console.log(taskInput);
+
+            selection.addEventListener('change', () => {
+              if (selection.value == 'Task') {
+                taskInput.value = '● ';
+              } else if (selection.value == 'Note') {
+                taskInput.value = '- ';
+              } else {
+                taskInput.value = '⚬ ';
+              }
+            });
 
             //fixed bug where future and monthly tasks were getting mixed up
             if (
@@ -102,7 +117,7 @@ for (let i = 7; i < dayBtns.length; i++) {
               text_box.append(task);
             }
 
-            let selection = task.shadowRoot.querySelector('#checklist-select');
+            //let selection = task.shadowRoot.querySelector('#checklist-select');
             console.log(taskInput);
 
             selection.addEventListener('change', () => {
@@ -336,6 +351,16 @@ for (let i = 7; i < dayBtns.length; i++) {
           } else {
             curDay = i.toString() - 6;
           }
+
+          tasks.forEach((tmp) => {
+            if (
+              tmp['type'] === 'reflection' &&
+              tmp['date'].slice(8, 10) == curDay
+            ) {
+              document.getElementById('reflection').append(tmp['content']);
+              isReflectionNew = false;
+            }
+          });
 
           tasks.forEach((tmp) => {
             if (

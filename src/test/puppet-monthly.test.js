@@ -1,4 +1,3 @@
-/* global test, expect */
 //Puppeter End to End User test.
 /*helper array to get months*/
 const months = [
