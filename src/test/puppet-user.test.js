@@ -1,4 +1,3 @@
-/* global expect */
 //Puppeter End to End User test.
 describe('User test:', () => {
   beforeAll(async () => {

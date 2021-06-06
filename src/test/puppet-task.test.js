@@ -1,4 +1,3 @@
-/* global test, expect */
 //Puppeter End to End User test.
 describe('Daily Tasks tests:', () => {
   beforeAll(async () => {

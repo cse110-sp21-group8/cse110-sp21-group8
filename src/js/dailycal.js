@@ -44,7 +44,7 @@ let dayBtns = document.querySelectorAll('.day');
 dayBtns[currentDay + 6].style.background = '#5aa8979f';
 
 let curIdx = currentDay + 6;
-for(let i = 7; i < dayBtns.length; i++) {
+for (let i = 7; i < dayBtns.length; i++) {
   dayBtns[i].addEventListener('click', () => {
     // change background color of selected day
     curIdx = i;
@@ -54,8 +54,8 @@ for(let i = 7; i < dayBtns.length; i++) {
         dayBtns[j].style.background = 'none';
       }
     }
-    document.getElementById("text-box").innerHTML = "";
-    document.getElementById("reflection").innerHTML = "";
+    document.getElementById('text-box').innerHTML = '';
+    document.getElementById('reflection').innerHTML = '';
     let date = new Date(today.getFullYear(), today.getMonth(), i - 6);
     fetch('/getDailyTask', {
       method: 'POST',
@@ -63,52 +63,51 @@ for(let i = 7; i < dayBtns.length; i++) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({date: date.toDateString()})
-      })
-      .then(response => response.json())
-      .then(data => {
-          if(data["status"]==200){
-              //obtains the task list
-              let tasks = data["task"];
-              console.log(tasks);
-              let text_box = document.getElementById("text-box");
-              //add each task into the box
-              tasks.forEach((tmp)=>{
-                  // skip reflections
-                  if (tmp["type"] === "reflection") {
-                      return;
-                  }
-                  console.log(tmp);
-                  let task = document.createElement('task-list');
-                  let taskInput = task.shadowRoot.querySelector('#tasks');
-                  let taskForm = task.shadowRoot.querySelector('#form');
-                  task.task_id = tmp._id;
-                  taskInput.value = tmp["content"];
-                  task.isNew = false;
-                  let curDay;
-                  if(i <= 15) {
-                    curDay = '0' + (i.toString() - 6);
-                  }
-                  else {
-                    curDay = (i.toString() - 6);
-                  }
-                  //fixed bug where future and monthly tasks were getting mixed up
-                  if(tmp["status"] == "daily" && tmp["date"].slice(8,10) == curDay){
-                      console.log("in here!!!");
-                      text_box.append(task);
-                  }
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data['status'] == 200) {
+          //obtains the task list
+          let tasks = data['task'];
+          console.log(tasks);
+          let text_box = document.getElementById('text-box');
+          //add each task into the box
+          tasks.forEach((tmp) => {
+            // skip reflections
+            if (tmp['type'] === 'reflection') {
+              return;
+            }
+            console.log(tmp);
+            let task = document.createElement('task-list');
+            let taskInput = task.shadowRoot.querySelector('#tasks');
+            let taskForm = task.shadowRoot.querySelector('#form');
+            task.task_id = tmp._id;
+            taskInput.value = tmp['content'];
+            task.isNew = false;
+            let curDay;
+            if (i <= 15) {
+              curDay = '0' + (i.toString() - 6);
+            } else {
+              curDay = i.toString() - 6;
+            }
+            //fixed bug where future and monthly tasks were getting mixed up
+            if (tmp['status'] == 'daily' && tmp['date'].slice(8, 10) == curDay) {
+              console.log('in here!!!');
+              text_box.append(task);
+            }
 
-                  let selection = task.shadowRoot.querySelector('#checklist-select');
-                  console.log(taskInput); 
-              
-                  selection.addEventListener('change', () => {
-                      if(selection.value == "Task"){
-                          taskInput.value = "● ";
-                      } else if (selection.value == "Note"){
-                          taskInput.value = "- ";
-                      } else {
-                          taskInput.value = "⚬ ";
-                      }
-                  })
+            let selection = task.shadowRoot.querySelector('#checklist-select');
+            console.log(taskInput);
+
+            selection.addEventListener('change', () => {
+              if (selection.value == 'Task') {
+                taskInput.value = '● ';
+              } else if (selection.value == 'Note') {
+                taskInput.value = '- ';
+              } else {
+                taskInput.value = '⚬ ';
+              }
+            });
 
             //fixed bug where future and monthly tasks were getting mixed up
             if (
@@ -332,34 +331,36 @@ for(let i = 7; i < dayBtns.length; i++) {
       .catch((error) => {
         console.error('Error:', error);
       });
-      fetch('/getDailyTask', {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({date: date.toDateString()})
-      })
-      .then(response => response.json())
-      .then(data => {
-        if(data["status"] == 200) {
-           //obtains the task list
-            let tasks = data["task"];
-            let reflect_box = document.getElementById("reflect-box");
-    
-            let curDay;
-            if(i <= 15) {
-              curDay = '0' + (i.toString() - 6);
+    fetch('/getDailyTask', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({date: date.toDateString()})
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data['status'] == 200) {
+          //obtains the task list
+          let tasks = data['task'];
+          let reflect_box = document.getElementById('reflect-box');
+
+          let curDay;
+          if (i <= 15) {
+            curDay = '0' + (i.toString() - 6);
+          } else {
+            curDay = i.toString() - 6;
+          }
+
+          tasks.forEach((tmp) => {
+            if (
+              tmp['type'] === 'reflection' &&
+              tmp['date'].slice(8, 10) == curDay
+            ) {
+              document.getElementById('reflection').append(tmp['content']);
+              isReflectionNew = false;
             }
-            else {
-              curDay = (i.toString() - 6);
-            }
-            
-            tasks.forEach((tmp) => {
-                if(tmp["type"] === "reflection" && tmp["date"].slice(8,10) == curDay) {
-                    document.getElementById("reflection").append(tmp["content"]);
-                    isReflectionNew = false;
-                }
-            });
+          });
 
           tasks.forEach((tmp) => {
             if (
