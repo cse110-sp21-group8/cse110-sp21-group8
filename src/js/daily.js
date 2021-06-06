@@ -2,7 +2,6 @@ let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
 let reflect_btn = document.querySelector('#add-reflection');
 
-
 /* Custom Tag Script */ 
 let addTagButton = document.getElementById('add-tag').firstElementChild;
 let tagTracker = document.getElementById('tracker-box');
@@ -13,27 +12,26 @@ let customInput;
 let newTag = false;
 
 addTagButton.addEventListener('click', ()=>{
-  customTag = document.createElement('custom-tag');
-  tagTracker.appendChild(customTag);
+    customTag = document.createElement('custom-tag');
+    tagTracker.appendChild(customTag);
 
-  customForm = customTag.shadowRoot.getElementById('custom-form'); 
-  let customSubmit = customTag.shadowRoot.getElementById('submit');
-  customInput = customTag.shadowRoot.querySelector("#custom-tags");
-  customSubmit.addEventListener('click', (event) =>{
-    event.preventDefault();
-    newTag = true;
-    customTag.id = customInput.value;
-    let tagList = document.getElementById('text-box').childNodes;
+    customForm = customTag.shadowRoot.getElementById('custom-form'); 
+    let customSubmit = customTag.shadowRoot.getElementById('submit');
+    customInput = customTag.shadowRoot.querySelector("#custom-tags");
+    customSubmit.addEventListener('click', (event) =>{
+      event.preventDefault();
+      newTag = true;
+      customTag.id = customInput.value;
+      let tagList = document.getElementById('text-box').childNodes;
     
-    for(let i = 1; i < tagList.length; i++){
-      newTag = false;
-      let choices = new Option(`${customTag.id}`, `${customTag.id}`);
-      if(tagList[i].nodeName == "TASK-LIST"){
-        tagList[i].shadowRoot.getElementById('tag-select').add(choices);
-      }
-    }
-  });
-
+        for(let i = 1; i < tagList.length; i++){
+            newTag = false;
+            let choices = new Option(`${customTag.id}`, `${customTag.id}`);
+            if(tagList[i].nodeName == "TASK-LIST"){
+                tagList[i].shadowRoot.getElementById('tag-select').add(choices);
+            }
+        }
+    });
 });
 
 let selectedTask;
@@ -44,13 +42,23 @@ document.addEventListener('click', (event) => {
       console.log("hola");
       let tagType = selectedTask.value;
       selectedTask.task_tag = tagType;
-      
 
-      let parentTask = selectedTask.parentElement.querySelector('#tasks');
-      let oldData = {status:"daily",type:"task", content:parentTask.value,date:parentTask.date};
-      let content = parentTask.value;
+      let dayBtns = document.querySelectorAll(".day");
+      let curDay;
+      for (let i = 7; i < dayBtns.length; i++) {
+        if (dayBtns[i].style.background === "rgba(90, 168, 151, 0.624)") {
+            curDay = dayBtns[i].innerHTML;
+            break;
+        }
+      }
+
       let date = new Date();
-      data = {status:"daily",type:"task", content:content,date:date.toDateString(), tag:selectedTask.task_tag};
+      let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
+      
+      let data;
+      let oldData = data;
+      let content = selectedTask.parentElement.querySelector('#tasks').value;
+      data = {status:"daily",type:"task", content:content,date:oldData["date"], tag:selectedTask.task_tag};
       let newData = data;
       send_data = {old:oldData, new:newData}; 
       fetch('/updateTask', {  
@@ -71,9 +79,9 @@ document.addEventListener('click', (event) => {
           })
           .catch((error) => {
           console.error('Error:', error);
-      });
-    }
-  })
+            });
+        }
+    });
 });
 
 /* */
@@ -159,10 +167,10 @@ document.addEventListener('keydown', function(e){
                         .catch((error) => {
                         console.error('Error:', error);
                     });
-                    
-
                 }
             })
+
+            
 
             let del = subTask.shadowRoot.querySelector('#delete');
             del.addEventListener('click',()=> { 
@@ -225,7 +233,7 @@ addButton.addEventListener('click', ()=> {
 
     /* Custom Tag Script */ 
     let tagList = document.getElementById('text-box').childNodes;
-    if(tagList[0].nodeName == "TASK-LIST"){
+    if(tagList[0] !== undefined && tagList[0].nodeName == "TASK-LIST"){
       let opts = tagList[0].shadowRoot.getElementById('tag-select').options;
 
       for(let i = 4; i < opts.length; i++){
@@ -279,6 +287,17 @@ addButton.addEventListener('click', ()=> {
 
 
     taskInput.addEventListener('focusout', (event)=> {
+
+        let dayBtns = document.querySelectorAll(".day");
+        for (let i = 7; i < dayBtns.length; i++) {
+            if (dayBtns[i].style.background === "rgba(90, 168, 151, 0.624)") {
+                curDay = dayBtns[i].innerHTML;
+                break;
+            }
+        }
+        let date = new Date();
+        let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
+
         if(task.isNew){
             console.log('focus out');
             event.preventDefault();
@@ -289,7 +308,7 @@ addButton.addEventListener('click', ()=> {
             console.log(date.toLocaleString());
             console.log(content);
             //type: task, events, reminders.
-            data = {status:"daily",type:"task", content:content,date:date.toDateString()};
+            data = {status:"daily",type:"task", content:content,date:curDate.toDateString()};
             fetch('/addTask', {  
                 method: 'POST',
                 headers: {
@@ -317,7 +336,7 @@ addButton.addEventListener('click', ()=> {
             let oldData = data;
             let content = taskInput.value;
             let date = new Date();
-            data = {status:"daily",type:"task", content:content,date:date.toDateString()};
+            data = {status:"daily",type:"task", content:content,date:curDate.toDateString()};
             let newData = data;
             send_data = {old:oldData, new:newData}; 
             fetch('/updateTask', {  
@@ -338,11 +357,82 @@ addButton.addEventListener('click', ()=> {
                 .catch((error) => {
                 console.error('Error:', error);
             });
-
         }
-
     });
 
+    let taskForm = task.shadowRoot.querySelector('#form');
+
+    taskForm.addEventListener('submit', (event)=>{
+
+        let dayBtns = document.querySelectorAll(".day");
+        let curDay;
+        for (let i = 7; i < dayBtns.length; i++) {
+            if (dayBtns[i].style.background === "rgba(90, 168, 151, 0.624)") {
+                curDay = dayBtns[i].innerHTML;
+                break;
+            }
+        }
+        let date = new Date();
+        let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
+        
+        event.preventDefault();
+        if(task.isNew){
+            console.log('focus out');
+            //Put task, event, note drop down menu
+            let content = taskInput.value;
+            let date = new Date();
+            console.log(date.toLocaleString());
+            console.log(content);
+            //type: task, events, reminders.
+            data = {status:"daily",type:"task", content:content,date:curDate.toDateString()};
+            fetch('/addTask', {  
+                method: 'POST',
+                headers: {
+                  "Content-Type": "application/json"
+                }, 
+                body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    task.task_id = data.task._id;
+                    if(data["status"]==200){
+                        let newTask = data["task"];
+                    }else{
+                        alert("Task didn't added");
+                    }
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+                });
+            task.isNew = false;
+        } else {
+            let oldData = data;
+            let content = taskInput.value;
+            let date = new Date();
+            data = {status:"daily",type:"task", content:content,date:curDate.toDateString()};
+            let newData = data;
+            send_data = {old:oldData, new:newData}; 
+            fetch('/updateTask', {  
+                method: 'POST',
+                headers: {
+                  "Content-Type": "application/json"
+                }, 
+                body: JSON.stringify(send_data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data["status"]==200){
+                        let newTask = data["task"];
+                    }else{
+                       // alert("Task didn't added");
+                    }
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+        document.activeElement.blur();
+    });
 
     let deleteButton = task.shadowRoot.querySelector('#delete');
 
@@ -486,34 +576,6 @@ window.onload = function(event){
                             change = "⚬ ";
                         }
 
-                        //Update the task type
-                        /*let index = Array.prototype.indexOf.call(text_box.children, task);
-                        let oldData = data.task[index];
-                        //let inputArr = taskInput.value.split(" ");
-                        taskInput.value[0] = change;
-                        let content = taskInput.value; //.replace(inputArr[0], change);
-                        let date = new Date();
-                        //TODO: fix the bug that content isnt fully showing
-                        let newData = {status:"daily", type:`${selection.value}`, content:content,date:date.toDateString()};
-                        send_data = {old:oldData, new:newData}; 
-                        fetch('/updateTask', {  
-                            method: 'POST',
-                            headers: {
-                              "Content-Type": "application/json"
-                            }, 
-                            body: JSON.stringify(send_data)
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if(data["status"]==200){
-                                    let newTask = data["task"];
-                                }else{
-                                    //alert("Task didn't added");
-                                }
-                            })
-                            .catch((error) => {
-                            console.error('Error:', error);
-                        });*/
                     })
 
                     taskInput.addEventListener('change', (event)=> {
@@ -704,6 +766,17 @@ window.onload = function(event){
         .catch((error) => {
             console.error('Error:', error);
         });
+    
+    let dayBtns = document.querySelectorAll(".day");
+    let curDay;
+    for (let i = 7; i < dayBtns.length; i++) {
+        if (dayBtns[i].style.background === "rgba(90, 168, 151, 0.624)") {
+            curDay = dayBtns[i].innerHTML;
+            break;
+        }
+     }
+    let date = new Date();
+    let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
 
     //load reflection
     fetch('/getDailyTask', {
@@ -711,7 +784,7 @@ window.onload = function(event){
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({date: new Date().toDateString()})
+        body: JSON.stringify({date: curDate.toDateString()})
     })
     .then(response => response.json())
     .then(data => {
@@ -730,85 +803,27 @@ window.onload = function(event){
     });
 }
 
-// reflect_btn.addEventListener('click', (event) => {
-//     const content = document.getElementById('reflection').value;
-//     document.getElementById('reflection-content').append(content);
-
-//     event.preventDefault();
-
-//     let date = new Date();
-//     data = { content: content, date: date.toDateString(), type: "reflection" };
-//     console.log(data);
-//     fetch('/addDailyTask', {
-//         method: 'POST',
-//         headers: {
-//             "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify(data)
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         if(data["status"] == 200) {
-//             let newReflection = data["reflection"];
-//         }
-//         else {
-//             alert("Reflection didn't add");
-//         }
-//     })
-//     .catch((error) => {
-//         console.error('Error:', error);
-//     });
-//     if (document.getElementById("reflection-content").innerHTML.length > 0) {
-//         document.getElementById("add-reflection").disabled = true;
-//     }
-// });
-
-
-
-
-
-
-
-
-    //fetch data for daily reflection here
-        //change the value of reflection.value = to the saved data
-        //set isReflectionNew = false;
-    
-/*upload picture:
-let upload = document.getElementById('tracker-form');
-upload.addEventListener("submit", (event)=>{
-    event.preventDefault();
-    
-    let input = document.querySelector('input[type="file"]')
-    let data = new FormData()
-    data.append('file-to-upload', input.files[0]);
-    fetch('/uploadImg', {
-    method: 'POST',
-    body: data
-    }).then(response => response.json())
-    .then(data => {
-        if(data["status"]==200){
-            let image = document.querySelector(".tracker-image");
-            image.src = data["src"];
-        }
-    })
-    .catch((error) => {
-    console.error('Error:', error);
-    });
-    
-});*/
-
 
 //reflection section
 let reflection = document.getElementById('reflection');
 let reflectionForm = document.querySelector('#reflect-box form')
 
 reflection.addEventListener('change', ()=> {
-    if(isReflectionNew == true){
+    let dayBtns = document.querySelectorAll(".day");
+    let curDay;
+    for (let i = 7; i < dayBtns.length; i++) {
+        if (dayBtns[i].style.background === "rgba(90, 168, 151, 0.624)") {
+            curDay = dayBtns[i].innerHTML;
+            break;
+        }
+    }
+    let date = new Date();
+    let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
+    if(document.getElementById("reflection").innerHTML === ""){
         //create new reflection on back end
         let content = reflection.value;
         let date = new Date();
-        data = {status: "daily", type: "reflection", content: content, date: date.toDateString()};
+        data = {status: "daily", type: "reflection", content: content, date: curDate.toDateString()};
         fetch('/addTask', {
             method: 'POST',
             headers: {
@@ -836,7 +851,7 @@ reflection.addEventListener('change', ()=> {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({date: new Date().toDateString()})
+            body: JSON.stringify({date: curDate.toDateString()})
         })
         .then(response => response.json())
         .then(data => {
@@ -850,7 +865,7 @@ reflection.addEventListener('change', ()=> {
                 });
                 let content = document.getElementById("reflection").value;
                 let date = new Date();
-                newData = {status: "daily", type: "reflection", content: content, date: date.toDateString()};
+                newData = {status: "daily", type: "reflection", content: content, date: curDate.toDateString()};
                 if (newData["content"] === "") {
                     delete_data = oldData;
                     fetch('/deleteTask', {  
@@ -900,48 +915,3 @@ reflection.addEventListener('change', ()=> {
         })
     }
 });
-
-
-
-
-
-//add tasks:
-// form.addEventListener('submit', (event)=>{
-//     event.preventDefault();
-//     let content = document.getElementById('tasks').value;
-//     let date = new Date();
-//     console.log(date.toLocaleString());
-//     console.log(content);
-//     //type: task, events, reminders.
-//     data = {status:"daily",type:"task", content:content,date:date.toDateString()};
-//     fetch('/addTask', {  
-//         method: 'POST',
-//         headers: {
-//           "Content-Type": "application/json"
-//         }, 
-//         body: JSON.stringify(data)
-//         })
-//         .then(response => response.json())
-//         .then(data => {
-//             if(data["status"]==200){
-//                 let newTask = data["task"];
-                
-//                 //added component to the html
-//                 let text_box = document.getElementById("text-box");
-//                 let item = document.createElement('div');
-//                 item.innerText = newTask["content"];
-//                 text_box.appendChild(item);
-
-
-//             }else{
-//                 alert("Task didn't added");
-//             }
-//         })
-//         .catch((error) => {
-//         console.error('Error:', error);
-//         });
-//     form.reset();
-// });
-
-
-
