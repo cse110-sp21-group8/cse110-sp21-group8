@@ -19,6 +19,7 @@ document.addEventListener('keydown', function (e) {
       subTask.shadowRoot.querySelector('#tasks').focus();
       let selection = subTask.shadowRoot.querySelector('#checklist-select');
       let input = subTask.shadowRoot.querySelector('#tasks');
+      let subForm = subTask.shadowRoot.querySelector('#form');
 
       selection.addEventListener('change', () => {
         if (selection.value == 'Task') {
@@ -91,6 +92,11 @@ document.addEventListener('keydown', function (e) {
             });
         }
       });
+
+      subForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        input.blur();
+      })
 
       let del = subTask.shadowRoot.querySelector('#delete');
       del.addEventListener('click', () => {
@@ -208,6 +214,8 @@ for (i = 1; i < 5; i++) {
         }
       });
 
+      
+
       del.addEventListener('click', () => {
         delete_data = data;
         fetch('/deleteTask', {
@@ -242,6 +250,8 @@ addButton.addEventListener('click', () => {
   console.log(task.shadowRoot);
   let taskInput = task.shadowRoot.querySelector('#tasks');
   let selection = task.shadowRoot.querySelector('#checklist-select');
+  let taskForm = task.shadowRoot.querySelector('#form');
+
   console.log(taskInput);
   selection.addEventListener('change', () => {
     if (selection.value == 'Task') {
@@ -252,6 +262,7 @@ addButton.addEventListener('click', () => {
       taskInput.value = '⚬ ';
     }
   });
+
   taskInput.addEventListener('focusout', (event) => {
     if (task.isNew) {
       console.log('focus out');
@@ -320,6 +331,7 @@ addButton.addEventListener('click', () => {
         });
     }
 
+
     let deleteButton = task.shadowRoot.querySelector('#delete');
     deleteButton.addEventListener('click', () => {
       delete_data = data;
@@ -379,7 +391,6 @@ addButton.addEventListener('click', () => {
     });
   });
 
-  let taskForm = task.shadowRoot.querySelector('#form');
   taskForm.addEventListener('submit', (event) => {
     event.preventDefault();
     if (task.isNew) {
@@ -451,7 +462,7 @@ addButton.addEventListener('click', () => {
   });
 });
 
-let form = document.querySelector('form');
+//let form = document.querySelector('form');
 //load Task:
 window.onload = function () {
   console.log('testlog');
@@ -493,6 +504,11 @@ window.onload = function () {
               }
             });
 
+            taskForm.addEventListener('submit', (event) => {
+              event.preventDefault();
+              taskInput.blur();
+            });
+
             taskInput.addEventListener('focusout', (event) => {
               event.preventDefault();
               let index = Array.prototype.indexOf.call(text_box.children, task);
@@ -525,11 +541,8 @@ window.onload = function () {
                   console.error('Error:', error);
                 });
             });
-            taskForm.addEventListener('submit', (event) => {
-              event.preventDefault();
-              //update task code here
-              document.activeElement.blur();
-            });
+
+            
 
             let deleteButton = task.shadowRoot.querySelector('#delete');
             deleteButton.addEventListener('click', () => {
@@ -652,8 +665,7 @@ window.onload = function () {
 
                     subTaskForm.addEventListener('submit', (event) => {
                       event.preventDefault();
-                      //update task gere in backend
-                      document.activeElement.blur();
+                      subTaskInput.blur();
                     });
 
                     subDelete.addEventListener('click', () => {

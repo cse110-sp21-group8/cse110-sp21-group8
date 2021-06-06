@@ -7,12 +7,12 @@ document.addEventListener('keydown', function (e) {
     console.log('tab key pressed');
     console.log(document.activeElement.nodeName);
     if (document.activeElement.nodeName == 'TASK-LIST') {
-      console.log('tasklist selected and pressed tab');
       let task = document.activeElement;
       let subTask = document.createElement('task-list');
       subTask.className = 'subtask';
       task.after(subTask);
       subTask.shadowRoot.querySelector('#tasks').focus();
+
     }
     console.log(document.activeElement);
   }
@@ -32,7 +32,7 @@ document.addEventListener('click', function (e) {
 addButton.addEventListener('click', () => {
   console.log('click');
   let task = document.createElement('task-list');
-  text_box.prepend(task);
+  text_box.append(task);
   console.log(task.shadowRoot);
   let taskInput = task.shadowRoot.querySelector('#tasks');
   let selection = task.shadowRoot.querySelector('#checklist-select');

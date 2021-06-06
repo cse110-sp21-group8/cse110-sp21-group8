@@ -1,3 +1,4 @@
+
 let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
 let reflect_btn = document.querySelector('#add-reflection');
@@ -101,6 +102,7 @@ document.addEventListener('keydown', function (e) {
       console.log('tasklist selected and pressed tab');
       let task = document.activeElement;
       let subTask = document.createElement('task-list');
+      let subForm = subTask.shadowRoot.querySelector('#form');
       subTask.className = 'subtask';
       subTask.task_id = task.task_id;
       subTask.isNew = true;
@@ -185,6 +187,12 @@ document.addEventListener('keydown', function (e) {
             });
         }
       });
+
+      // Submit FOrm
+      subForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        input.blur();
+      })
 
       let del = subTask.shadowRoot.querySelector('#delete');
       del.addEventListener('click', () => {
@@ -596,7 +604,7 @@ window.onload = function (event) {
             }
           });
 
-          taskInput.addEventListener('change', (event) => {
+          taskInput.addEventListener('focusout', (event) => {
             event.preventDefault();
             let index = Array.prototype.indexOf.call(text_box.children, task);
             let oldData = data.task[index];
@@ -615,7 +623,7 @@ window.onload = function (event) {
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify(send_data)
-            })
+              })
               .then((response) => response.json())
               .then((data) => {
                 if (data['status'] == 200) {
@@ -628,6 +636,12 @@ window.onload = function (event) {
                 console.error('Error:', error);
               });
           });
+
+          taskForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            taskInput.blur();
+          })
+
 
           let deleteButton = task.shadowRoot.querySelector('#delete');
 
@@ -718,7 +732,7 @@ window.onload = function (event) {
                   let content = subTemp.content;
                   subTask.isSubtask = true;
                   //subTaskInput.value = "● ";
-                  subTaskInput.addEventListener('change', () => {
+                  subTaskInput.addEventListener('focsout', () => {
                     let oldData = subTemp;
                     newData = {
                       status: 'daily',
@@ -734,18 +748,21 @@ window.onload = function (event) {
                         'Content-Type': 'application/json'
                       },
                       body: JSON.stringify(send_data)
-                    })
+                      })
                       .then((response) => response.json())
                       .then((data) => {
                         if (data['status'] == 200) {
                           let newTask = data['task'];
-                        } else {
-                          // alert("Task didn't added");
-                        }
+                        } 
                       })
                       .catch((error) => {
                         console.error('Error:', error);
                       });
+                  });
+
+                  subTaskForm.addEventListener('submit',  (event) => {
+                    event.preventDefault();
+                    subTask.blur();
                   });
 
                   subDelete.addEventListener('click', () => {
