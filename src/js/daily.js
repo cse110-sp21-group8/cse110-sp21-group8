@@ -255,6 +255,7 @@ addButton.addEventListener('click', () => {
   let tagList = document.getElementById('text-box').childNodes;
   if (tagList[0] !== undefined && tagList[0].nodeName == 'TASK-LIST') {
     let opts = tagList[0].shadowRoot.getElementById('tag-select').options;
+    
 
     for (let i = 4; i < opts.length; i++) {
       let choices = new Option(`${opts[i].value}`, `${opts[i].value}`);
@@ -272,6 +273,7 @@ addButton.addEventListener('click', () => {
         }
       }
     }
+
   } else {
     if (customTag != null) {
       let choices = new Option(`${customTag.id}`, `${customTag.id}`);
@@ -344,6 +346,21 @@ addButton.addEventListener('click', () => {
           task.task_id = data.task._id;
           if (data['status'] == 200) {
             let newTask = data['task'];
+
+                //migration
+                let migrate = task.shadowRoot.querySelector('#move');
+                migrate.addEventListener("click",()=>{
+                //display the calendar
+                let cal = document.getElementById("calendar");
+                cal.classList.add("disapper");
+
+                let cal2 = document.getElementById("MigrationCalendar");
+                cal2.classList.remove("disapper");
+                cal2.setAttribute("task_id",data.task._id);
+
+                console.log(data.task._id);
+                
+                });
           } else {
             // alert("Task didn't added");
           }
@@ -535,341 +552,328 @@ addButton.addEventListener('click', () => {
 let form = document.querySelector('form');
 let isReflectionNew = true;
 
-//load Task:
-window.onload = function (event) {
-  fetch('/getDailyTask', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({date: new Date().toDateString()})
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data['status'] == 200) {
-        //obtains the task list
-        let tasks = data['task'];
-        console.log(tasks);
-        let text_box = document.getElementById('text-box');
-        //add each task into the box
-        tasks.forEach((tmp) => {
-          // skip reflections
-          if (tmp['type'] === 'reflection') {
-            return;
-          }
-          console.log(tmp);
-          let task = document.createElement('task-list');
-          let taskInput = task.shadowRoot.querySelector('#tasks');
-          let taskForm = task.shadowRoot.querySelector('#form');
-          let tag = task.shadowRoot.querySelector('#tag-select');
-          task.task_id = tmp._id;
-          taskInput.value = tmp['content'];
-          task.isNew = false;
 
-
-          //migration
-          let migrate = task.shadowRoot.querySelector('#move');
-          migrate.addEventListener("click",()=>{
-            $('#dateSpan').toggle();
-            let oldData = tmp;
-            let currContent = task.shadowRoot.querySelector('#tasks').value;
-            let newDate = new Date();
-            newDate.setDate(newDate.getDate()+1);
-            data = {status:"daily",type:"task", content:currContent,date:newDate.toDateString()};
-            let newData = data;
-            send_data = {old:oldData, new:newData};
-            console.log(oldData);
-            console.log(newDate.toDateString());
-            console.log(send_data);
-            fetch('/updateTask',{
+function getDailyTasks(){
+    fetch('/getDailyTask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({date: new Date().toDateString()})
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data['status'] == 200) {
+            //obtains the task list
+            let tasks = data['task'];
+            console.log(tasks);
+            let text_box = document.getElementById('text-box');
+            //add each task into the box
+            tasks.forEach((tmp) => {
+              // skip reflections
+              if (tmp['type'] === 'reflection') {
+                return;
+              }
+              console.log(tmp);
+              let task = document.createElement('task-list');
+              let taskInput = task.shadowRoot.querySelector('#tasks');
+              let taskForm = task.shadowRoot.querySelector('#form');
+              let tag = task.shadowRoot.querySelector('#tag-select');
+              task.task_id = tmp._id;
+              taskInput.value = tmp['content'];
+              task.isNew = false;
+    
+    
+              //migration
+              let migrate = task.shadowRoot.querySelector('#move');
+              migrate.addEventListener("click",()=>{
+                //display the calendar
+                let cal = document.getElementById("calendar");
+                cal.classList.add("disapper");
+    
+                let cal2 = document.getElementById("MigrationCalendar");
+                cal2.classList.remove("disapper");
+                cal2.setAttribute("task_id",tmp._id);
+    
+                console.log(tmp._id);
+               
+                });
+    
+              //Load in the right tag
+              console.log(tmp.tag);
+              for (let i = 1; i < tag.options.length; i++) {
+                if (tag.options[i].value == tmp.tag) {
+                  tag.selectedIndex = `${i}`;
+                }
+              }
+    
+              //Load in the right task type
+              let taskType = task.shadowRoot.querySelector('#checklist-select');
+              for (let i = 1; i < taskType.options.length; i++) {
+                if (taskType.options[i].value == tmp.type) {
+                  taskType.selectedIndex = `${i}`;
+                }
+              }
+    
+              //fixed bug where future and monthly tasks were getting mixed up
+              if (tmp['status'] == 'daily') {
+                text_box.append(task);
+              }
+    
+              let selection = task.shadowRoot.querySelector('#checklist-select');
+              console.log(taskInput);
+    
+              let change;
+              selection.addEventListener('change', () => {
+                if (selection.value == 'Task') {
+                  taskInput.value = '● ';
+                  change = '● ';
+                } else if (selection.value == 'Note') {
+                  taskInput.value = '- ';
+                  change = '- ';
+                } else {
+                  taskInput.value = '⚬ ';
+                  change = '⚬ ';
+                }
+              });
+    
+              taskInput.addEventListener('focusout', (event) => {
+                event.preventDefault();
+                let index = Array.prototype.indexOf.call(text_box.children, task);
+                let oldData = data.task[index];
+                let content = taskInput.value;
+                let date = new Date();
+                let newData = {
+                  status: 'daily',
+                  type: `${selection.value}`,
+                  content: content,
+                  date: date.toDateString()
+                };
+                send_data = {old: oldData, new: newData};
+                fetch('/updateTask', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(send_data)
+                  })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    if (data['status'] == 200) {
+                      let newTask = data['task'];
+                    } else {
+                      //alert("Task didn't added");
+                    }
+                  })
+                  .catch((error) => {
+                    console.error('Error:', error);
+                  });
+              });
+    
+              taskForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                taskInput.blur();
+              })
+    
+    
+              let deleteButton = task.shadowRoot.querySelector('#delete');
+    
+              deleteButton.addEventListener('click', () => {
+                let index = Array.prototype.indexOf.call(text_box.children, task);
+                delete_data = data.task[index];
+                fetch('/deleteTask', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(delete_data)
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    if (data['status'] == 200) {
+                      let newTask = data['task'];
+                    } else {
+                      //alert("Task didn't added");
+                    }
+                  })
+                  .catch((error) => {
+                    console.error('Error:', error);
+                  });
+    
+                task.remove();
+    
+                fetch('/getSubTask', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({task_id: task.task_id})
+                })
+                  .then((response) => response.json())
+                  .then((subdata) => {
+                    if (subdata['status'] == 200) {
+                      let subtasks = subdata['task'];
+                      subtasks.forEach((subTemp) => {
+                        delete_data = subTemp;
+                        fetch('/deleteSubTask', {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json'
+                          },
+                          body: JSON.stringify(delete_data)
+                        })
+                          .then((response) => response.json())
+                          .then((data) => {
+                            if (data['status'] == 200) {
+                              let newTask = data['task'];
+                            } else {
+                              //alert("Task didn't added");
+                            }
+                          })
+                          .catch((error) => {
+                            console.error('Error:', error);
+                          });
+                      });
+                    }
+                  });
+              });
+    
+              //append subtask;
+              fetch('/getSubTask', {
                 method: 'POST',
                 headers: {
-                    "Content-Type": "application/json"
-                            }, 
-                            body: JSON.stringify(send_data)
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if(data["status"]==200){
-                                    let newTask = data["task"];
-                                }else{
-                                   // alert("Task didn't added");
-                                }
-                            })
-                            .catch((error) => {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({task_id: task.task_id})
+              })
+                .then((response) => response.json())
+                .then((subdata) => {
+                  if (subdata['status'] == 200) {
+                    console.log(subdata);
+                    let subtasks = subdata['task'];
+                    subtasks.forEach((subTemp) => {
+                      let subTask = document.createElement('task-list');
+                      let subTaskInput = subTask.shadowRoot.querySelector('#tasks');
+                      let subTaskForm = subTask.shadowRoot.querySelector('#form');
+                      subTask.className = 'subtask';
+                      subTaskInput.value = subTemp.content;
+                      subTask.task_id = task.task_id;
+                      task.shadowRoot.querySelector('#subtask-box').append(subTask);
+                      subTask.isNew = false;
+                      let subDelete = subTask.shadowRoot.querySelector('#delete');
+    
+                      let content = subTemp.content;
+                      subTask.isSubtask = true;
+                      //subTaskInput.value = "● ";
+                      subTaskInput.addEventListener('focsout', () => {
+                        let oldData = subTemp;
+                        newData = {
+                          status: 'daily',
+                          type: 'task',
+                          content: content,
+                          date: date.toDateString(),
+                          task_id: subTask.task_id
+                        };
+                        send_data = {old: oldData, new: newData};
+                        fetch('/updateSubTask', {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json'
+                          },
+                          body: JSON.stringify(send_data)
+                          })
+                          .then((response) => response.json())
+                          .then((data) => {
+                            if (data['status'] == 200) {
+                              let newTask = data['task'];
+                            } 
+                          })
+                          .catch((error) => {
                             console.error('Error:', error);
-                        });
-            });
-
-
-          //Load in the right tag
-          console.log(tmp.tag);
-          for (let i = 1; i < tag.options.length; i++) {
-            if (tag.options[i].value == tmp.tag) {
-              tag.selectedIndex = `${i}`;
-            }
-          }
-
-          //Load in the right task type
-          let taskType = task.shadowRoot.querySelector('#checklist-select');
-          for (let i = 1; i < taskType.options.length; i++) {
-            if (taskType.options[i].value == tmp.type) {
-              taskType.selectedIndex = `${i}`;
-            }
-          }
-
-          //fixed bug where future and monthly tasks were getting mixed up
-          if (tmp['status'] == 'daily') {
-            text_box.append(task);
-          }
-
-          let selection = task.shadowRoot.querySelector('#checklist-select');
-          console.log(taskInput);
-
-          let change;
-          selection.addEventListener('change', () => {
-            if (selection.value == 'Task') {
-              taskInput.value = '● ';
-              change = '● ';
-            } else if (selection.value == 'Note') {
-              taskInput.value = '- ';
-              change = '- ';
-            } else {
-              taskInput.value = '⚬ ';
-              change = '⚬ ';
-            }
-          });
-
-          taskInput.addEventListener('focusout', (event) => {
-            event.preventDefault();
-            let index = Array.prototype.indexOf.call(text_box.children, task);
-            let oldData = data.task[index];
-            let content = taskInput.value;
-            let date = new Date();
-            let newData = {
-              status: 'daily',
-              type: `${selection.value}`,
-              content: content,
-              date: date.toDateString()
-            };
-            send_data = {old: oldData, new: newData};
-            fetch('/updateTask', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(send_data)
-              })
-              .then((response) => response.json())
-              .then((data) => {
-                if (data['status'] == 200) {
-                  let newTask = data['task'];
-                } else {
-                  //alert("Task didn't added");
-                }
-              })
-              .catch((error) => {
-                console.error('Error:', error);
-              });
-          });
-
-          taskForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            taskInput.blur();
-          })
-
-
-          let deleteButton = task.shadowRoot.querySelector('#delete');
-
-          deleteButton.addEventListener('click', () => {
-            let index = Array.prototype.indexOf.call(text_box.children, task);
-            delete_data = data.task[index];
-            fetch('/deleteTask', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(delete_data)
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                if (data['status'] == 200) {
-                  let newTask = data['task'];
-                } else {
-                  //alert("Task didn't added");
-                }
-              })
-              .catch((error) => {
-                console.error('Error:', error);
-              });
-
-            task.remove();
-
-            fetch('/getSubTask', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({task_id: task.task_id})
-            })
-              .then((response) => response.json())
-              .then((subdata) => {
-                if (subdata['status'] == 200) {
-                  let subtasks = subdata['task'];
-                  subtasks.forEach((subTemp) => {
-                    delete_data = subTemp;
-                    fetch('/deleteSubTask', {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify(delete_data)
-                    })
-                      .then((response) => response.json())
-                      .then((data) => {
-                        if (data['status'] == 200) {
-                          let newTask = data['task'];
-                        } else {
-                          //alert("Task didn't added");
-                        }
-                      })
-                      .catch((error) => {
-                        console.error('Error:', error);
+                          });
                       });
-                  });
-                }
-              });
-          });
-
-          //append subtask;
-          fetch('/getSubTask', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({task_id: task.task_id})
-          })
-            .then((response) => response.json())
-            .then((subdata) => {
-              if (subdata['status'] == 200) {
-                console.log(subdata);
-                let subtasks = subdata['task'];
-                subtasks.forEach((subTemp) => {
-                  let subTask = document.createElement('task-list');
-                  let subTaskInput = subTask.shadowRoot.querySelector('#tasks');
-                  let subTaskForm = subTask.shadowRoot.querySelector('#form');
-                  subTask.className = 'subtask';
-                  subTaskInput.value = subTemp.content;
-                  subTask.task_id = task.task_id;
-                  task.shadowRoot.querySelector('#subtask-box').append(subTask);
-                  subTask.isNew = false;
-                  let subDelete = subTask.shadowRoot.querySelector('#delete');
-
-                  let content = subTemp.content;
-                  subTask.isSubtask = true;
-                  //subTaskInput.value = "● ";
-                  subTaskInput.addEventListener('focsout', () => {
-                    let oldData = subTemp;
-                    newData = {
-                      status: 'daily',
-                      type: 'task',
-                      content: content,
-                      date: date.toDateString(),
-                      task_id: subTask.task_id
-                    };
-                    send_data = {old: oldData, new: newData};
-                    fetch('/updateSubTask', {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify(send_data)
-                      })
-                      .then((response) => response.json())
-                      .then((data) => {
-                        if (data['status'] == 200) {
-                          let newTask = data['task'];
-                        } 
-                      })
-                      .catch((error) => {
-                        console.error('Error:', error);
+    
+                      subTaskForm.addEventListener('submit',  (event) => {
+                        event.preventDefault();
+                        subTask.blur();
                       });
-                  });
-
-                  subTaskForm.addEventListener('submit',  (event) => {
-                    event.preventDefault();
-                    subTask.blur();
-                  });
-
-                  subDelete.addEventListener('click', () => {
-                    delete_data = subTemp;
-                    fetch('/deleteSubTask', {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify(delete_data)
-                    })
-                      .then((response) => response.json())
-                      .then((data) => {
-                        if (data['status'] == 200) {
-                          let newTask = data['task'];
-                        } else {
-                          //alert("Task didn't added");
-                        }
-                      })
-                      .catch((error) => {
-                        console.error('Error:', error);
+    
+                      subDelete.addEventListener('click', () => {
+                        delete_data = subTemp;
+                        fetch('/deleteSubTask', {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json'
+                          },
+                          body: JSON.stringify(delete_data)
+                        })
+                          .then((response) => response.json())
+                          .then((data) => {
+                            if (data['status'] == 200) {
+                              let newTask = data['task'];
+                            } else {
+                              //alert("Task didn't added");
+                            }
+                          })
+                          .catch((error) => {
+                            console.error('Error:', error);
+                          });
+    
+                        subTask.remove();
                       });
-
-                    subTask.remove();
-                  });
+                    });
+                  }
                 });
+            });
+          } else {
+            //alert("Task didn't added");
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    
+      let dayBtns = document.querySelectorAll('.day');
+      let curDay;
+      for (let i = 7; i < dayBtns.length; i++) {
+        if (dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)') {
+          curDay = dayBtns[i].innerHTML;
+          break;
+        }
+      }
+      let date = new Date();
+      let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
+    
+      //load reflection
+      fetch('/getDailyTask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({date: curDate.toDateString()})
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data['status'] == 200) {
+            //obtains the task list
+            let tasks = data['task'];
+            let reflect_box = document.getElementById('reflect-box');
+    
+            tasks.forEach((tmp) => {
+              if (tmp['type'] === 'reflection') {
+                document.getElementById('reflection').append(tmp['content']);
+                isReflectionNew = false;
               }
             });
-        });
-      } else {
-        //alert("Task didn't added");
-      }
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-
-  let dayBtns = document.querySelectorAll('.day');
-  let curDay;
-  for (let i = 7; i < dayBtns.length; i++) {
-    if (dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)') {
-      curDay = dayBtns[i].innerHTML;
-      break;
-    }
-  }
-  let date = new Date();
-  let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
-
-  //load reflection
-  fetch('/getDailyTask', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({date: curDate.toDateString()})
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data['status'] == 200) {
-        //obtains the task list
-        let tasks = data['task'];
-        let reflect_box = document.getElementById('reflect-box');
-
-        tasks.forEach((tmp) => {
-          if (tmp['type'] === 'reflection') {
-            document.getElementById('reflection').append(tmp['content']);
-            isReflectionNew = false;
           }
         });
-      }
-    });
+}
+
+
+//load Task:
+window.onload = function (event) {
+
+    getDailyTasks();
 };
 
 //reflection section
@@ -990,3 +994,84 @@ reflection.addEventListener('change', () => {
       });
   }
 });
+
+
+
+
+//migration:
+let m_today = new Date();
+let m_currentMonth = m_today.getMonth();
+let m_currentDay = parseInt(m_today.toDateString().slice(8, 10));
+
+let m_months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
+
+let m_monthName = m_months[m_currentMonth];
+document.getElementById('Migratiocal').innerHTML = m_monthName;
+
+const m_date = new Date();
+
+const migration_monthDays = document.getElementById('cal-bodyM');
+let M_cal = document.querySelector('#MigrationCalendar');
+let cal = document.getElementById("calendar");
+
+m_date.setDate(1);
+
+const m_lastDay = new Date(m_date.getFullYear(), m_date.getMonth() + 1, 0).getDate();
+
+const m_firstDayIndex = m_date.getDay();
+
+
+for (let x = m_firstDayIndex; x > 0; x--) {
+  let day = document.createElement("div");
+  day.classList.add("prev-date1");
+  migration_monthDays.appendChild(day);
+}
+
+for (let i = 1; i <= m_lastDay; i++) {
+  let day = document.createElement("button");
+  day.classList.add("day");
+  day.innerText=i;
+  day.setAttribute("index",i);
+
+  day.addEventListener("click",()=>{
+    let cday = new Date();
+    cday.setDate(day.getAttribute("index"));
+    let send_data = {old:{"_id":M_cal.getAttribute("task_id")}, new:{"date":cday.toDateString()}}
+    fetch('/updateTask',{
+      method: 'POST',
+      headers: {
+          "Content-Type": "application/json"
+                  }, 
+                  body: JSON.stringify(send_data)
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      if(data["status"]==200){
+                          cal.classList.remove("disapper");
+                          M_cal.classList.add("disapper");
+                          document.getElementById('text-box').innerHTML = '';
+                          document.getElementById('reflection').innerHTML = '';
+                          getDailyTasks();
+                      }else{
+                         // alert("Task didn't added");
+                      }
+                  })
+                  .catch((error) => {
+                  console.error('Error:', error);
+      });
+  });
+  migration_monthDays.appendChild(day);
+}

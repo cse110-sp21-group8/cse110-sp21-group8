@@ -40,7 +40,8 @@ for (let i = 1; i <= lastDay; i++) {
   monthDays.innerHTML = days;
 }
 
-let dayBtns = document.querySelectorAll('.day');
+
+let dayBtns = document.querySelectorAll('#calendar  .day');
 dayBtns[currentDay + 6].style.background = '#5aa8979f';
 
 let curIdx = currentDay + 6;
@@ -84,6 +85,23 @@ for (let i = 7; i < dayBtns.length; i++) {
             task.task_id = tmp._id;
             taskInput.value = tmp['content'];
             task.isNew = false;
+
+
+            //migration
+            let migrate = task.shadowRoot.querySelector('#move');
+            migrate.addEventListener("click",()=>{
+              //display the calendar
+              let cal = document.getElementById("calendar");
+              cal.classList.add("disapper");
+  
+              let cal2 = document.getElementById("MigrationCalendar");
+              cal2.classList.remove("disapper");
+              cal2.setAttribute("task_id",tmp._id);
+  
+              console.log(tmp._id);
+             
+            });
+
             let curDay;
             if (i <= 15) {
               curDay = '0' + (i.toString() - 6);
