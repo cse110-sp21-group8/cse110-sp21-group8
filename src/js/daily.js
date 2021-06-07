@@ -1,9 +1,9 @@
-
+//Global Variables
 let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
 let reflect_btn = document.querySelector('#add-reflection');
 
-/* Custom Tag Script */
+
 let addTagButton = document.getElementById('add-tag').firstElementChild;
 let tagTracker = document.getElementById('tracker-box');
 
@@ -12,6 +12,7 @@ let customForm;
 let customInput;
 let newTag = false;
 
+// Custom Tag Script 
 addTagButton.addEventListener('click', () => {
   customTag = document.createElement('custom-tag');
   tagTracker.appendChild(customTag);
@@ -91,15 +92,14 @@ document.addEventListener('click', (event) => {
   });
 });
 
-/* */
-
+//Tab Event Listener for adding a subtask 
 document.addEventListener('keydown', function (e) {
   if (e.key == 'Tab') {
     e.preventDefault();
-    console.log('tab key pressed');
-    console.log(document.activeElement.nodeName);
+    
+    //make sure that the active element is a task-;ost 
     if (document.activeElement.nodeName == 'TASK-LIST') {
-      console.log('tasklist selected and pressed tab');
+      //create a subTask
       let task = document.activeElement;
       let subTask = document.createElement('task-list');
       let subForm = subTask.shadowRoot.querySelector('#form');
@@ -107,12 +107,13 @@ document.addEventListener('keydown', function (e) {
       subTask.task_id = task.task_id;
       subTask.isNew = true;
       subTask.isSubtask = true;
-
+      //subTask element operations 
       task.shadowRoot.querySelector('#subtask-box').append(subTask);
       subTask.shadowRoot.querySelector('#tasks').focus();
       let selection = subTask.shadowRoot.querySelector('#checklist-select');
       let input = subTask.shadowRoot.querySelector('#tasks');
 
+      //drop down menu for task, note, event 
       selection.addEventListener('change', () => {
         if (selection.value == 'Task') {
           input.value = '● ';
@@ -127,8 +128,11 @@ document.addEventListener('keydown', function (e) {
       });
       input.value = '● ';
 
+      //adding a subtask by focusing out 
       subTask.addEventListener('focusout', (event) => {
+        //if the subtask is new, add it instead of update
         if (subTask.isNew) {
+          //create data with the user input 
           let content = subTask.shadowRoot.querySelector('#tasks').value;
           data = {
             status: 'daily',
@@ -137,6 +141,8 @@ document.addEventListener('keydown', function (e) {
             date: date.toDateString(),
             task_id: task.task_id
           };
+
+          //add task in the database
           fetch('/addSubTask', {
             method: 'POST',
             headers: {
@@ -148,17 +154,21 @@ document.addEventListener('keydown', function (e) {
             .then((data) => {
               if (data['status'] == 200) {
                 let newTask = data['task'];
-              } else {
-                // alert("Task didn't added");
-              }
+              } 
             })
             .catch((error) => {
               console.error('Error:', error);
             });
+          //set subTask.isNew to false to signal that we will update at task now
           subTask.isNew = false;
         } else {
+          // grabs user input 
           let content = subTask.shadowRoot.querySelector('#tasks').value;
+
+          //oldData is the previous data we store 
           let oldData = data;
+
+          //newData stores the updated user input 
           newData = {
             status: 'daily',
             type: 'task',
@@ -166,7 +176,9 @@ document.addEventListener('keydown', function (e) {
             date: date.toDateString(),
             task_id: task.task_id
           };
-          send_data = {old: oldData, new: newData};
+
+          //send old and new Data to databse for updating 
+          let send_data = {old: oldData, new: newData};
           fetch('/updateSubTask', {
             method: 'POST',
             headers: {
@@ -178,9 +190,7 @@ document.addEventListener('keydown', function (e) {
             .then((data) => {
               if (data['status'] == 200) {
                 let newTask = data['task'];
-              } else {
-                // alert("Task didn't added");
-              }
+              } 
             })
             .catch((error) => {
               console.error('Error:', error);
@@ -188,12 +198,13 @@ document.addEventListener('keydown', function (e) {
         }
       });
 
-      // Submit FOrm
+      //Triggers focusout when user clicks enter
       subForm.addEventListener('submit', (event) => {
         event.preventDefault();
         input.blur();
       })
 
+      //operational delete button: deletes subtask on page and databse
       let del = subTask.shadowRoot.querySelector('#delete');
       del.addEventListener('click', () => {
         delete_data = data;
@@ -217,6 +228,7 @@ document.addEventListener('keydown', function (e) {
           });
       });
 
+      //Deletes task from page and databse when delete button is clicked
       let deleteButton = task.shadowRoot.querySelector('#delete');
 
       deleteButton.addEventListener('click', () => {
@@ -244,9 +256,9 @@ document.addEventListener('keydown', function (e) {
       });
     }
   }
-  // if(document.activeElement)
 });
 
+//Adding a new task with the add button on the page
 addButton.addEventListener('click', () => {
   console.log('click');
   let task = document.createElement('task-list');
@@ -278,7 +290,6 @@ addButton.addEventListener('click', () => {
       task.shadowRoot.getElementById('tag-select').add(choices);
     }
   }
-  /* */
 
   //adding task to document
   text_box.append(task);
@@ -291,6 +302,7 @@ addButton.addEventListener('click', () => {
   let change;
   console.log(taskInput);
 
+  //prefixes value with correct symbol based on drop down menu
   selection.addEventListener('change', () => {
     if (selection.value == 'Task') {
       taskInput.value = '● ';
@@ -304,7 +316,9 @@ addButton.addEventListener('click', () => {
     }
   });
 
+  //adds and updates task to database when user focuses out 
   taskInput.addEventListener('focusout', (event) => {
+    //Sets date to log the task depending on date user selects
     let dayBtns = document.querySelectorAll('.day');
     for (let i = 7; i < dayBtns.length; i++) {
       if (dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)') {
@@ -315,22 +329,22 @@ addButton.addEventListener('click', () => {
     let date = new Date();
     let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
 
+    //if task is new, then add to backend 
     if (task.isNew) {
-      console.log('focus out');
       event.preventDefault();
-      //Put task, event, note drop down men
-
+      //getting user content
       let content = taskInput.value;
       let date = new Date();
-      console.log(date.toLocaleString());
-      console.log(content);
-      //type: task, events, reminders.
+      
+      //create data based on data and user input 
       data = {
         status: 'daily',
         type: 'task',
         content: content,
         date: curDate.toDateString()
       };
+
+      //add data to the databse 
       fetch('/addTask', {
         method: 'POST',
         headers: {
@@ -344,16 +358,16 @@ addButton.addEventListener('click', () => {
           task.task_id = data.task._id;
           if (data['status'] == 200) {
             let newTask = data['task'];
-          } else {
-            // alert("Task didn't added");
           }
         })
         .catch((error) => {
           console.error('Error:', error);
         });
 
+      //set task.isNew to false so task is not duplicated 
       task.isNew = false;
     } else {
+      //update task in the databse 
       let oldData = data;
       let content = taskInput.value;
       let date = new Date();
@@ -364,7 +378,9 @@ addButton.addEventListener('click', () => {
         date: curDate.toDateString()
       };
       let newData = data;
-      send_data = {old: oldData, new: newData};
+      let send_data = {old: oldData, new: newData};
+      
+      //update the task in the backend 
       fetch('/updateTask', {
         method: 'POST',
         headers: {
@@ -386,6 +402,7 @@ addButton.addEventListener('click', () => {
     }
   });
 
+  //
   let taskForm = task.shadowRoot.querySelector('#form');
 
   taskForm.addEventListener('submit', (event) => {
