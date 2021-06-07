@@ -63,7 +63,7 @@ describe('Daily Tasks tests:', () => {
 
     expect(actual_task).toBe("Note");
     expect(actual_task_tag).toBe("Later");
-    expect(actual_task).toBe("test content");
+    expect(actual_task_text).toBe("test content");
     });
 
 

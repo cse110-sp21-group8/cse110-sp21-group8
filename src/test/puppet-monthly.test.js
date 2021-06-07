@@ -234,7 +234,7 @@ describe('Monthly page tests:', () => {
         elem.selectedIndex = 2;
         return elem.value;
       });
-      expect(actual_task).toBe('Event');
+      expect(actual_task).toBe('Note');
     });
 
     it('Test3: After the textbox pops up, test if the task input feature works properly', async () => {
