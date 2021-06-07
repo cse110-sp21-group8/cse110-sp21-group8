@@ -18,7 +18,13 @@ jobs:
     - name: Install modules
       run: yarn install
     - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum yarn test
-
+    - run: |
+        xvfb-run --auto-servernum yarn test 
+        xvfb-run --auto-servernum yarn test 
+        xvfb-run --auto-servernum yarn test 
+        xvfb-run --auto-servernum yarn test 
+        xvfb-run --auto-servernum yarn test 
+        xvfb-run --auto-servernum yarn test 
+        xvfb-run --auto-servernum yarn test 
 
 
