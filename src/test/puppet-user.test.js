@@ -2,7 +2,7 @@
 describe('User test:', () => {
   beforeAll(async () => {
     jest.setTimeout(35000);
-    await page.goto('http://localhost:8080/login');
+    await page.goto('http://localhost:8080');
   });
   // User login by entering the correct password and password: verify by the home page title
   it('Test1: User login by entering the correct password and password', async () => {
@@ -105,7 +105,7 @@ describe('Home Page Navigation testing', () => {
     await page.click('#index > div.widget-content > button:nth-child(3)');
 
     const title = await page.evaluate(() => {
-      const elem = document.querySelector('title');
+      const elem = document.querySelector('body > div.nav-bar > h1');
       return elem.innerText;
     });
     expect(title).toBe('Future Log');

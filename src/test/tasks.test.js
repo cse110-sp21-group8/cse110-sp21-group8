@@ -47,7 +47,7 @@ describe('Test: add Subtasks', () => {
       .then((response) => {
         let tasks = response.body.task;
         expect(response.body.status).toEqual(200);
-        expect(tasks.length).toEqual(6);
+        expect(tasks.length).toEqual(1);
         done();
       });
   });
