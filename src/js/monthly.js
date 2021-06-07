@@ -166,12 +166,18 @@ for (i = 1; i < 5; i++) {
       //create the note and delete button 
       let box = document.createElement('input');
       let del = document.createElement('button');
+      let calTaskDiv = document.createElement('div');
+      calTaskDiv.className = 'calTask';
       box.type = 'input';
       box.className = 'append';
+      del.className = 'delete';
+      del.innerHTML = '\u274C'
 
       //append to the calendar div
-      appendArea.appendChild(box);
-      appendArea.appendChild(del);
+      calTaskDiv.appendChild(box);
+      calTaskDiv.appendChild(del);
+      appendArea.appendChild(calTaskDiv);
+
       box.isNew = true;
 
       //when user focuses out, add/update in database
@@ -755,8 +761,13 @@ window.onload = function () {
             let numId = '#' + info[0];
             let appendNum = document.querySelector(numId).children[info[1]];
             let del = document.createElement('button');
-            appendNum.append(note);
-            appendNum.append(del);
+            let calTaskDiv = document.createElement('div');
+            calTaskDiv.className = 'calTask';
+            del.className = 'delete';
+            del.innerHTML = '\u274C'
+            calTaskDiv.append(note);
+            calTaskDiv.append(del);
+            appendNum.append(calTaskDiv);
 
             //when user focuses out, update note in db
             note.addEventListener('focusout', (event) => {
