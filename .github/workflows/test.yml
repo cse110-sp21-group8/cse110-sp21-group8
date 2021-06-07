@@ -18,7 +18,8 @@ jobs:
     - name: Install modules
       run: yarn install
     - run: sudo apt-get install xvfb
-    - run: npm install
+    - run: npm ci
+    - run: npm run build --if-present
     - run: |
            npm test -- tasks.test.js
            npm test -- user.test.js
