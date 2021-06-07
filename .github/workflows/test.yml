@@ -26,7 +26,7 @@ jobs:
         xvfb-run --auto-servernum yarn test puppet-future.test.js
         xvfb-run --auto-servernum yarn test puppet-monthly.test.js
         xvfb-run --auto-servernum yarn test user.test.js
-
+  
         
 
 
