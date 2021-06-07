@@ -41,7 +41,6 @@ document.addEventListener('click', (event) => {
   selectedTask = event.path[0];
   selectedTask.addEventListener('focusout', () => {
     if (selectedTask.id == 'tag-select') {
-      console.log('hola');
       let tagType = selectedTask.value;
       selectedTask.task_tag = tagType;
 
@@ -97,9 +96,9 @@ document.addEventListener('keydown', function (e) {
   if (e.key == 'Tab') {
     e.preventDefault();
     
-    //make sure that the active element is a task-;ost 
+    //make sure that the active element is a task-list 
     if (document.activeElement.nodeName == 'TASK-LIST') {
-      //create a subTask
+      //create a subTask and set properties 
       let task = document.activeElement;
       let subTask = document.createElement('task-list');
       let subForm = subTask.shadowRoot.querySelector('#form');
@@ -113,7 +112,7 @@ document.addEventListener('keydown', function (e) {
       let selection = subTask.shadowRoot.querySelector('#checklist-select');
       let input = subTask.shadowRoot.querySelector('#tasks');
 
-      //drop down menu for task, note, event 
+      //prefixes symbol if user selects event, note, or task
       selection.addEventListener('change', () => {
         if (selection.value == 'Task') {
           input.value = '● ';
@@ -128,7 +127,7 @@ document.addEventListener('keydown', function (e) {
       });
       input.value = '● ';
 
-      //adding a subtask by focusing out 
+      //adding/updating a subtask to page and db by focusing out 
       subTask.addEventListener('focusout', (event) => {
         //if the subtask is new, add it instead of update
         if (subTask.isNew) {
@@ -159,7 +158,8 @@ document.addEventListener('keydown', function (e) {
             .catch((error) => {
               console.error('Error:', error);
             });
-          //set subTask.isNew to false to signal that we will update at task now
+
+          //set subTask.isNew to false to prevent duplication of tasks
           subTask.isNew = false;
         } else {
           // grabs user input 
@@ -198,13 +198,13 @@ document.addEventListener('keydown', function (e) {
         }
       });
 
-      //Triggers focusout when user clicks enter
+      //Triggers focusout when user enters a task, add/updates task
       subForm.addEventListener('submit', (event) => {
         event.preventDefault();
         input.blur();
       })
 
-      //operational delete button: deletes subtask on page and databse
+      //operational delete button: deletes subtask on page and db
       let del = subTask.shadowRoot.querySelector('#delete');
       del.addEventListener('click', () => {
         let delete_data = data;
@@ -219,8 +219,6 @@ document.addEventListener('keydown', function (e) {
           .then((data) => {
             if (data['status'] == 200) {
               let newTask = data['task'];
-            } else {
-              //alert("Task didn't added");
             }
           })
           .catch((error) => {
@@ -233,6 +231,7 @@ document.addEventListener('keydown', function (e) {
 
       deleteButton.addEventListener('click', () => {
         let delete_data = data;
+        //delete from the db
         fetch('/deleteTask', {
           method: 'POST',
           headers: {
@@ -251,7 +250,8 @@ document.addEventListener('keydown', function (e) {
           .catch((error) => {
             console.error('Error:', error);
           });
-
+        
+        //delete from page 
         task.remove();
       });
     }
@@ -301,24 +301,19 @@ addButton.addEventListener('click', () => {
   taskInput.value = '● ';
 
   let selection = task.shadowRoot.querySelector('#checklist-select');
-  let change;
-  console.log(taskInput);
 
   //prefixes value with correct symbol based on drop down menu
   selection.addEventListener('change', () => {
     if (selection.value == 'Task') {
       taskInput.value = '● ';
-      change = '● ';
     } else if (selection.value == 'Note') {
       taskInput.value = '- ';
-      change = '- ';
     } else {
       taskInput.value = '⚬ ';
-      change = '⚬ ';
     }
   });
 
-  //adds and updates task to database when user focuses out 
+  //adds or updates task to database when user focuses out 
   taskInput.addEventListener('focusout', (event) => {
     //Sets date to log the task depending on date user selects
     let dayBtns = document.querySelectorAll('.day');
@@ -346,7 +341,7 @@ addButton.addEventListener('click', () => {
         date: curDate.toDateString()
       };
 
-      //add data to the databse 
+      //add data to the database 
       fetch('/addTask', {
         method: 'POST',
         headers: {
@@ -383,10 +378,10 @@ addButton.addEventListener('click', () => {
           console.error('Error:', error);
         });
 
-      //set task.isNew to false so task is not duplicated 
+      //set task.isNew to false so updating the task does not create a new one 
       task.isNew = false;
     } else {
-      //update task in the databse 
+      //update task in the database 
       let oldData = data;
       let content = taskInput.value;
       let date = new Date();
@@ -411,9 +406,7 @@ addButton.addEventListener('click', () => {
         .then((data) => {
           if (data['status'] == 200) {
             let newTask = data['task'];
-          } else {
-            // alert("Task didn't added");
-          }
+          } 
         })
         .catch((error) => {
           console.error('Error:', error);
@@ -508,7 +501,7 @@ addButton.addEventListener('click', () => {
     document.activeElement.blur();
   });
 
-  //Deleting task from database when user clicks delete button
+  //Deleting task from page and  database when user clicks delete button
   let deleteButton = task.shadowRoot.querySelector('#delete');
   deleteButton.addEventListener('click', () => {
     let delete_data = data;
@@ -650,10 +643,8 @@ function getDailyTasks(){
               }
     
               let selection = task.shadowRoot.querySelector('#checklist-select');
-              console.log(taskInput);
               
               //prefix symbol depending if user selects event, task, note 
-              let change;
               selection.addEventListener('change', () => {
                 if (selection.value == 'Task') {
                   taskInput.value = '● ';
@@ -664,7 +655,7 @@ function getDailyTasks(){
                 }
               });
     
-              //updates task when user focusesout of textbox
+              //updates task when user focuses out of textbox
               taskInput.addEventListener('focusout', (event) => {
                 event.preventDefault();
                 //getting old data from database 
@@ -706,7 +697,7 @@ function getDailyTasks(){
                 taskInput.blur();
               })
     
-              //deletes task and associate subtask from page and database
+              //deletes task and corresponding subtask from page and database
               let deleteButton = task.shadowRoot.querySelector('#delete');
               deleteButton.addEventListener('click', () => {
                 let index = Array.prototype.indexOf.call(text_box.children, task);
@@ -756,9 +747,7 @@ function getDailyTasks(){
                           .then((data) => {
                             if (data['status'] == 200) {
                               let newTask = data['task'];
-                            } else {
-                              //alert("Task didn't added");
-                            }
+                            } 
                           })
                           .catch((error) => {
                             console.error('Error:', error);
