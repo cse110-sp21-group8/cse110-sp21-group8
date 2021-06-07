@@ -1019,7 +1019,7 @@ let m_months = [
 ];
 
 let m_monthName = m_months[m_currentMonth];
-document.getElementById('Migratiocal').innerHTML = m_monthName;
+document.getElementById('Migratiocal').innerHTML = "Migration:  "+ m_monthName;
 
 const m_date = new Date();
 
@@ -1045,6 +1045,14 @@ for (let i = 1; i <= m_lastDay; i++) {
   day.classList.add("day");
   day.innerText=i;
   day.setAttribute("index",i);
+
+
+  day.addEventListener('mouseenter', () => {
+    day.style.background = '#5aa8979f';
+  });
+  day.addEventListener('mouseleave', () => {
+        day.style.background = 'none';
+  });
 
   day.addEventListener("click",()=>{
     let cday = new Date();

@@ -19,7 +19,7 @@ body {
 }
 
 /*Calendar*/
-#calendar {
+#calendar,#MigrationCalendar {
   background: #F7F3E9;
   border-radius: 50px;
 
