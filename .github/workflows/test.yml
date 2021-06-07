@@ -17,7 +17,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install modules
       run: yarn install
-    - run: yarn jest
+    - run: sudo apt-get install xvfb
+    - run: xvfb-run --auto-servernum yarn test
 
 
 
