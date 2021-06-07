@@ -16,16 +16,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install modules
-      run: yarn install
-    - run: sudo apt-get install xvfb
+      run: npm install
+    
     - run: |
-        xvfb-run --auto-servernum yarn test tasks.test.js
-        xvfb-run --auto-servernum yarn test puppet-future.test.js
-        xvfb-run --auto-servernum yarn test puppet-monthly.test.js
-        xvfb-run --auto-servernum yarn test puppet-future.test.js
-        xvfb-run --auto-servernum yarn test puppet-tasks.test.js
-        xvfb-run --auto-servernum yarn test puppet-home.test.js
-        xvfb-run --auto-servernum yarn test user.test.js
+           npm test -- tasks.test.js
+           npm test -- users.test.js
+           npm test -- future.test.js
          
    
         
