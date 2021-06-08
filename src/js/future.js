@@ -1,5 +1,4 @@
 //Global Variables
-let form = document.querySelector('form');
 let text_box = document.querySelector('#text-box1');
 //DOMContentLoaded for Testing 
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,10 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         input.value = '● ';
 
+        let data;
+
         //when user focuses out add or update subtask in db 
-        subTask.addEventListener('focusout', (event) => {
+        subTask.addEventListener('focusout', () => {
+          let date = new Date();
           if (subTask.isNew) {
-            //get user input 
+            //get user input
             let content = subTask.shadowRoot.querySelector('#tasks').value;
             data = {
               status: 'future',
@@ -74,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             //get new data and replace it with previous task's data 
             let content = subTask.shadowRoot.querySelector('#tasks').value;
             let oldData = data;
-            newData = {
+            let newData = {
               status: 'future',
               type: 'task',
               content: content,
@@ -83,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             //update task in the database 
-            send_data = {old: oldData, new: newData};
+            let send_data = {old: oldData, new: newData};
             fetch('/updateSubTask', {
               method: 'POST',
               headers: {
@@ -150,16 +152,17 @@ document.addEventListener('DOMContentLoaded', () => {
     for (j = 1; j < 32; j++) {
       //prefills the value depending on which day of month user selects
       let name = '.whole-cal' + i;
-      let cal = document.querySelector(name);
       let geth2 = name + ' ' + 'h2';
       let text = document.querySelector(geth2).textContent;
 
       let classname = '.date' + i + j;
       let day = document.querySelector(classname);
+      let data;
+
       if (day != null) {
 
         //when user selects a day, add or update task 
-        day.addEventListener('click', (event) => {
+        day.addEventListener('click', () => {
           //create new task to append to page 
           let task = document.createElement('task-list');
           text_box.append(task);
@@ -169,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
           //prefix the day user selects along with month
           let prefixed = text + ' ' + day.innerHTML + ': ';
           taskInput.value = prefixed;
-          //change the drop down menu 
+          //change the drop down menu
           selection.addEventListener('change', () => {
             if (selection.value == 'Task') {
               taskInput.value = prefixed + '● ';
@@ -236,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 date: date.toDateString()
               };
               let newData = data;
-              send_data = {old: oldData, new: newData};
+              let send_data = {old: oldData, new: newData};
               //update data in the db 
               fetch('/updateTask', {
                 method: 'POST',
@@ -262,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let deleteButton = task.shadowRoot.querySelector('#delete');
             deleteButton.addEventListener('click', () => {
               //delete data from the db 
-              delete_data = data;
+              let delete_data = data;
               fetch('/deleteTask', {
                 method: 'POST',
                 headers: {
@@ -293,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 //load Task:
-window.onload = function (event) {
+window.onload = function () {
   fetch('/getFutureTask', {
     method: 'POST',
     headers: {
@@ -322,10 +325,10 @@ window.onload = function (event) {
             text_box.appendChild(task);
           }
 
-          //updating task when focusout 
+          //updating task when focusout
           taskInput.addEventListener('focusout', (event) => {
             event.preventDefault();
-            //updating the data based on new input 
+            //updating the data based on new input
             let index = Array.prototype.indexOf.call(text_box.children, task);
             let oldData = data.task[index];
             let content = taskInput.value;
@@ -338,7 +341,7 @@ window.onload = function (event) {
             };
 
             //update the data in the db 
-            send_data = {old: oldData, new: newData};
+            let send_data = {old: oldData, new: newData};
             fetch('/updateTask', {
                 method: 'POST',
                 headers: {
@@ -463,14 +466,14 @@ window.onload = function (event) {
                     //get new data from user 
                     let content = subTaskInput.value;
                     let oldData = subTemp;
-                    newData = {
+                    let newData = {
                       status: 'future',
                       type: 'task',
                       content: content,
                       date: date.toDateString(),
                       task_id: subTask.task_id
                     };
-                    send_data = {old: oldData, new: newData};
+                    let send_data = {old: oldData, new: newData};
                     
                     //update the subtask in the db 
                     fetch('/updateSubTask', {
@@ -502,7 +505,7 @@ window.onload = function (event) {
                   //clicking the subtask delete button, delete subtask from db and window 
                   subDelete.addEventListener('click', () => {
                     //delete from db
-                    delete_data = subTemp;
+                    let delete_data = subTemp;
                     fetch('/deleteSubTask', {
                       method: 'POST',
                       headers: {

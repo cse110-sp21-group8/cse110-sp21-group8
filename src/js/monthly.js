@@ -37,13 +37,16 @@ document.addEventListener('keydown', function (e) {
       });
       input.value = '● ';
 
+      let data;
+
       //adding/updating a subtask to page and db by focusing out 
-      subTask.addEventListener('focusout', (event) => {
+      subTask.addEventListener('focusout', () => {
         //if the subtask is new, add it instead of update
         if (subTask.isNew) {
 
           //create data with the user input 
           let content = subTask.shadowRoot.querySelector('#tasks').value;
+          let date = new Date();
           data = {
             status: 'monthly',
             type: 'goal',
@@ -75,12 +78,13 @@ document.addEventListener('keydown', function (e) {
         } else {
           // grabs user input
           let content = subTask.shadowRoot.querySelector('#tasks').value;
+          let date = new Date();
 
           //oldData is the previous data we store 
           let oldData = data;
 
            //newData stores the updated user input 
-          newData = {
+          let newData = {
             status: 'monthly',
             type: 'goal',
             content: content,
@@ -113,7 +117,7 @@ document.addEventListener('keydown', function (e) {
       subForm.addEventListener('submit', (event) => {
         event.preventDefault();
         input.blur();
-      })
+      });
 
       //operational delete button: deletes subtask on page and database
       let del = subTask.shadowRoot.querySelector('#delete');
@@ -156,6 +160,7 @@ for (i = 1; i < 5; i++) {
     let day = calendar.children[j];
     let appendArea = num.children[j];
 
+    let data;
     //event listener for adding a note 
     day.addEventListener('click', () => {
       //storing information for loading 
@@ -181,7 +186,7 @@ for (i = 1; i < 5; i++) {
           let content = box.value;
           let date = new Date();
 
-          //data based on user input 
+          //data based on user input
           data = {
             status: 'monthly',
             type: 'note',
@@ -298,6 +303,8 @@ addButton.addEventListener('click', () => {
       taskInput.value = '⚬ ';
     }
   });
+
+  let data;
 
   //adds or updates task to database when user focuses out
   taskInput.addEventListener('focusout', (event) => {
@@ -511,6 +518,7 @@ addButton.addEventListener('click', () => {
 //load Task:
 window.onload = function () {
   //fetch the tasks and append them 
+  let date = new Date();
   fetch('/getMonthlyTask', {
     method: 'POST',
     headers: {
@@ -597,7 +605,7 @@ window.onload = function () {
             let deleteButton = task.shadowRoot.querySelector('#delete');
             deleteButton.addEventListener('click', () => {
               let index = Array.prototype.indexOf.call(text_box.children, task);
-              delete_data = data.task[index];
+              let delete_data = data.task[index];
               //delete task from database
               fetch('/deleteTask', {
                 method: 'POST',
@@ -685,14 +693,14 @@ window.onload = function () {
                     //even listener for updating pre-existing subtask
                     subTaskInput.addEventListener('focusout', () => {
                       let oldData = subTemp;
-                      newData = {
+                      let newData = {
                         status: 'monthly',
                         type: 'goal',
                         content: subTaskInput.value,
                         date: date.toDateString(),
                         task_id: subTask.task_id
                       };
-                      send_data = {old: oldData, new: newData};
+                      let send_data = {old: oldData, new: newData};
                       fetch('/updateSubTask', {
                         method: 'POST',
                         headers: {
@@ -719,7 +727,7 @@ window.onload = function () {
 
                     //delete subtask on page and db when delete button is pressed
                     subDelete.addEventListener('click', () => {
-                      delete_data = subTemp;
+                      let delete_data = subTemp;
                       //delete on the db
                       fetch('/deleteSubTask', {
                         method: 'POST',
@@ -759,7 +767,7 @@ window.onload = function () {
             appendNum.append(del);
 
             //when user focuses out, update note in db
-            note.addEventListener('focusout', (event) => {
+            note.addEventListener('focusout', () => {
               let oldData = tmp;
               let newData = {
                 status: 'monthly',
