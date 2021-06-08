@@ -64,7 +64,7 @@ document.addEventListener('keydown', function (e) {
             .then((response) => response.json())
             .then((data) => {
               if (data['status'] == 200) {
-                let newTask = data['task'];
+                //Success
               } 
             })
             .catch((error) => {
@@ -75,7 +75,7 @@ document.addEventListener('keydown', function (e) {
         } else {
           // grabs user input 
           let content = subTask.shadowRoot.querySelector('#tasks').value;
-          
+          let date = new Date();
           //oldData is the previous data we store
           let oldData = data;
 
@@ -100,7 +100,7 @@ document.addEventListener('keydown', function (e) {
             .then((response) => response.json())
             .then((data) => {
               if (data['status'] == 200) {
-                let newTask = data['task'];
+                //Success
               } 
             })
             .catch((error) => {
@@ -129,7 +129,7 @@ document.addEventListener('keydown', function (e) {
           .then((response) => response.json())
           .then((data) => {
             if (data['status'] == 200) {
-              let newTask = data['task'];
+              //Success
             } 
           })
           .catch((error) => {
@@ -153,7 +153,7 @@ document.addEventListener('keydown', function (e) {
           .then((response) => response.json())
           .then((data) => {
             if (data['status'] == 200) {
-              let newTask = data['task'];
+              //Success
             } else {
               alert("Task didn't added");
             }
@@ -189,7 +189,7 @@ document.addEventListener('keydown', function (e) {
                   .then((response) => response.json())
                   .then((data) => {
                     if (data['status'] == 200) {
-                      let newTask = data['task'];
+                      //Success
                     } 
                   })
                   .catch((error) => {
@@ -272,7 +272,7 @@ addButton.addEventListener('click', () => {
           task.date = data.date;
           task.task_id = data.task._id;
           if (data['status'] == 200) {
-            let newTask = data['task'];
+            //Success
           } 
         })
         .catch((error) => {
@@ -304,7 +304,7 @@ addButton.addEventListener('click', () => {
         .then((response) => response.json())
         .then((data) => {
           if (data['status'] == 200) {
-            let newTask = data['task'];
+            //Success
           } 
         })
         .catch((error) => {
@@ -335,7 +335,7 @@ addButton.addEventListener('click', () => {
       .then((response) => response.json())
       .then((data) => {
         if (data['status'] == 200) {
-          let newTask = data['task'];
+          //Success
         } 
       })
       .catch((error) => {
@@ -443,7 +443,7 @@ window.onload = function () {
               .then((response) => response.json())
               .then((data) => {
                 if (data['status'] == 200) {
-                  let newTask = data['task'];
+                  //Success
                 } else {
                   //alert("Task didn't added");
                 }
@@ -475,7 +475,7 @@ window.onload = function () {
               .then((response) => response.json())
               .then((data) => {
                 if (data['status'] == 200) {
-                  let newTask = data['task'];
+                  //Success
                 }
               })
               .catch((error) => {
@@ -510,7 +510,7 @@ window.onload = function () {
                       .then((response) => response.json())
                       .then((data) => {
                         if (data['status'] == 200) {
-                          let newTask = data['task'];
+                          //Success
                         } 
                       })
                       .catch((error) => {
@@ -553,6 +553,7 @@ window.onload = function () {
                   //update subtask in database
                   subTaskInput.addEventListener('focusout', () => {
                     let oldData = subTemp;
+                    let date = new Date();
                     let newData = {
                       status: 'daily',
                       type: 'task',
@@ -572,7 +573,7 @@ window.onload = function () {
                       .then((response) => response.json())
                       .then((data) => {
                         if (data['status'] == 200) {
-                          let newTask = data['task'];
+                          //Success
                         } 
                       })
                       .catch((error) => {
@@ -599,7 +600,7 @@ window.onload = function () {
                       .then((response) => response.json())
                       .then((data) => {
                         if (data['status'] == 200) {
-                          let newTask = data['task'];
+                          //Success
                         } 
                       })
                       .catch((error) => {

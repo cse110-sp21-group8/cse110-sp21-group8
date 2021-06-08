@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
               .then((response) => response.json())
               .then((data) => {
                 if (data['status'] == 200) {
-                  let newTask = data['task'];
+                  //Success
                 } else {
                   alert("Task didn't added");
                 }
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
               .then((response) => response.json())
               .then((data) => {
                 if (data['status'] == 200) {
-                  let newTask = data['task'];
+                  //Success
                 } else {
                   alert("Task didn't added");
                 }
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then((response) => response.json())
             .then((data) => {
               if (data['status'] == 200) {
-                let newTask = data['task'];
+                //Success
               } else {
                 alert("Task didn't added");
               }
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then((response) => response.json())
                 .then((data) => {
                   if (data['status'] == 200) {
-                    let newTask = data['task'];
+                    //Success
                     task.task_id = data.task._id;
                   } else {
                     alert("Task didn't added");
@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then((response) => response.json())
                 .then((data) => {
                   if (data['status'] == 200) {
-                    let newTask = data['task'];
+                    //Success
                   } else {
                     alert("Task didn't added");
                   }
@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then((response) => response.json())
                 .then((data) => {
                   if (data['status'] == 200) {
-                    let newTask = data['task'];
+                    //Success
                   } else {
                     alert("Task didn't added");
                   }
@@ -350,7 +350,7 @@ window.onload = function () {
                 .then((response) => response.json())
                 .then((data) => {
                   if (data['status'] == 200) {
-                    let newTask = data['task'];
+                    //Success
                   } 
                 })
                 .catch((error) => {
@@ -383,7 +383,7 @@ window.onload = function () {
               .then((response) => response.json())
               .then((data) => {
                 if (data['status'] == 200) {
-                  let newTask = data['task'];
+                  //Success
                 } else {
                   alert("Task didn't added");
                 }
@@ -420,7 +420,7 @@ window.onload = function () {
                       .then((response) => response.json())
                       .then((data) => {
                         if (data['status'] == 200) {
-                          let newTask = data['task'];
+                          //Success
                         } else {
                           alert("Task didn't added");
                         }
@@ -459,6 +459,7 @@ window.onload = function () {
                   let subDelete = subTask.shadowRoot.querySelector('#delete');
                   subTask.isSubtask = true;
                   
+                  let date = new Date();
                   //updating subtask when user focusesout
                   subTaskInput.addEventListener('focusout', () => {
                     //get new data from user 
@@ -484,7 +485,7 @@ window.onload = function () {
                       .then((response) => response.json())
                       .then((data) => {
                         if (data['status'] == 200) {
-                          let newTask = data['task'];
+                          //Success
                         } else {
                           alert("Task didn't added");
                         }
@@ -514,7 +515,7 @@ window.onload = function () {
                       .then((response) => response.json())
                       .then((data) => {
                         if (data['status'] == 200) {
-                          let newTask = data['task'];
+                          //Success
                         } else {
                           alert("Task didn't added");
                         }

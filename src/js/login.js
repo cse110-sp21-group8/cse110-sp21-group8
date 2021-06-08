@@ -3,7 +3,7 @@ form.addEventListener('submit', (event) => {
   event.preventDefault();
   let username = document.getElementById('email').value;
   let password = document.getElementById('password').value;
-  data = {username: username, password: password};
+  let data = {username: username, password: password};
   fetch('/user_login', {
     method: 'POST',
     headers: {

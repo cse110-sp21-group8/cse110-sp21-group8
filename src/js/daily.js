@@ -76,8 +76,7 @@ document.addEventListener('click', (event) => {
         .then((response) => response.json())
         .then((data) => {
           if (data['status'] == 200) {
-            let newTask = data['task'];
-            console.log(newTask);
+            //Success;
           } else {
             // alert("Task didn't added");
           }
@@ -147,7 +146,7 @@ document.addEventListener('keydown', function (e) {
             .then((response) => response.json())
             .then((data) => {
               if (data['status'] == 200) {
-                let newTask = data['task'];
+                //Success;
               } 
             })
             .catch((error) => {
@@ -184,7 +183,7 @@ document.addEventListener('keydown', function (e) {
             .then((response) => response.json())
             .then((data) => {
               if (data['status'] == 200) {
-                let newTask = data['task'];
+                //Success;
               } 
             })
             .catch((error) => {
@@ -213,7 +212,7 @@ document.addEventListener('keydown', function (e) {
           .then((response) => response.json())
           .then((data) => {
             if (data['status'] == 200) {
-              let newTask = data['task'];
+              //Success;
             }
           })
           .catch((error) => {
@@ -237,7 +236,7 @@ document.addEventListener('keydown', function (e) {
           .then((response) => response.json())
           .then((data) => {
             if (data['status'] == 200) {
-              let newTask = data['task'];
+              //Success;
             } else {
               alert("Task didn't added");
             }
@@ -347,7 +346,7 @@ addButton.addEventListener('click', () => {
           task.date = data.date;
           task.task_id = data.task._id;
           if (data['status'] == 200) {
-            let newTask = data['task'];
+            //Success;
 
                 //migration
                 let migrate = task.shadowRoot.querySelector('#move');
@@ -397,7 +396,7 @@ addButton.addEventListener('click', () => {
         .then((response) => response.json())
         .then((data) => {
           if (data['status'] == 200) {
-            let newTask = data['task'];
+            //Success;
           } 
         })
         .catch((error) => {
@@ -447,7 +446,7 @@ addButton.addEventListener('click', () => {
         .then((data) => {
           task.task_id = data.task._id;
           if (data['status'] == 200) {
-            let newTask = data['task'];
+            //Success;
           } else {
             alert("Task didn't added");
           }
@@ -460,7 +459,6 @@ addButton.addEventListener('click', () => {
       //updating database when user updates tasl
       let oldData = data;
       let content = taskInput.value;
-      let date = new Date();
       data = {
         status: 'daily',
         type: 'task',
@@ -481,7 +479,7 @@ addButton.addEventListener('click', () => {
         .then((response) => response.json())
         .then((data) => {
           if (data['status'] == 200) {
-            let newTask = data['task'];
+            //Success;
           } 
         })
         .catch((error) => {
@@ -506,7 +504,7 @@ addButton.addEventListener('click', () => {
       .then((response) => response.json())
       .then((data) => {
         if (data['status'] == 200) {
-          let newTask = data['task'];
+          //Success;
         } else {
           alert("Task didn't added");
         }
@@ -542,7 +540,7 @@ addButton.addEventListener('click', () => {
               .then((response) => response.json())
               .then((data) => {
                 if (data['status'] == 200) {
-                  let newTask = data['task'];
+                  //Success;
                 } 
               })
               .catch((error) => {
@@ -556,7 +554,8 @@ addButton.addEventListener('click', () => {
   taskInput.focus();
 });
 
-let form = document.querySelector('form');
+
+// eslint-disable-next-line no-unused-vars
 let isReflectionNew = true;
 
 //fetching the Daily Tasks and subtasks and appending them to screen
@@ -673,7 +672,7 @@ function getDailyTasks(){
                   .then((response) => response.json())
                   .then((data) => {
                     if (data['status'] == 200) {
-                      let newTask = data['task'];
+                      //Success;
                     }
                   })
                   .catch((error) => {
@@ -702,7 +701,7 @@ function getDailyTasks(){
                   .then((response) => response.json())
                   .then((data) => {
                     if (data['status'] == 200) {
-                      let newTask = data['task'];
+                      //Success;
                     }
                   })
                   .catch((error) => {
@@ -736,7 +735,7 @@ function getDailyTasks(){
                           .then((response) => response.json())
                           .then((data) => {
                             if (data['status'] == 200) {
-                              let newTask = data['task'];
+                              //Success;
                             } 
                           })
                           .catch((error) => {
@@ -798,7 +797,7 @@ function getDailyTasks(){
                           .then((response) => response.json())
                           .then((data) => {
                             if (data['status'] == 200) {
-                              let newTask = data['task'];
+                              //Success;
                             } 
                           })
                           .catch((error) => {
@@ -826,7 +825,7 @@ function getDailyTasks(){
                           .then((response) => response.json())
                           .then((data) => {
                             if (data['status'] == 200) {
-                              let newTask = data['task'];
+                              //Success;
                             } 
                           })
                           .catch((error) => {
@@ -909,7 +908,6 @@ reflection.addEventListener('focusout', () => {
   if (document.getElementById('reflection').innerHTML === '') {
     //create new reflection on back end
     let content = reflection.value;
-    let date = new Date();
     data = {
       status: 'daily',
       type: 'reflection',
@@ -926,7 +924,7 @@ reflection.addEventListener('focusout', () => {
       .then((response) => response.json())
       .then((data) => {
         if (data['status'] == 200) {
-          let newReflection = data['reflection'];
+          //let newReflection = data['reflection'];
         } else {
           alert("Reflection didn't add");
         }
@@ -957,7 +955,6 @@ reflection.addEventListener('focusout', () => {
 
           //Deleting reflection from the database
           let content = document.getElementById('reflection').value;
-          let date = new Date();
           let newData = {
             status: 'daily',
             type: 'reflection',
@@ -977,7 +974,7 @@ reflection.addEventListener('focusout', () => {
               .then((response) => response.json())
               .then((data) => {
                 if (data['status'] == 200) {
-                  let newReflection = data['reflection'];
+                  //let newReflection = data['reflection'];
                 } 
               })
               .catch((error) => {
@@ -995,7 +992,7 @@ reflection.addEventListener('focusout', () => {
               .then((response) => response.json())
               .then((data) => {
                 if (data['status'] == 200) {
-                  let newReflection = data['reflection'];
+                  //let newReflection = data['reflection'];
                 } else {
                   alert("Reflection didn't add");
                 }
