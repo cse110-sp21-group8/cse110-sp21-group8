@@ -466,7 +466,7 @@ addButton.addEventListener('click', () => {
         date: curDate.toDateString()
       };
       let newData = data;
-      send_data = {old: oldData, new: newData};
+      let send_data = {old: oldData, new: newData};
 
       //udpating task in database 
       fetch('/updateTask', {
@@ -891,6 +891,7 @@ window.onload = function () {
 
 //reflection section
 let reflection = document.getElementById('reflection');
+// eslint-disable-next-line no-unused-vars
 let reflectionForm = document.querySelector('#reflect-box form');
 
 //adding reflection when user focuses out

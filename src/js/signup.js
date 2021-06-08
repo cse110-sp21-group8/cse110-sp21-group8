@@ -12,7 +12,7 @@ form.addEventListener('submit', (event) => {
     return false;
   }
 
-  data = {username: username, password: password, name: name};
+  let data = {username: username, password: password, name: name};
   fetch('/user_signup', {
     method: 'POST',
     headers: {

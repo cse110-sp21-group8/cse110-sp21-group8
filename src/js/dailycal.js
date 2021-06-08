@@ -160,7 +160,7 @@ for (let i = 7; i < dayBtns.length; i++) {
                 content: content,
                 date: date.toDateString()
               };
-              send_data = {old: oldData, new: newData};
+              let send_data = {old: oldData, new: newData};
               fetch('/updateTask', {
                 method: 'POST',
                 headers: {
@@ -171,7 +171,7 @@ for (let i = 7; i < dayBtns.length; i++) {
                 .then((response) => response.json())
                 .then((data) => {
                   if (data['status'] == 200) {
-                    let newTask = data['task'];
+                    //Success
                   } else {
                     //alert("Task didn't added");
                   }
@@ -191,7 +191,7 @@ for (let i = 7; i < dayBtns.length; i++) {
 
             deleteButton.addEventListener('click', () => {
               let index = Array.prototype.indexOf.call(text_box.children, task);
-              delete_data = data.task[index];
+              let delete_data = data.task[index];
               fetch('/deleteTask', {
                 method: 'POST',
                 headers: {
@@ -202,7 +202,7 @@ for (let i = 7; i < dayBtns.length; i++) {
                 .then((response) => response.json())
                 .then((data) => {
                   if (data['status'] == 200) {
-                    let newTask = data['task'];
+                    //Success
                   } else {
                     //alert("Task didn't added");
                   }
@@ -236,7 +236,7 @@ for (let i = 7; i < dayBtns.length; i++) {
                         .then((response) => response.json())
                         .then((data) => {
                           if (data['status'] == 200) {
-                            let newTask = data['task'];
+                            //Success
                           } else {
                             //alert("Task didn't added");
                           }
@@ -281,14 +281,14 @@ for (let i = 7; i < dayBtns.length; i++) {
                     //subTaskInput.value = "● ";
                     subTaskInput.addEventListener('change', () => {
                       let oldData = subTemp;
-                      newData = {
+                      let newData = {
                         status: 'daily',
                         type: 'task',
                         content: content,
                         date: date.toDateString(),
                         task_id: subTask.task_id
                       };
-                      send_data = {old: oldData, new: newData};
+                      let send_data = {old: oldData, new: newData};
                       fetch('/updateSubTask', {
                         method: 'POST',
                         headers: {
@@ -299,7 +299,7 @@ for (let i = 7; i < dayBtns.length; i++) {
                         .then((response) => response.json())
                         .then((data) => {
                           if (data['status'] == 200) {
-                            let newTask = data['task'];
+                            //Success
                           } else {
                             // alert("Task didn't added");
                           }
@@ -316,7 +316,7 @@ for (let i = 7; i < dayBtns.length; i++) {
                     });
 
                     subDelete.addEventListener('click', () => {
-                      delete_data = subTemp;
+                      let delete_data = subTemp;
                       fetch('/deleteSubTask', {
                         method: 'POST',
                         headers: {
@@ -327,7 +327,7 @@ for (let i = 7; i < dayBtns.length; i++) {
                         .then((response) => response.json())
                         .then((data) => {
                           if (data['status'] == 200) {
-                            let newTask = data['task'];
+                            //Success
                           } else {
                             //alert("Task didn't added");
                           }
@@ -358,9 +358,11 @@ for (let i = 7; i < dayBtns.length; i++) {
     })
       .then((response) => response.json())
       .then((data) => {
+        
         if (data['status'] == 200) {
           //obtains the task list
           let tasks = data['task'];
+          // eslint-disable-next-line no-unused-vars
           let reflect_box = document.getElementById('reflect-box');
 
           let curDay;
@@ -376,6 +378,7 @@ for (let i = 7; i < dayBtns.length; i++) {
               tmp['date'].slice(8, 10) == curDay
             ) {
               document.getElementById('reflection').append(tmp['content']);
+              // eslint-disable-next-line no-undef
               isReflectionNew = false;
             }
           });
@@ -386,6 +389,7 @@ for (let i = 7; i < dayBtns.length; i++) {
               tmp['date'].slice(8, 10) === curDay
             ) {
               document.getElementById('reflection').append(tmp['content']);
+              // eslint-disable-next-line no-undef
               isReflectionNew = false;
             }
           });

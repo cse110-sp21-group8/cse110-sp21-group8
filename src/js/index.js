@@ -204,7 +204,7 @@ document.addEventListener('keydown', function (e) {
 });
 
 /* Custom Tag */
-document.addEventListener('click', function (e) {
+document.addEventListener('click', function () {
   if (document.activeElement.nodeName == 'TASK-LIST') {
     let selectedTask = document.activeElement;
     let tagType = selectedTask.shadowRoot.querySelector('#tag-select').value;
