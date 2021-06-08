@@ -18,9 +18,19 @@ jobs:
     - name: Install modules
       run: yarn install
     - run: sudo apt-get install xvfb
-
-    - run: | 
-        xvfb-run --auto-servernum yarn test puppet-user.test.js 
+    - run: |
+        xvfb-run --auto-servernum yarn test tasks.test.js
+    - run: |
+        xvfb-run --auto-servernum yarn test puppet-task.test.js
+    - run: |
+        xvfb-run --auto-servernum yarn test puppet-future.test.js
+    - run: |
+        xvfb-run --auto-servernum yarn test puppet-monthly.test.js
+    - run: |
+        xvfb-run --auto-servernum yarn test puppet-home.test.js
+    - run: |
+        xvfb-run --auto-servernum yarn test users.test.js 
+ 
             
         
 
