@@ -263,3 +263,18 @@ p {
   align-items: center;
   justify-content: center;
 }
+
+@media (prefers-color-scheme: dark) {
+  html {
+    background: #222;
+  }
+
+  #search-container h1, #todays-log .header h1{
+    color: #DDD;
+  }
+
+  .widget-content, .widget-content p , .widget-content button{
+    background: #444;
+    color: #DDD;
+  }
+}
