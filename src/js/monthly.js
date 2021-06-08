@@ -2,6 +2,7 @@
 //global variables
 let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
+let data;
 
 //adding subtask to page and database when user tabs on task
 document.addEventListener('keydown', function (e) {
@@ -37,8 +38,6 @@ document.addEventListener('keydown', function (e) {
       });
       input.value = '● ';
 
-      let data;
-
       //adding/updating a subtask to page and db by focusing out 
       subTask.addEventListener('focusout', () => {
         //if the subtask is new, add it instead of update
@@ -66,7 +65,7 @@ document.addEventListener('keydown', function (e) {
             .then((response) => response.json())
             .then((data) => {
               if (data['status'] == 200) {
-                let newTask = data['task'];
+                //Success
               }
             })
             .catch((error) => {
@@ -104,7 +103,7 @@ document.addEventListener('keydown', function (e) {
             .then((response) => response.json())
             .then((data) => {
               if (data['status'] == 200) {
-                let newTask = data['task'];
+                //Success
               } 
             })
             .catch((error) => {
@@ -133,7 +132,7 @@ document.addEventListener('keydown', function (e) {
           .then((response) => response.json())
           .then((data) => {
             if (data['status'] == 200) {
-              let newTask = data['task'];
+              //Success
             } 
           })
           .catch((error) => {
@@ -159,8 +158,6 @@ for (i = 1; i < 5; i++) {
     //if user selects a certain day div, then add a note 
     let day = calendar.children[j];
     let appendArea = num.children[j];
-
-    let data;
     //event listener for adding a note 
     day.addEventListener('click', () => {
       //storing information for loading 
@@ -211,7 +208,7 @@ for (i = 1; i < 5; i++) {
             .then((response) => response.json())
             .then((data) => {
               if (data['status'] == 200) {
-                let newTask = data['task'];
+                //Success
               } else {
                 alert("Goal didn't add");
               }
@@ -247,7 +244,7 @@ for (i = 1; i < 5; i++) {
             .then((response) => response.json())
             .then((data) => {
               if (data['status'] == 200) {
-                let newTask = data['task'];
+                //Success
               } else {
                 alert("Goal didn't add");
               }
@@ -273,7 +270,7 @@ for (i = 1; i < 5; i++) {
           .then((response) => response.json())
           .then((data) => {
             if (data['status'] == 200) {
-              let newTask = data['task'];
+              //Success
             } else {
               alert("Task didn't added");
             }
@@ -310,8 +307,6 @@ addButton.addEventListener('click', () => {
     }
   });
 
-  let data;
-
   //adds or updates task to database when user focuses out
   taskInput.addEventListener('focusout', (event) => {
     //if task is new, then add to backend 
@@ -341,7 +336,7 @@ addButton.addEventListener('click', () => {
         .then((data) => {
           task.task_id = data.task._id;
           if (data['status'] == 200) {
-            let newTask = data['task'];
+            //Success
           } 
         })
         .catch((error) => {
@@ -376,7 +371,7 @@ addButton.addEventListener('click', () => {
         .then((response) => response.json())
         .then((data) => {
           if (data['status'] == 200) {
-            let newTask = data['task'];
+            //Success
           } else {
             //alert("Goal didn't add");
           }
@@ -401,7 +396,7 @@ addButton.addEventListener('click', () => {
         .then((response) => response.json())
         .then((data) => {
           if (data['status'] == 200) {
-            let newTask = data['task'];
+            //Success
           } else {
             alert("Task didn't added");
           }
@@ -437,7 +432,7 @@ addButton.addEventListener('click', () => {
                 .then((response) => response.json())
                 .then((data) => {
                   if (data['status'] == 200) {
-                    let newTask = data['task'];
+                    //Success
                   } 
                 })
                 .catch((error) => {
@@ -476,7 +471,7 @@ addButton.addEventListener('click', () => {
         .then((data) => {
           task.task_id = data.task._id;
           if (data['status'] == 200) {
-            let newTask = data['task'];
+            //Success
           } 
         })
         .catch((error) => {
@@ -507,7 +502,7 @@ addButton.addEventListener('click', () => {
         .then((response) => response.json())
         .then((data) => {
           if (data['status'] == 200) {
-            let newTask = data['task'];
+            //Success
           } else {
             alert("Task didn't added");
           }
@@ -596,7 +591,7 @@ window.onload = function () {
                 .then((response) => response.json())
                 .then((data) => {
                   if (data['status'] == 200) {
-                    let newTask = data['task'];
+                    //Success
                   } else {
                     alert("Task didn't added");
                   }
@@ -623,7 +618,7 @@ window.onload = function () {
                 .then((response) => response.json())
                 .then((data) => {
                   if (data['status'] == 200) {
-                    let newTask = data['task'];
+                    //Success
                   } else {
                     alert("Task didn't added");
                   }
@@ -659,7 +654,7 @@ window.onload = function () {
                         .then((response) => response.json())
                         .then((data) => {
                           if (data['status'] == 200) {
-                            let newTask = data['task'];
+                            //Success
                           } 
                         })
                         .catch((error) => {
@@ -717,7 +712,7 @@ window.onload = function () {
                         .then((response) => response.json())
                         .then((data) => {
                           if (data['status'] == 200) {
-                            let newTask = data['task'];
+                            //Success
                           } 
                         })
                         .catch((error) => {
@@ -745,7 +740,7 @@ window.onload = function () {
                         .then((response) => response.json())
                         .then((data) => {
                           if (data['status'] == 200) {
-                            let newTask = data['task'];
+                            //Success
                           }
                         })
                         .catch((error) => {
@@ -799,7 +794,7 @@ window.onload = function () {
                 .then((response) => response.json())
                 .then((data) => {
                   if (data['status'] == 200) {
-                    let newTask = data['task'];
+                    //Success
                   } else {
                     alert("Task didn't added");
                   }
@@ -823,7 +818,7 @@ window.onload = function () {
                 .then((response) => response.json())
                 .then((data) => {
                   if (data['status'] == 200) {
-                    let newTask = data['task'];
+                    //Success
                   } else {
                     alert("Task didn't added");
                   }

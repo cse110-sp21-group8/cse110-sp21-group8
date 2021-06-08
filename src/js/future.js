@@ -1,5 +1,6 @@
 //Global Variables
 let text_box = document.querySelector('#text-box1');
+let data;
 //DOMContentLoaded for Testing 
 document.addEventListener('DOMContentLoaded', () => {
   //adding subtask when user tabs 
@@ -33,8 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
         input.value = '● ';
-
-        let data;
 
         //when user focuses out add or update subtask in db 
         subTask.addEventListener('focusout', () => {
@@ -157,7 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let classname = '.date' + i + j;
       let day = document.querySelector(classname);
-      let data;
 
       if (day != null) {
 

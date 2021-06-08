@@ -1,6 +1,7 @@
 //Global Variables
 let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
+let data;
 
 //Tab Event Listener for adding a subtask 
 document.addEventListener('keydown', function (e) {
@@ -36,8 +37,6 @@ document.addEventListener('keydown', function (e) {
         }
       });
       input.value = '● ';
-
-      let data;
 
       // adding/updating a subtask to page and db by focusing out
       subTask.addEventListener('focusout', () => {
@@ -232,8 +231,6 @@ addButton.addEventListener('click', () => {
       taskInput.value = '⚬ ';
     }
   });
-
-  let data;
 
   //adds or updates task to database when user focuses out 
   taskInput.addEventListener('focusout', (event) => {

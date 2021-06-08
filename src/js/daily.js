@@ -1,6 +1,7 @@
 //Global Variables
 let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
+let data;
 
 
 let addTagButton = document.getElementById('add-tag').firstElementChild;
@@ -54,7 +55,6 @@ document.addEventListener('click', (event) => {
         }
       }
 
-      let data;
       let oldData = data;
       let content = selectedTask.parentElement.querySelector('#tasks').value;
       data = {
@@ -121,7 +121,6 @@ document.addEventListener('keydown', function (e) {
       });
       input.value = '● ';
 
-      let data;
       let date = new Date();
       //adding/updating a subtask to page and db by focusing out
       subTask.addEventListener('focusout', () => {
@@ -310,7 +309,6 @@ addButton.addEventListener('click', () => {
 
   //adds or updates task to database when user focuses out 
   taskInput.addEventListener('focusout', (event) => {
-    let data;
     //Sets date to log the task depending on date user selects
     let dayBtns = document.querySelectorAll('.day');
     for (let i = 7; i < dayBtns.length; i++) {
@@ -426,7 +424,6 @@ addButton.addEventListener('click', () => {
 
 
     event.preventDefault();
-    let data;
   
     //adding task to database
     if (task.isNew) {
