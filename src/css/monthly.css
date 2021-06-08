@@ -215,4 +215,28 @@ body {
 
 .calTask {
   display: flex;
+  padding: .5rem;
+  box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    background: #222;
+  }
+
+  .log{
+    color: #DDD;
+  }
+
+  .nav-buttons button {
+    color: #DDD;
+  }
+
+  .cal-content * {
+    color: #DDD;
+  }
+
+  .list {
+    background: #444;
+  }
 }
