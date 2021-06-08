@@ -21,6 +21,7 @@ jobs:
     - run: |
         xvfb-run --auto-servernum yarn test tasks.test.js
         xvfb-run --auto-servernum yarn test puppet-task.test.js
+        xvfb-run --auto-servernum yarn test puppet-future.test.js
 
         
 
