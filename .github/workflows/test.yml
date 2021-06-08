@@ -28,6 +28,8 @@ jobs:
         xvfb-run --auto-servernum yarn test puppet-monthly.test.js
     - run: |
         xvfb-run --auto-servernum yarn test puppet-home.test.js
+    - run: |
+        xvfb-run --auto-servernum yarn test users.test.js
         
         
         
