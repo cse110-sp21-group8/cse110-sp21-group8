@@ -1,18 +1,18 @@
 //Global Variables
 let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
-let reflect_btn = document.querySelector('#add-reflection');
 
 
 let addTagButton = document.getElementById('add-tag').firstElementChild;
 let tagTracker = document.getElementById('tracker-box');
 
-let customTag;
+// eslint-disable-next-line no-unused-vars
 let customForm;
+let customTag;
 let customInput;
 let newTag = false;
 
-// Custom Tag Script 
+// Custom Tag Script
 addTagButton.addEventListener('click', () => {
   customTag = document.createElement('custom-tag');
   tagTracker.appendChild(customTag);
@@ -48,13 +48,11 @@ document.addEventListener('click', (event) => {
       let curDay;
       for (let i = 7; i < dayBtns.length; i++) {
         if (dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)') {
+          // eslint-disable-next-line no-unused-vars
           curDay = dayBtns[i].innerHTML;
           break;
         }
       }
-
-      let date = new Date();
-      let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
 
       let data;
       let oldData = data;
@@ -67,7 +65,7 @@ document.addEventListener('click', (event) => {
         tag: selectedTask.task_tag
       };
       let newData = data;
-      send_data = {old: oldData, new: newData};
+      let send_data = {old: oldData, new: newData};
       fetch('/updateTask', {
         method: 'POST',
         headers: {
@@ -91,14 +89,13 @@ document.addEventListener('click', (event) => {
   });
 });
 
-//Tab Event Listener for adding a subtask 
+//Tab Event Listener for adding a subtask
 document.addEventListener('keydown', function (e) {
   if (e.key == 'Tab') {
     e.preventDefault();
-    
-    //make sure that the active element is a task-list 
+    //make sure that the active element is a task-list
     if (document.activeElement.nodeName == 'TASK-LIST') {
-      //create a subTask and set properties 
+      //create a subTask and set properties
       let task = document.activeElement;
       let subTask = document.createElement('task-list');
       let subForm = subTask.shadowRoot.querySelector('#form');
@@ -106,7 +103,7 @@ document.addEventListener('keydown', function (e) {
       subTask.task_id = task.task_id;
       subTask.isNew = true;
       subTask.isSubtask = true;
-      //subTask element operations 
+      //subTask element operations
       task.shadowRoot.querySelector('#subtask-box').append(subTask);
       subTask.shadowRoot.querySelector('#tasks').focus();
       let selection = subTask.shadowRoot.querySelector('#checklist-select');
@@ -116,22 +113,21 @@ document.addEventListener('keydown', function (e) {
       selection.addEventListener('change', () => {
         if (selection.value == 'Task') {
           input.value = '● ';
-          change = '● ';
         } else if (selection.value == 'Note') {
           input.value = '- ';
-          change = '- ';
         } else {
           input.value = '⚬ ';
-          change = '⚬ ';
         }
       });
       input.value = '● ';
 
-      //adding/updating a subtask to page and db by focusing out 
-      subTask.addEventListener('focusout', (event) => {
+      let data;
+      let date = new Date();
+      //adding/updating a subtask to page and db by focusing out
+      subTask.addEventListener('focusout', () => {
         //if the subtask is new, add it instead of update
         if (subTask.isNew) {
-          //create data with the user input 
+          //create data with the user input
           let content = subTask.shadowRoot.querySelector('#tasks').value;
           data = {
             status: 'daily',
@@ -162,14 +158,14 @@ document.addEventListener('keydown', function (e) {
           //set subTask.isNew to false to prevent duplication of tasks
           subTask.isNew = false;
         } else {
-          // grabs user input 
+          // grabs user input
           let content = subTask.shadowRoot.querySelector('#tasks').value;
 
-          //oldData is the previous data we store 
+          //oldData is the previous data we store
           let oldData = data;
 
           //newData stores the updated user input 
-          newData = {
+          let newData = {
             status: 'daily',
             type: 'task',
             content: content,
@@ -202,7 +198,7 @@ document.addEventListener('keydown', function (e) {
       subForm.addEventListener('submit', (event) => {
         event.preventDefault();
         input.blur();
-      })
+      });
 
       //operational delete button: deletes subtask on page and db
       let del = subTask.shadowRoot.querySelector('#delete');
@@ -250,8 +246,7 @@ document.addEventListener('keydown', function (e) {
           .catch((error) => {
             console.error('Error:', error);
           });
-        
-        //delete from page 
+        //delete from page
         task.remove();
       });
     }
@@ -315,11 +310,12 @@ addButton.addEventListener('click', () => {
 
   //adds or updates task to database when user focuses out 
   taskInput.addEventListener('focusout', (event) => {
+    let data;
     //Sets date to log the task depending on date user selects
     let dayBtns = document.querySelectorAll('.day');
     for (let i = 7; i < dayBtns.length; i++) {
       if (dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)') {
-        curDay = dayBtns[i].innerHTML;
+        var curDay = dayBtns[i].innerHTML;
         break;
       }
     }
@@ -331,7 +327,6 @@ addButton.addEventListener('click', () => {
       event.preventDefault();
       //getting user content
       let content = taskInput.value;
-      let date = new Date();
       
       //create data based on data and user input 
       data = {
@@ -384,7 +379,6 @@ addButton.addEventListener('click', () => {
       //update task in the database 
       let oldData = data;
       let content = taskInput.value;
-      let date = new Date();
       data = {
         status: 'daily',
         type: 'task',
@@ -432,13 +426,12 @@ addButton.addEventListener('click', () => {
 
 
     event.preventDefault();
+    let data;
   
     //adding task to database
     if (task.isNew) {
       console.log('focus out');
-      let content = taskInput.value;
-      let date = new Date();
-      
+      let content = taskInput.value; 
       //adding user input to database
       data = {
         status: 'daily',
@@ -790,14 +783,14 @@ function getDailyTasks(){
                       //updating subtask on page and db when user updates subtask
                       subTaskInput.addEventListener('focsout', () => {
                         let oldData = subTemp;
-                        newData = {
+                        let newData = {
                           status: 'daily',
                           type: 'task',
                           content: content,
                           date: date.toDateString(),
                           task_id: subTask.task_id
                         };
-                        send_data = {old: oldData, new: newData};
+                        let send_data = {old: oldData, new: newData};
                         fetch('/updateSubTask', {
                           method: 'POST',
                           headers: {
@@ -824,7 +817,7 @@ function getDailyTasks(){
     
                       //delete subtask from page and db when user clicks subtask delete buttom
                       subDelete.addEventListener('click', () => {
-                        delete_data = subTemp;
+                        let delete_data = subTemp;
                         //delete from databse 
                         fetch('/deleteSubTask', {
                           method: 'POST',
@@ -882,7 +875,6 @@ function getDailyTasks(){
           if (data['status'] == 200) {
             //obtains the task list
             let tasks = data['task'];
-            let reflect_box = document.getElementById('reflect-box');
     
             tasks.forEach((tmp) => {
               if (tmp['type'] === 'reflection') {
@@ -896,7 +888,7 @@ function getDailyTasks(){
 
 
 //load Task:
-window.onload = function (event) {
+window.onload = function () {
 
     getDailyTasks();
 };
@@ -969,7 +961,7 @@ reflection.addEventListener('focusout', () => {
           //Deleting reflection from the database
           let content = document.getElementById('reflection').value;
           let date = new Date();
-          newData = {
+          let newData = {
             status: 'daily',
             type: 'reflection',
             content: content,
@@ -995,7 +987,7 @@ reflection.addEventListener('focusout', () => {
                 console.error('Error:', error);
               });
           } else {
-            send_data = {old: oldData, new: newData};
+            let send_data = {old: oldData, new: newData};
             fetch('/updateTask', {
               method: 'POST',
               headers: {
@@ -1027,7 +1019,6 @@ reflection.addEventListener('focusout', () => {
 //migration:
 let m_today = new Date();
 let m_currentMonth = m_today.getMonth();
-let m_currentDay = parseInt(m_today.toDateString().slice(8, 10));
 
 let m_months = [
   'January',

@@ -1,10 +1,10 @@
 module.exports = {
     launch: {
         headless: false,
-        slowMo: 500
+        slowMo: 800
       },
     server: {
         command: 'node app.js',
-        port:8080,
+        port:8080, 
     },
 }
