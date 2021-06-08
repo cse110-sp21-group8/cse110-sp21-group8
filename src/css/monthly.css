@@ -32,6 +32,7 @@ body {
     justify-content: space-evenly;
     width: 100%;
     flex-grow: 1;
+    height: inherit;
   }
 
   /* left side of screen formatting*/
@@ -205,13 +206,13 @@ body {
 }
 
 .append{
-  display: grid;
-  grid-column: auto;
-  height:10px;
-  width: 80px;
+  flex-grow: 1;
+
   font-size: 13px;
   align-content: center;
 }
 
 
-  
+.calTask {
+  display: flex;
+}

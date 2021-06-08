@@ -9,7 +9,7 @@ describe('Daily Tasks tests:', () => {
     const password = await page.$('#password');
     await password.type('123');
     await page.click('button[type="submit"]');
-    await page.click('.widget-content button:nth-child(1)');
+    await page.click('#index > div.widget-content > button:nth-child(1)');
   });
   // User login and go to daily log page. Verify it is in daily log page
   it('Test1: User login and go to daily log page. Verify it is in daily log page', async () => {
@@ -63,7 +63,7 @@ describe('Daily Tasks tests:', () => {
 
     expect(actual_task).toBe("Note");
     expect(actual_task_tag).toBe("Later");
-    expect(actual_task).toBe("test content");
+    expect(actual_task_text).toBe("test content");
     });
 
 
