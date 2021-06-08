@@ -1,22 +1,29 @@
 //Puppeter End to End User test.
 describe('Daily Tasks tests:', () => {
     beforeAll(async () => {
-      jest.setTimeout(35000);
+      jest.setTimeout(50000);
       await page.goto('http://localhost:8080/login');
     
   });
-  // User login and go to daily log page. Verify it is in daily log page
-  it('Test1: User login and go to daily log page. Verify it is in daily log page', async () => {
+
+  it('pre process: user login',async()=>{
     const username = await page.$('#email');
     await username.type('test');
 
     const password = await page.$('#password');
     await password.type('123');
+
+    const title = await page.$eval('body > div > div > div.header > h1', (el) => el.textContent);
+    expect(title).toBe('Log In');
+
     await page.click('button[type="submit"]');
+  })
+  // User login and go to daily log page. Verify it is in daily log page
+  it('Test1: User login and go to daily log page. Verify it is in daily log page', async () => {
 
     //await page.click('#index > div.widget-content > button:nth-child(1)');
     await page.$eval('#index > div.widget-content > button:nth-child(1)', el => {el.click()});
-    
+
     const title = await page.evaluate(() => {
       const elem = document.querySelector('title');
       return elem.innerText;
