@@ -90,12 +90,11 @@ class TaskList extends HTMLElement {
     `;
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.isNew = true;
+    this.task_id = '';
+    this.task_tag = '';
+    this.task_date = '';
   }
-
-  isNew = true; 
-  task_id = '';
-  task_tag = '';
-  task_date = '';
 
   set isSubtask(value){
     this.shadowRoot.querySelector('#tag-select').style.display = 'none';

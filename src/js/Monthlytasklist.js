@@ -39,8 +39,8 @@ class TaskList extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
-  isNew = true; 
-  task_id = '';
+  //isNew = true; 
+  //task_id = '';
 
   /*set isSubtask(value){
     this.shadowRoot.querySelector('#tag-select').style.display = 'none';
