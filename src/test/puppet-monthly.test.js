@@ -272,7 +272,7 @@ describe('Monthly page tests:', () => {
       /*await page.click('body > div > div > button:nth-child(1)');
 
       const title = await page.evaluate(() => {
-        const elem = document.querySelector('title');
+        const elem = document.querySelector('.nav-bar > .log');
         return elem.innerText;
       });
       expect(title).toBe('Home Page');*/
@@ -282,7 +282,7 @@ describe('Monthly page tests:', () => {
       //await page.click('#index > div.widget-content > button:nth-child(2)');
       /*await page.goBack();
       const title = await page.evaluate(() => {
-        const elem = document.querySelector('title');
+        const elem = document.querySelector('.nav-bar > .log');
         return elem.innerText;
       });
       expect(title).toBe('Monthly Log');*/
@@ -292,7 +292,7 @@ describe('Monthly page tests:', () => {
       /*await page.click('body > div > div > button:nth-child(2)');
 
       const title = await page.evaluate(() => {
-        const elem = document.querySelector('title');
+        const elem = document.querySelector('.nav-bar > .log');
         return elem.innerText;
       });
       expect(title).toBe('Daily Log');*/
@@ -301,7 +301,7 @@ describe('Monthly page tests:', () => {
     it('Test4: User click the Monthly Log button and go back to the Mongthly page:', async () => {
      /* await page.goBack();
       const title = await page.evaluate(() => {
-        const elem = document.querySelector('title');
+        const elem = document.querySelector('.nav-bar > .log');
         return elem.innerText;
       });
       expect(title).toBe('Monthly Log');*/
@@ -321,7 +321,7 @@ describe('Monthly page tests:', () => {
       /*await page.goBack();
 
       const title = await page.evaluate(() => {
-        const elem = document.querySelector('title');
+        const elem = document.querySelector('.nav-bar > .log');
         return elem.innerText;
       });
       expect(title).toBe('Monthly Log');*/

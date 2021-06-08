@@ -20,7 +20,7 @@ const months = [
 describe('Future page tests:', () => {
   beforeAll(async () => {
     jest.setTimeout(50000);
-    await page.goto('http://localhost:8080');
+    await page.goto('http://localhost:8080/login');
     const username = await page.$('#email');
     await username.type('test');
 

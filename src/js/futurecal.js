@@ -82,16 +82,7 @@ const firstDayIndex3 = date3.getDay();
 const firstDayIndex4 = date4.getDay();
 const firstDayIndex5 = date5.getDay();
 const firstDayIndex6 = date6.getDay();
-/* */
 
-/*assign each month to a variable for testing purposes*/
-let month1 = months[date.getMonth()];
-let month2 = months[date.getMonth() + 1];
-let month3 = months[date.getMonth() + 2];
-let month4 = months[date.getMonth() + 3];
-let month5 = months[date.getMonth() + 4];
-let month6 = months[date.getMonth() + 5];
-/* */
 //window.onload = function(){
 document.addEventListener('DOMContentLoaded', () => {
   //function init(){
@@ -184,24 +175,3 @@ document.addEventListener('DOMContentLoaded', () => {
     monthDays6.innerHTML = days6;
   }
 });
-
-/* */
-
-//window.onload = init2();
-
-module.exports = {
-  firstDayIndex: firstDayIndex,
-  firstDayIndex2: firstDayIndex2,
-  month1: month1,
-  month2: month2,
-  month3: month3,
-  month4: month4,
-  month5: month5,
-  month6: month6,
-  lastDay: lastDay,
-  lastDay2: lastDay2,
-  lastDay3: lastDay4,
-  lastDay4: lastDay4,
-  lastDay5: lastDay5,
-  lastDay6: lastDay6
-};

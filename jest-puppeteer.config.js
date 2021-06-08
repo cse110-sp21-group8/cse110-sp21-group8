@@ -1,7 +1,7 @@
 module.exports = {
     launch: {
         headless: false,
-        slowMo: 800
+        slowMo: 500
       },
     server: {
         command: 'node app.js',
