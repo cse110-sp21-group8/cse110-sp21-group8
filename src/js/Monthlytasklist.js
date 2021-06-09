@@ -35,11 +35,11 @@ class TaskList extends HTMLElement {
       </div>
     </div>
     `;
-    this.attachShadow({ mode: 'open' });
+    this.attachShadow({mode: 'open'});
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
-  //isNew = true; 
+  //isNew = true;
   //task_id = '';
 
   /*set isSubtask(value){

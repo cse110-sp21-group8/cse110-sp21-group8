@@ -12,7 +12,10 @@ describe('User test:', () => {
     const password = await page.$('#password');
     await password.type('123');
 
-    const title = await page.$eval('body > div > div > div.header > h1', (el) => el.textContent);
+    const title = await page.$eval(
+      'body > div > div > div.header > h1',
+      (el) => el.textContent
+    );
     expect(title).toBe('Log In');
 
     await page.click('button[type="submit"]');
@@ -43,7 +46,10 @@ describe('User test:', () => {
     const confirmPassword = await page.$('#confirmPassword');
     await confirmPassword.type('123');
 
-    const title = await page.$eval('body > div > div > div.header > h1', (el) => el.textContent);
+    const title = await page.$eval(
+      'body > div > div > div.header > h1',
+      (el) => el.textContent
+    );
     expect(title).toBe('Sign Up');
 
     await page.click('button[type="submit"]');
@@ -89,7 +95,9 @@ describe('Home Page Navigation testing', () => {
 
   // User click the Home button and would go back to the home page from monthly log:
   it('Test7: User click the Home button and go back to the home page from monthly log:', async () => {
-    await page.$eval('body > div.nav-bar > div > button:nth-child(1)', el => {el.click()});
+    await page.$eval('body > div.nav-bar > div > button:nth-child(1)', (el) => {
+      el.click();
+    });
 
     const title = await page.evaluate(() => {
       const elem = document.querySelector('title');

@@ -4,6 +4,7 @@
 const server = require('../../server.js');
 const app = server['app'];
 const request = require('supertest');
+let sendData;
 
 describe('Test: add Subtasks', () => {
   test('User login successfully with correct password and username', (done) => {
@@ -479,7 +480,6 @@ describe('Test: delete tasks', () => {
       });
   });
 });
-
 
 describe('Test: Custom Tags', () => {
   test('User create custom tags', (done) => {

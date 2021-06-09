@@ -3,12 +3,12 @@ let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
 let data;
 
-//Tab Event Listener for adding a subtask 
+//Tab Event Listener for adding a subtask
 document.addEventListener('keydown', function (e) {
   if (e.key == 'Tab') {
     e.preventDefault();
 
-    //make sure that the active element is a task-list 
+    //make sure that the active element is a task-list
     if (document.activeElement.nodeName == 'TASK-LIST') {
       //create a subTask and set properties
       console.log('tasklist selected and pressed tab');
@@ -20,7 +20,7 @@ document.addEventListener('keydown', function (e) {
       subTask.isNew = true;
       subTask.isSubtask = true;
 
-       //subTask element operations
+      //subTask element operations
       task.shadowRoot.querySelector('#subtask-box').append(subTask);
       subTask.shadowRoot.querySelector('#tasks').focus();
       let selection = subTask.shadowRoot.querySelector('#checklist-select');
@@ -65,7 +65,7 @@ document.addEventListener('keydown', function (e) {
             .then((data) => {
               if (data['status'] == 200) {
                 //Success
-              } 
+              }
             })
             .catch((error) => {
               console.error('Error:', error);
@@ -73,13 +73,13 @@ document.addEventListener('keydown', function (e) {
           //set subTask.isNew to false to prevent duplication of tasks
           subTask.isNew = false;
         } else {
-          // grabs user input 
+          // grabs user input
           let content = subTask.shadowRoot.querySelector('#tasks').value;
           let date = new Date();
           //oldData is the previous data we store
           let oldData = data;
 
-          //newData stores the updated user input 
+          //newData stores the updated user input
           let newData = {
             status: 'daily',
             type: 'task',
@@ -101,7 +101,7 @@ document.addEventListener('keydown', function (e) {
             .then((data) => {
               if (data['status'] == 200) {
                 //Success
-              } 
+              }
             })
             .catch((error) => {
               console.error('Error:', error);
@@ -130,14 +130,14 @@ document.addEventListener('keydown', function (e) {
           .then((data) => {
             if (data['status'] == 200) {
               //Success
-            } 
+            }
           })
           .catch((error) => {
             console.error('Error:', error);
           });
-          subTask.remove();
+        subTask.remove();
       });
-      
+
       //Deletes task from page and database when delete button is clicked
       let deleteButton = task.shadowRoot.querySelector('#delete');
       deleteButton.addEventListener('click', () => {
@@ -190,7 +190,7 @@ document.addEventListener('keydown', function (e) {
                   .then((data) => {
                     if (data['status'] == 200) {
                       //Success
-                    } 
+                    }
                   })
                   .catch((error) => {
                     console.error('Error:', error);
@@ -214,7 +214,6 @@ document.addEventListener('click', function () {
 
 //Adding a new task with the add button on the page
 addButton.addEventListener('click', () => {
-  
   //create task and get elements of task
   let task = document.createElement('task-list');
   text_box.append(task);
@@ -232,7 +231,7 @@ addButton.addEventListener('click', () => {
     }
   });
 
-  //adds or updates task to database when user focuses out 
+  //adds or updates task to database when user focuses out
   taskInput.addEventListener('focusout', (event) => {
     //Sets date to log the task depending on date user selects
     let dayBtns = document.querySelectorAll('.day');
@@ -245,13 +244,13 @@ addButton.addEventListener('click', () => {
     let date = new Date();
     let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
 
-    //if task is new, then add to backend 
+    //if task is new, then add to backend
     if (task.isNew) {
       event.preventDefault();
-       //getting user content
+      //getting user content
       let content = taskInput.value;
 
-       //create data based on data and user input
+      //create data based on data and user input
       data = {
         status: 'daily',
         type: 'task',
@@ -259,7 +258,7 @@ addButton.addEventListener('click', () => {
         date: curDate.toDateString()
       };
 
-       //add data to the database 
+      //add data to the database
       fetch('/addTask', {
         method: 'POST',
         headers: {
@@ -273,13 +272,13 @@ addButton.addEventListener('click', () => {
           task.task_id = data.task._id;
           if (data['status'] == 200) {
             //Success
-          } 
+          }
         })
         .catch((error) => {
           console.error('Error:', error);
         });
 
-      //set task.isNew to false so updating the task does not create a new one 
+      //set task.isNew to false so updating the task does not create a new one
       task.isNew = false;
     } else {
       //update task in the database
@@ -291,7 +290,7 @@ addButton.addEventListener('click', () => {
         content: content,
         date: curDate.toDateString()
       };
-       //update the task in the backend 
+      //update the task in the backend
       let newData = data;
       let send_data = {old: oldData, new: newData};
       fetch('/updateTask', {
@@ -305,7 +304,7 @@ addButton.addEventListener('click', () => {
         .then((data) => {
           if (data['status'] == 200) {
             //Success
-          } 
+          }
         })
         .catch((error) => {
           console.error('Error:', error);
@@ -324,7 +323,7 @@ addButton.addEventListener('click', () => {
   let deleteButton = task.shadowRoot.querySelector('#delete');
   deleteButton.addEventListener('click', () => {
     let delete_data = data;
-    //delete task from database 
+    //delete task from database
     fetch('/deleteTask', {
       method: 'POST',
       headers: {
@@ -336,19 +335,16 @@ addButton.addEventListener('click', () => {
       .then((data) => {
         if (data['status'] == 200) {
           //Success
-        } 
+        }
       })
       .catch((error) => {
         console.error('Error:', error);
       });
-    
+
     //remove task from the the page
     task.remove();
-    
   });
-
 });
-
 
 //load Task:
 window.onload = function () {
@@ -403,7 +399,7 @@ window.onload = function () {
             text_box.append(task);
           }
 
-          //prefix symbol depending if user selects event, task, note 
+          //prefix symbol depending if user selects event, task, note
           let selection = task.shadowRoot.querySelector('#checklist-select');
           selection.addEventListener('change', () => {
             if (selection.value == 'Task') {
@@ -417,11 +413,11 @@ window.onload = function () {
 
           //updates task when user focus out of textbox
           taskInput.addEventListener('focusout', (event) => {
-            //getting old data from database 
+            //getting old data from database
             event.preventDefault();
             let index = Array.prototype.indexOf.call(text_box.children, task);
             let oldData = data.task[index];
-            
+
             //setting new data based on user input
             let content = taskInput.value;
             let date = new Date();
@@ -439,7 +435,7 @@ window.onload = function () {
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify(send_data)
-              })
+            })
               .then((response) => response.json())
               .then((data) => {
                 if (data['status'] == 200) {
@@ -485,7 +481,7 @@ window.onload = function () {
             //remove from page
             task.remove();
 
-            //get corresponding subtasks from databse 
+            //get corresponding subtasks from databse
             fetch('/getSubTask', {
               method: 'POST',
               headers: {
@@ -499,7 +495,7 @@ window.onload = function () {
                   let subtasks = subdata['task'];
                   subtasks.forEach((subTemp) => {
                     delete_data = subTemp;
-                    //delete subtasks from db 
+                    //delete subtasks from db
                     fetch('/deleteSubTask', {
                       method: 'POST',
                       headers: {
@@ -511,7 +507,7 @@ window.onload = function () {
                       .then((data) => {
                         if (data['status'] == 200) {
                           //Success
-                        } 
+                        }
                       })
                       .catch((error) => {
                         console.error('Error:', error);
@@ -569,12 +565,12 @@ window.onload = function () {
                         'Content-Type': 'application/json'
                       },
                       body: JSON.stringify(send_data)
-                      })
+                    })
                       .then((response) => response.json())
                       .then((data) => {
                         if (data['status'] == 200) {
                           //Success
-                        } 
+                        }
                       })
                       .catch((error) => {
                         console.error('Error:', error);
@@ -582,7 +578,7 @@ window.onload = function () {
                   });
 
                   //when user enters, triggers focusout to add/update subtasks
-                  subTaskForm.addEventListener('submit',  (event) => {
+                  subTaskForm.addEventListener('submit', (event) => {
                     event.preventDefault();
                     subTask.blur();
                   });
@@ -601,7 +597,7 @@ window.onload = function () {
                       .then((data) => {
                         if (data['status'] == 200) {
                           //Success
-                        } 
+                        }
                       })
                       .catch((error) => {
                         console.error('Error:', error);
@@ -706,4 +702,3 @@ window.onload = function () {
       console.error('Error:', error);
     });
 };
-

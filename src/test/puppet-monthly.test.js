@@ -16,12 +16,6 @@ const months = [
 ];
 /* */
 
-/* helper function to get current month*/
-var getDaysInMonth = function (month, year) {
-  return new Date(year, month, 0).getDate();
-};
-/* */
-
 describe('Monthly page tests:', () => {
   beforeAll(async () => {
     jest.setTimeout(35000);
@@ -299,7 +293,7 @@ describe('Monthly page tests:', () => {
     });
 
     it('Test4: User click the Monthly Log button and go back to the Mongthly page:', async () => {
-     /* await page.goBack();
+      /* await page.goBack();
       const title = await page.evaluate(() => {
         const elem = document.querySelector('.nav-bar > .log');
         return elem.innerText;

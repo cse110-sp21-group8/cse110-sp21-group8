@@ -1,4 +1,3 @@
-
 //global variables
 let addButton = document.querySelector('#add span');
 let text_box = document.querySelector('#text-box');
@@ -9,9 +8,9 @@ document.addEventListener('keydown', function (e) {
   if (e.key == 'Tab') {
     e.preventDefault();
     console.log(document.activeElement.nodeName);
-    //make sure that the active element is a task-list 
+    //make sure that the active element is a task-list
     if (document.activeElement.nodeName == 'TASK-LIST') {
-      //create a subTask and set properties 
+      //create a subTask and set properties
       let task = document.activeElement;
       let subTask = document.createElement('task-list');
       subTask.className = 'subtask';
@@ -19,14 +18,14 @@ document.addEventListener('keydown', function (e) {
       subTask.isNew = true;
       subTask.isSubtask = true;
 
-      //subTask element operations 
+      //subTask element operations
       task.shadowRoot.querySelector('#subtask-box').append(subTask);
       subTask.shadowRoot.querySelector('#tasks').focus();
       let selection = subTask.shadowRoot.querySelector('#checklist-select');
       let input = subTask.shadowRoot.querySelector('#tasks');
       let subForm = subTask.shadowRoot.querySelector('#form');
 
-       //prefixes symbol if user selects event, note, or task
+      //prefixes symbol if user selects event, note, or task
       selection.addEventListener('change', () => {
         if (selection.value == 'Task') {
           input.value = '● ';
@@ -38,12 +37,11 @@ document.addEventListener('keydown', function (e) {
       });
       input.value = '● ';
 
-      //adding/updating a subtask to page and db by focusing out 
+      //adding/updating a subtask to page and db by focusing out
       subTask.addEventListener('focusout', () => {
         //if the subtask is new, add it instead of update
         if (subTask.isNew) {
-
-          //create data with the user input 
+          //create data with the user input
           let content = subTask.shadowRoot.querySelector('#tasks').value;
           let date = new Date();
           data = {
@@ -71,7 +69,7 @@ document.addEventListener('keydown', function (e) {
             .catch((error) => {
               console.error('Error:', error);
             });
-          
+
           //set subTask.isNew to false to prevent duplication of tasks
           subTask.isNew = false;
         } else {
@@ -79,10 +77,10 @@ document.addEventListener('keydown', function (e) {
           let content = subTask.shadowRoot.querySelector('#tasks').value;
           let date = new Date();
 
-          //oldData is the previous data we store 
+          //oldData is the previous data we store
           let oldData = data;
 
-           //newData stores the updated user input 
+          //newData stores the updated user input
           let newData = {
             status: 'monthly',
             type: 'goal',
@@ -91,7 +89,7 @@ document.addEventListener('keydown', function (e) {
             task_id: task.task_id
           };
 
-          //send old and new Data to databse for updating 
+          //send old and new Data to databse for updating
           let send_data = {old: oldData, new: newData};
           fetch('/updateSubTask', {
             method: 'POST',
@@ -104,7 +102,7 @@ document.addEventListener('keydown', function (e) {
             .then((data) => {
               if (data['status'] == 200) {
                 //Success
-              } 
+              }
             })
             .catch((error) => {
               console.error('Error:', error);
@@ -133,39 +131,39 @@ document.addEventListener('keydown', function (e) {
           .then((data) => {
             if (data['status'] == 200) {
               //Success
-            } 
+            }
           })
           .catch((error) => {
             console.error('Error:', error);
           });
-          subTask.remove();
+        subTask.remove();
       });
     }
   }
 });
 
-//CRUD application for notes to the calendar section of page 
+//CRUD application for notes to the calendar section of page
 //iterating through week divs
 var i;
 for (i = 1; i < 5; i++) {
-  //grabbing correct calendar 
+  //grabbing correct calendar
   let calendar = document.querySelector('#week-day' + i);
   let num = document.querySelector('#week-num' + i);
-  
-  //iterating over the 7 days of the week 
+
+  //iterating over the 7 days of the week
   var j;
   for (j = 0; j < 7; j++) {
-    //if user selects a certain day div, then add a note 
+    //if user selects a certain day div, then add a note
     let day = calendar.children[j];
     let appendArea = num.children[j];
-    //event listener for adding a note 
+    //event listener for adding a note
     day.addEventListener('click', () => {
-      //storing information for loading 
+      //storing information for loading
       let appendId = num.id;
       let index = Array.prototype.indexOf.call(day.parentElement.children, day);
       let tagContent = appendId + '_' + index;
 
-      //create the note and delete button 
+      //create the note and delete button
       let box = document.createElement('input');
       let del = document.createElement('button');
       let calTaskDiv = document.createElement('div');
@@ -173,7 +171,7 @@ for (i = 1; i < 5; i++) {
       box.type = 'input';
       box.className = 'append';
       del.className = 'delete';
-      del.innerHTML = '\u274C'
+      del.innerHTML = '\u274C';
 
       //append to the calendar div
       calTaskDiv.appendChild(box);
@@ -216,14 +214,14 @@ for (i = 1; i < 5; i++) {
             .catch((error) => {
               console.error('Error:', error);
             });
-          //signal note is not new, so we update next time 
+          //signal note is not new, so we update next time
           box.isNew = false;
         } else {
           //updating task
           let oldData = data;
           let content = box.value;
           let date = new Date();
-          //updating data based on user input 
+          //updating data based on user input
           data = {
             status: 'monthly',
             type: 'note',
@@ -231,7 +229,7 @@ for (i = 1; i < 5; i++) {
             date: date.getMonth(),
             tag: tagContent
           };
-          //updating note in the db 
+          //updating note in the db
           let newData = data;
           let send_data = {old: oldData, new: newData};
           fetch('/updateTask', {
@@ -255,7 +253,6 @@ for (i = 1; i < 5; i++) {
         }
       });
 
-      
       //deleting note from page and db
       del.addEventListener('click', () => {
         //delete from db
@@ -278,7 +275,7 @@ for (i = 1; i < 5; i++) {
           .catch((error) => {
             console.error('Error:', error);
           });
-        //delete from page 
+        //delete from page
         box.remove();
         del.remove();
       });
@@ -286,10 +283,9 @@ for (i = 1; i < 5; i++) {
   }
 }
 
-//When user clicks add button, add/update a task 
+//When user clicks add button, add/update a task
 addButton.addEventListener('click', () => {
-  
-  //create a task and add it to the page 
+  //create a task and add it to the page
   let task = document.createElement('task-list');
   text_box.append(task);
   let taskInput = task.shadowRoot.querySelector('#tasks');
@@ -309,7 +305,7 @@ addButton.addEventListener('click', () => {
 
   //adds or updates task to database when user focuses out
   taskInput.addEventListener('focusout', (event) => {
-    //if task is new, then add to backend 
+    //if task is new, then add to backend
     if (task.isNew) {
       event.preventDefault();
       //getting user content
@@ -324,7 +320,7 @@ addButton.addEventListener('click', () => {
         date: date.getMonth()
       };
 
-      //add data to the database 
+      //add data to the database
       fetch('/addTask', {
         method: 'POST',
         headers: {
@@ -337,12 +333,12 @@ addButton.addEventListener('click', () => {
           task.task_id = data.task._id;
           if (data['status'] == 200) {
             //Success
-          } 
+          }
         })
         .catch((error) => {
           console.error('Error:', error);
         });
-      
+
       //set task.isNew to false so task is not duplicated
       task.isNew = false;
     } else {
@@ -360,7 +356,7 @@ addButton.addEventListener('click', () => {
       let newData = data;
       let send_data = {old: oldData, new: newData};
 
-      //update the task in the backend 
+      //update the task in the backend
       fetch('/updateTask', {
         method: 'POST',
         headers: {
@@ -385,7 +381,7 @@ addButton.addEventListener('click', () => {
     let deleteButton = task.shadowRoot.querySelector('#delete');
     deleteButton.addEventListener('click', () => {
       let delete_data = data;
-      //delete task from database 
+      //delete task from database
       fetch('/deleteTask', {
         method: 'POST',
         headers: {
@@ -405,7 +401,7 @@ addButton.addEventListener('click', () => {
           console.error('Error:', error);
         });
 
-      //delete from the page 
+      //delete from the page
       task.remove();
 
       //get all the subtasks associated with deleted task and delete them
@@ -433,7 +429,7 @@ addButton.addEventListener('click', () => {
                 .then((data) => {
                   if (data['status'] == 200) {
                     //Success
-                  } 
+                  }
                 })
                 .catch((error) => {
                   console.error('Error:', error);
@@ -444,12 +440,12 @@ addButton.addEventListener('click', () => {
     });
   });
 
-  //User enters a task with key, add/update on task list 
+  //User enters a task with key, add/update on task list
   taskForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    //if task is new, then add to backend 
+    //if task is new, then add to backend
     if (task.isNew) {
-      //create data based on user input 
+      //create data based on user input
       let content = taskInput.value;
       let date = new Date();
       data = {
@@ -472,15 +468,15 @@ addButton.addEventListener('click', () => {
           task.task_id = data.task._id;
           if (data['status'] == 200) {
             //Success
-          } 
+          }
         })
         .catch((error) => {
           console.error('Error:', error);
         });
-      //set task.isNew to false to prevent duplicate tasks 
+      //set task.isNew to false to prevent duplicate tasks
       task.isNew = false;
     } else {
-      //update task in database based on user input 
+      //update task in database based on user input
       let oldData = data;
       let content = taskInput.value;
       let date = new Date();
@@ -515,10 +511,9 @@ addButton.addEventListener('click', () => {
   });
 });
 
-
 //load Task:
 window.onload = function () {
-  //fetch the tasks and append them 
+  //fetch the tasks and append them
   let date = new Date();
   fetch('/getMonthlyTask', {
     method: 'POST',
@@ -558,19 +553,19 @@ window.onload = function () {
               }
             });
 
-            //trigger focsout out when user enters 
+            //trigger focsout out when user enters
             taskForm.addEventListener('submit', (event) => {
               event.preventDefault();
               taskInput.blur();
             });
 
-            //update task on the database 
+            //update task on the database
             taskInput.addEventListener('focusout', (event) => {
               event.preventDefault();
-              //get old data from fetching 
+              //get old data from fetching
               let index = Array.prototype.indexOf.call(text_box.children, task);
               let oldData = data.task[index];
-              //new data from new user input 
+              //new data from new user input
               let content = taskInput.value;
               let date = new Date();
               let newData = {
@@ -601,8 +596,7 @@ window.onload = function () {
                 });
             });
 
-            
-            //delete task and subtask from page and database 
+            //delete task and subtask from page and database
             let deleteButton = task.shadowRoot.querySelector('#delete');
             deleteButton.addEventListener('click', () => {
               let index = Array.prototype.indexOf.call(text_box.children, task);
@@ -655,7 +649,7 @@ window.onload = function () {
                         .then((data) => {
                           if (data['status'] == 200) {
                             //Success
-                          } 
+                          }
                         })
                         .catch((error) => {
                           console.error('Error:', error);
@@ -665,7 +659,7 @@ window.onload = function () {
                 });
             });
 
-            //display subtasks on window 
+            //display subtasks on window
             let id_data = {task_id: task.task_id};
             fetch('/getSubTask', {
               method: 'POST',
@@ -681,12 +675,15 @@ window.onload = function () {
                   //append subtask
                   subtasks.forEach((subTemp) => {
                     let subTask = document.createElement('task-list');
-                    let subTaskInput = subTask.shadowRoot.querySelector('#tasks');
+                    let subTaskInput =
+                      subTask.shadowRoot.querySelector('#tasks');
                     let subTaskForm = subTask.shadowRoot.querySelector('#form');
                     subTask.className = 'subtask';
                     subTaskInput.value = subTemp.content;
                     subTask.task_id = task.task_id;
-                    task.shadowRoot.querySelector('#subtask-box').append(subTask);
+                    task.shadowRoot
+                      .querySelector('#subtask-box')
+                      .append(subTask);
                     subTask.isNew = false;
                     let subDelete = subTask.shadowRoot.querySelector('#delete');
 
@@ -713,13 +710,13 @@ window.onload = function () {
                         .then((data) => {
                           if (data['status'] == 200) {
                             //Success
-                          } 
+                          }
                         })
                         .catch((error) => {
                           console.error('Error:', error);
                         });
                     });
-                    
+
                     // trigger focusout to update data on enter
                     subTaskForm.addEventListener('submit', (event) => {
                       event.preventDefault();
@@ -746,7 +743,7 @@ window.onload = function () {
                         .catch((error) => {
                           console.error('Error:', error);
                         });
-                      
+
                       //delete subtask on the page
                       subTask.remove();
                     });
@@ -759,7 +756,7 @@ window.onload = function () {
             note.type = 'text';
             note.className = 'append';
             note.value = tmp['content'];
-            //get the right id, to append to correct calendar spit 
+            //get the right id, to append to correct calendar spit
             let info = tmp['tag'].split('_');
             let numId = '#' + info[0];
             let appendNum = document.querySelector(numId).children[info[1]];
@@ -767,7 +764,7 @@ window.onload = function () {
             let calTaskDiv = document.createElement('div');
             calTaskDiv.className = 'calTask';
             del.className = 'delete';
-            del.innerHTML = '\u274C'
+            del.innerHTML = '\u274C';
             calTaskDiv.append(note);
             calTaskDiv.append(del);
             appendNum.append(calTaskDiv);

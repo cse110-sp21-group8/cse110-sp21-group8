@@ -40,7 +40,6 @@ for (let i = 1; i <= lastDay; i++) {
   monthDays.innerHTML = days;
 }
 
-
 let dayBtns = document.querySelectorAll('#calendar  .day');
 dayBtns[currentDay + 6].style.background = '#5aa8979f';
 
@@ -86,20 +85,18 @@ for (let i = 7; i < dayBtns.length; i++) {
             taskInput.value = tmp['content'];
             task.isNew = false;
 
-
             //migration
             let migrate = task.shadowRoot.querySelector('#move');
-            migrate.addEventListener("click",()=>{
+            migrate.addEventListener('click', () => {
               //display the calendar
-              let cal = document.getElementById("calendar");
-              cal.classList.add("disapper");
-  
-              let cal2 = document.getElementById("MigrationCalendar");
-              cal2.classList.remove("disapper");
-              cal2.setAttribute("task_id",tmp._id);
-  
+              let cal = document.getElementById('calendar');
+              cal.classList.add('disapper');
+
+              let cal2 = document.getElementById('MigrationCalendar');
+              cal2.classList.remove('disapper');
+              cal2.setAttribute('task_id', tmp._id);
+
               console.log(tmp._id);
-             
             });
 
             let curDay;
@@ -358,7 +355,6 @@ for (let i = 7; i < dayBtns.length; i++) {
     })
       .then((response) => response.json())
       .then((data) => {
-        
         if (data['status'] == 200) {
           //obtains the task list
           let tasks = data['task'];
