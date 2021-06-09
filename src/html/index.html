@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <link rel="stylesheet" href="../css/index.css" />
+  </head>
+
+  <body>
+    <!-- grid container with 3 columns -->
+    <div class="grid-container">
+      <!-- left column contains calendar and index widgets -->
+      <div class="left-col col">
+        <!-- calendar widget -->
+        <div id="calendar" class="widget">
+          <div class="header" id="month">
+            <h2 id="cal"></h2>
+            <div class="week"> 
+              <div class="day">Sun</div>
+              <div class="day">Mon</div>
+              <div class="day">Tue</div>
+              <div class="day">Wed</div>
+              <div class="day">Thu</div>
+              <div class="day">Fri</div>
+              <div class="day">Sat</div>
+            </div>
+          </div>
+          <div class="widget-content">
+            <div class="cal-body">
+            </div>
+          </div>
+        </div>
+        <!-- index widget -->
+        <div id="index" class="widget">
+          <div class="header">
+            <h1>Index</h1>
+          </div>
+          <div class="widget-content">
+            <button onclick="location.href='./daily'">Daily Log</button>
+            <button onclick="location.href='./monthly'">Monthly Log</button>
+            <button onclick="location.href='./future'">Future Log</button>
+            <button onclick="location.href='./custom'">Custom Log</button>
+            <!-- <button onclick="location.href='./daily'">Weekly Summary</button> -->
+          </div>
+        </div>
+      </div>
+      <!-- center column contains search bar, mission statement and today's notes widget -->
+      <div class="center-col col">
+        <!-- container for search bar -->
+        <div id="search-container" class="widget">
+          <!-- <input id="search" type="text" placeholder="Search for Keywords" /> -->
+          <h1>Bullet Journal</h1>
+        </div>
+        <!-- today's notes widget -->
+        <div id="todays-log" class="widget">
+          <div class="header">
+            <h1>Today's Notes</h1>
+            <div id="add">
+              <a><span>&#43;</span></a>
+            </div>
+          </div>
+
+          <div class="widget-content" id="text-box">
+          </div>
+        </div>
+        <!-- mission statement widget -->
+        <div id="mission" class="widget">
+          <div class="header">
+            <h2>Our Mission</h2>
+          </div>
+          <div class="widget-content">
+            <p>
+              Our team strives to challenge societal norms with innovative, flat
+              thinking. We are open to all ideas and opinions for a leveled
+              world. We strive to: Think Future. Think Fast. Think Flat.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- right column contains greeting message and collection selector -->
+      <div class="right-col col">
+        <!-- greeting widget -->
+        <div id="greeting" class="widget">
+          <div class="header">
+            <h2>Welcome <span></span></h2>
+          </div>
+          <div class="widget-content">
+              <img src="https://placeimg.com/200/200/nature" alt="profile-pic" />
+          </div>
+        </div>
+        <!-- Collections widget -->
+        <div id="collections" class="widget">
+          <div id="collect-h" class="header">
+            <h1>Collections</h1>
+          </div>
+          <div id="tag-button" class="widget-content">
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../js/dailycal.js"></script>   
+    <script src="../js/tasklist.js"></script>
+    <script src="../js/index.js"></script>
+    <script src="../js/indexcustomtag.js" type="module"></script>
+    <script src="../js/indexcollections.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Log</title>
+    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+    rel = "stylesheet">
+  <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="../css/daily.css">
+  </head>
+
+  <body>
+    <!-- home button -->
+    <div class="nav-bar">
+      <h1 class="log">Daily Log</h1>
+      <div class="nav-buttons">
+        <button onclick="location.href='./'">Home</button>
+        <button onclick="location.href='./monthly'">Monthly Log</button>
+        <button onclick="location.href='./future'">Future Log</button>
+      </div>
+    </div>
+    <!--Overall wrapper for all three sections for easier formatting and access-->
+    <div id="daily-tasks-wrapper">
+      <!--Daily Tasks wrapper. Contains task box and reflection box-->
+      <div class='col' id="daily-tasks">
+        <div class="widget">
+          <div class="header">
+            <h1>Today's Notes</h1>
+            <div id="add">
+              <a><span>&#43;</span></a>
+            </div>
+          </div>
+          <!--Text box for tasks form. Contains form for tasks and buttons associated with input-->
+          <div id="text-box">
+          </div>
+          <!--Reflection box. Contains input area for reflections-->
+          <div id="reflect-box">
+            <form>
+              <textarea type="text" id="reflection" placeholder="Click to add reflections!"></textarea><br>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--Wrapper for calendar and tracker-->
+      <div class='col' id="cal-tracker">
+        <!--Calendar. Containg month title-->
+        <div class="widget" id="calendar">
+          <div id="month">
+            <h2 id="cal"></h2>
+            <div class="week"> 
+              <div class="day">Sun</div>
+              <div class="day">Mon</div>
+              <div class="day">Tue</div>
+              <div class="day">Wed</div>
+              <div class="day">Thu</div>
+              <div class="day">Fri</div>
+              <div class="day">Sat</div>
+            </div>
+          </div>
+          <div class="cal-body">
+          </div>
+        </div>
+        <div class="widget disapper" id="MigrationCalendar">
+          <div id="month">
+            <h2 id="Migratiocal"></h2>
+            <div class="week"> 
+              <div class="day">Sun</div>
+              <div class="day">Mon</div>
+              <div class="day">Tue</div>
+              <div class="day">Wed</div>
+              <div class="day">Thu</div>
+              <div class="day">Fri</div>
+              <div class="day">Sat</div>
+            </div>
+          </div>
+          <div class="cal-body" id = "cal-bodyM">
+          </div>
+        </div>
+        <!--Tracker. Containing tracker box and input area-->
+        <div id="trackers">
+          <div class="header">
+            <h2>Custom Tag</h2>
+            <div id="add-tag">
+              <a><span>&#43;</span></a>
+            </div>
+          </div>
+          <!--Tracker box for formatting-->
+          <div id="tracker-box">
+            <!-- <input type="file" id="tracker" placeholder="Trackers are here!"><br> --> 
+          </div>
+        </div>
+        </div>
+    </div>
+    <script src="../js/daily.js"></script>
+
+    <script>
+      
+      $(function() {
+     $('#dateSpan').datepicker({onSelect: function(dateStr) { alert('selected ' + dateStr); }}).hide();
+     $('#dateButton').click(function() {
+           $('#dateSpan').toggle();
+     });
+    }); 
+    
+  </script>
+
+  <!--Daily Log Calendar Script-->
+    <script src="../js/dailycal.js"></script>   
+    <script src="../js/tasklist.js" type="module"></script>
+    <script src="../js/customtag.js" type="module"></script>
+    <!-- <script src="../js/customaddtag.js" type="module"></script> -->
+  </body>
+</html>

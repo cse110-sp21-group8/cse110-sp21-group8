@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Log</title>
+  <link rel="stylesheet" href="../css/custom.css">
+</head>
+
+<body>
+<!--Wrapper for custom log. Contains buttons and log section-->
+<div id="custom-log-wrapper">
+  <!--Wrapper for navigation buttons. Contains all three log buttons-->
+  <div id="nav-buttons">
+    <!--Three log buttons to add custom log-->
+    <div id="log-bar"></div>
+    <button class="buttons" id="Adding"> Add New Custom Log</button>
+    <button class="buttons" id="Updating"> Update Custom Log</button>
+    <button class="buttons" id="Deleting"> Delete Custom Log</button>
+  </div>
+  <!--Wrapper for log section. Contains input field.-->
+  <div id="log">
+    <input type="text" id="custom-log"><br>
+    <div class="log-content"></div>
+  </div>
+  <section id="addForm">
+    <form>
+      <div>title:<input type="text" value="title" id="title"></div>
+      <div>tags:<input type="text" value="tags" id="tags"></div>
+      <div>Color:
+        <div id="Color-radio">
+          <label class="container">Red
+            <input type="radio" checked="checked" name="Color" value="Red">
+            <span class="checkmark"></span>
+          </label>
+          <label class="container">Yellow
+            <input type="radio" name="Color" value="Yellow">
+            <span class="checkmark"></span>
+          </label>
+          <label class="container">Blue
+            <input type="radio" name="Color" value="Blue"> 
+            <span class="checkmark"></span>
+          </label>
+          <label class="container">Green
+            <input type="radio" name="Color" value="Green">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+      <div>sections:
+        <div id="Section-radio">
+          <label class="container">Daily
+            <input type="radio" checked="checked" name="sections" value="Daily">
+            <span class="checkmark"></span>
+          </label>
+          <label class="container">Weekly
+            <input type="radio" name="sections" value="Weekly">
+            <span class="checkmark"></span>
+          </label>
+          <label class="container">Monthly
+            <input type="radio" name="sections" value="Monthly">
+            <span class="checkmark"></span>
+          </label>
+          <label class="container">Goals
+            <input type="radio" name="sections" value="Goals">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+      <div>Content: <textarea id="content"></textarea></div>
+      <input type="submit" value="submit">
+    </form>
+  </section>
+</div>
+  <script src="../js/custom.js"></script>
+</body>
+</html>
