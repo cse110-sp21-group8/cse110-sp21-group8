@@ -20,18 +20,12 @@ document.addEventListener('keydown', function(e){
 });
 
 /* Custom Tag */ 
-document.addEventListener('click', function(e) {
-  if(document.activeElement.nodeName == "TASK-LIST"){
-    let selectedTask = document.activeElement;
-    let tagType = selectedTask.shadowRoot.querySelector('#tag-select').value;
-    selectedTask.task_tag = tagType;  
-  }
-});
 /* */ 
 
 addButton.addEventListener('click', ()=> {
     console.log('click')
     let task = document.createElement('task-list');
+    
     text_box.prepend(task);
     console.log(task.shadowRoot);
     let taskInput = task.shadowRoot.querySelector('#tasks');
@@ -192,6 +186,25 @@ let form = document.querySelector('form');
 
 //load Task:
 window.onload = function(event){
+  let tagOpts = ["Important", "Later", "Interesting"];
+  //Load in custom tags
+  fetch('/getCustomTag', {
+    method: 'POST',
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data["status"] == 200) {
+            //obtains the task list
+            let tags = data["tags"];              
+            tags.forEach((tmp) => {
+                tagOpts.push(`${tmp.name}`);
+            })
+        }
+    });
     fetch('/getDailyTask', {  
         method: 'POST',
         headers: {
@@ -211,12 +224,88 @@ window.onload = function(event){
                     let task = document.createElement('task-list');
                     let taskInput = task.shadowRoot.querySelector('#tasks');
                     let taskForm = task.shadowRoot.querySelector('#form');
+                    let tag = task.shadowRoot.querySelector('#tag-select');
                     taskInput.value = tmp["content"];
                     task.isNew = false;
 
-                    taskInput.addEventListener('focusout', (event)=> {
-                        event.preventDefault();
-                        //update task code here
+                    //Load in custom tags
+                    fetch('/getCustomTag', {
+                      method: 'POST',
+                      headers: {
+                          "Content-Type": "application/json"
+                      },
+                      body: JSON.stringify({})
+                      })
+                      .then(response => response.json())
+                      .then(data => {
+                          if(data["status"] == 200) {
+                              //obtains the task list
+                              let tags = data["tags"];              
+                              tags.forEach((tmp) => {
+                                let choices = new Option(`${tmp.name}`, `${tmp.name}`);
+                                tag.appendChild(choices);
+                              })
+                          }
+                      });
+
+                    //Load in the right tag
+                    console.log(tag.options);
+                    console.log(tmp.tag);
+                    for(let i = 1; i < tag.options.length; i++){
+                      if(tag.options[i].value == tmp.tag){
+                        tag.selectedIndex = `${i}`;
+                      }
+                    }
+
+                    //Load in the right task type
+                    let taskType = task.shadowRoot.querySelector('#checklist-select');
+                    for(let i = 1; i < taskType.options.length; i++){
+                      if(taskType.options[i].value == tmp.type){
+                        taskType.selectedIndex = `${i}`;
+                      }
+                    }
+
+                    /* Custom Tag */
+                    tag.addEventListener('click', (event) => {
+                      let selectedTask = tag;
+                      selectedTask.addEventListener('focusout', () => {
+                        if(selectedTask.id == "tag-select"){
+                          let tagType = selectedTask.value;
+                          selectedTask.task_tag = tagType;
+                    
+                          let parentTask = selectedTask.parentElement.querySelector('#tasks');
+                          let oldData = {status:"daily",type:"task", content:parentTask.value,date:parentTask.date};
+                          let content = parentTask.value;
+                          let date = new Date();
+                          data = {status:"daily",type:"task", content:content,date:date.toDateString(), tag:selectedTask.task_tag};
+                          let newData = data;
+                          send_data = {old:oldData, new:newData}; 
+                          fetch('/updateTask', {  
+                              method: 'POST',
+                              headers: {
+                                "Content-Type": "application/json"
+                              }, 
+                              body: JSON.stringify(send_data)
+                              })
+                              .then(response => response.json())
+                              .then(data => {
+                                  if(data["status"]==200){
+                                      let newTask = data["task"];
+                                  }else{
+                                      // alert("Task didn't added");
+                                  }
+                              })
+                              .catch((error) => {
+                              console.error('Error:', error);
+                          });
+                        }
+                      })
+                    });
+                    /* */
+
+                    taskInput.addEventListener('focusout', (event) => {
+                      event.preventDefault();
+                      //update task code here
                     });
 
                     taskForm.addEventListener('submit', (event)=>{
@@ -261,25 +350,46 @@ window.onload = function(event){
                // alert("Task didn't added");
             }
 
-            /* Custom Tag */ 
-            let tmp = data["task"][0];
-            let task = document.createElement('task-list');
-            let taskInput = task.shadowRoot.querySelector('#tasks');
-            taskInput.value = tmp["content"];
-            let tagOpts = task.shadowRoot.querySelector('#tag-select').options;
+            /* Custom Tag */
             let buttonDiv = document.getElementById('tag-button');
-            for (let i = 1; i < tagOpts.length; i++){
+            tagOpts.forEach((element) => {
               let button = document.createElement('button');
               button.type = "button";
-              button.innerHTML = tagOpts[i].innerHTML;
-              button.value = tagOpts[i].innerHTML;
+              button.innerHTML = element;
+              button.value = element;
               buttonDiv.appendChild(button);
-              button.addEventListener('click', () => {
-                let collections = document.getElementById('tag-button');
+              button.addEventListener('click', function(){getButtons(button.value)});
+            });
+
+            //Go Back to Collections
+            let header = document.getElementById('collect-h');
+            header.addEventListener('click', () => {
+              let collections = document.getElementById('tag-button');
+              while (collections.firstChild) {
+                collections.removeChild(collections.firstChild);
+              }
+              collections.className = 'widget-content';
+              tagOpts.forEach((element) => {
+                console.log(element);
+                let button = document.createElement('button');
+                button.type = "button";
+                button.innerHTML = element;
+                button.value = element;
+                buttonDiv.appendChild(button);
+                button.addEventListener('click', function(){getButtons(button.value)});
+              });
+
+            });
+
+            //Function for clicking the buttons
+            function getButtons(value) {
+              let collections = document.getElementById('tag-button');
                   while (collections.firstChild) {
                     collections.removeChild(collections.firstChild);
                   }
                   collections.className = 'show-tag';
+
+                  console.log(collections);
 
                   fetch('/getDailyTask', {  
                     method: 'POST',
@@ -294,57 +404,38 @@ window.onload = function(event){
                             //obtains the task list
                             let tasks = data["task"];
                             tasks.forEach((tmp)=>{
-                             if(tmp.tag == button.value){
-                              let task = document.createElement('task-list');
-                              let taskInput = task.shadowRoot.querySelector('#tasks');
-                              let taskForm = task.shadowRoot.querySelector('#form');
-                              let tag = task.shadowRoot.querySelector('#tag-select');
-                              task.task_id = tmp._id;
-                              taskInput.value = tmp["content"];
-                              task.isNew = false;
-
-                              //Load in the right tag
                               console.log(tmp.tag);
-                              for(let i = 1; i < tag.options.length; i++){
-                                if(tag.options[i].value == tmp.tag){
-                                  tag.selectedIndex = `${i}`;
-                                }
-                              }
+                              console.log(value);
+                              if(tmp.tag == value){
+                                let task = document.createElement('task-list');
+                                let taskInput = task.shadowRoot.querySelector('#tasks');
+                                let taskForm = task.shadowRoot.querySelector('#form');
+                                let tag = task.shadowRoot.querySelector('#tag-select');
+                                task.task_id = tmp._id;
+                                taskInput.value = tmp["content"];
+                                task.isNew = false;
 
-                              //Load in the right task type
-                              let taskType = task.shadowRoot.querySelector('#checklist-select');
-                              for(let i = 1; i < taskType.options.length; i++){
-                                if(taskType.options[i].value == tmp.type){
-                                  taskType.selectedIndex = `${i}`;
+                                //Load in the right tag
+                                console.log(tmp.tag);
+                                for(let i = 1; i < tag.options.length; i++){
+                                  if(tag.options[i].value == tmp.tag){
+                                    tag.selectedIndex = `${i}`;
+                                  }
                                 }
+
+                                //Load in the right task type
+                                let taskType = task.shadowRoot.querySelector('#checklist-select');
+                                for(let i = 1; i < taskType.options.length; i++){
+                                  if(taskType.options[i].value == tmp.type){
+                                    taskType.selectedIndex = `${i}`;
+                                  }
+                                }
+                                  collections.append(task);
                               }
-                               collections.append(task);
-                             }
                             }); 
                         }
                     });
-
-                    });
-                }
-            }
-
-            //Go Back to Collections
-            let header = document.getElementById('collect-h');
-            header.addEventListener('click', () => {
-              let collections = document.getElementById('tag-button');
-              while (collections.firstChild) {
-                collections.removeChild(collections.firstChild);
-              }
-              collections.className = 'widget-content';
-              for (let i = 1; i < tagOpts.length; i++){
-                let button = document.createElement('button');
-                button.type = "button";
-                button.innerHTML = tagOpts[i].innerHTML;
-                button.value = tagOpts[i].innerHTML;
-                buttonDiv.appendChild(button);
-              }
-
-            })
+              } 
             /* */
         })
         .catch((error) => {

@@ -116,6 +116,7 @@ p {
   align-items: center;
   justify-content: space-evenly;
   flex-direction: column;
+  overflow-y: auto;
 }
 
 #collections .widget-content button {
@@ -263,3 +264,11 @@ p {
   align-items: center;
   justify-content: center;
 }
+
+.show-tag {
+  background: #f8f5f1;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  overflow-y: auto;
+}
+

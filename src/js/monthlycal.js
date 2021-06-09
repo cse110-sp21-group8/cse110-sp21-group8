@@ -6,7 +6,7 @@ let currentMonth = today.getMonth();
 /* Array of months and week days to get names */ 
 let months = [ "January", "February", "March", "April", "May", "June", 
 "July", "August", "September", "October", "November", "December" ];
-let weekDay = [ "Sat", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sun"];
+let weekDay = [ "Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
 
 
 /* Gets the last day of this month */

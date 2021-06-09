@@ -10,23 +10,53 @@ let tagTracker = document.getElementById('tracker-box');
 let customTag;
 let customForm;
 let customInput;
-let newTag = false;
 
+//Add a custom tag
 addTagButton.addEventListener('click', ()=>{
   customTag = document.createElement('custom-tag');
   tagTracker.appendChild(customTag);
 
   customForm = customTag.shadowRoot.getElementById('custom-form'); 
   let customSubmit = customTag.shadowRoot.getElementById('submit');
+  let deleteButton = customTag.shadowRoot.getElementById('delete');
+  console.log(deleteButton);
+
+
   customInput = customTag.shadowRoot.querySelector("#custom-tags");
+  //Delete a tag
+  deleteButton.addEventListener('click', (event) => {
+
+  })
+
+  //Submit a tag
   customSubmit.addEventListener('click', (event) =>{
     event.preventDefault();
-    newTag = true;
+
+    //Add the new tag to database
+    data = {name: `${customInput.value}`};
+    fetch('/addCustomTag', {  
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      }, 
+      body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log(data);
+          if(data["status"]==200){
+              let newTag = data["tags"];
+          }else{
+          }
+      })
+      .catch((error) => {
+      console.error('Error:', error);
+  });
+    
     customTag.id = customInput.value;
     let tagList = document.getElementById('text-box').childNodes;
     
     for(let i = 1; i < tagList.length; i++){
-      newTag = false;
       let choices = new Option(`${customTag.id}`, `${customTag.id}`);
       if(tagList[i].nodeName == "TASK-LIST"){
         tagList[i].shadowRoot.getElementById('tag-select').add(choices);
@@ -67,7 +97,6 @@ document.addEventListener('click', (event) => {
           .then(data => {
               if(data["status"]==200){
                   let newTask = data["task"];
-                  console.log(newTask);
               }else{
                   // alert("Task didn't added");
               }
@@ -306,6 +335,7 @@ addButton.addEventListener('click', ()=> {
                     task.task_id = data.task._id;
                     if(data["status"]==200){
                         let newTask = data["task"];
+                        console.log(newTask);
                     }else{
                        // alert("Task didn't added");
                     }
@@ -505,7 +535,6 @@ window.onload = function(event){
                     if (tmp["type"] === "reflection") {
                         return;
                     }
-                    console.log(tmp);
                     let task = document.createElement('task-list');
                     let taskInput = task.shadowRoot.querySelector('#tasks');
                     let taskForm = task.shadowRoot.querySelector('#form');
@@ -514,13 +543,34 @@ window.onload = function(event){
                     taskInput.value = tmp["content"];
                     task.isNew = false;
 
-                    //Load in the right tag
-                    console.log(tmp.tag);
-                    for(let i = 1; i < tag.options.length; i++){
-                      if(tag.options[i].value == tmp.tag){
-                        tag.selectedIndex = `${i}`;
+                    //Load in custom tags
+                    fetch('/getCustomTag', {
+                      method: 'POST',
+                      headers: {
+                          "Content-Type": "application/json"
+                      },
+                      body: JSON.stringify({})
+                      })
+                      .then(response => response.json())
+                      .then(data => {
+                          if(data["status"] == 200) {
+                              //obtains the task list
+                              let tags = data["tags"];              
+                              tags.forEach((elem) => {
+                                let choices = new Option(`${elem.name}`, `${elem.name}`);
+                                tag.appendChild(choices);
+                              })
+                          }
+                      });
+                      //Load in the right tag
+                      console.log(task);
+                      console.log(task.task_tag);
+                      for(let i = 1; i < tag.options.length; i++){
+                        if(tag.options[i].value == task.task_tag){
+                          tag.selectedIndex = `${i}`;
+                        }
                       }
-                    }
+
 
                     //Load in the right task type
                     let taskType = task.shadowRoot.querySelector('#checklist-select');
@@ -535,9 +585,46 @@ window.onload = function(event){
                         text_box.append(task);
                     }
 
+                    /* Custom Tag */
+                    tag.addEventListener('click', (event) => {
+                      let selectedTask = tag;
+                      selectedTask.addEventListener('focusout', () => {
+                        if(selectedTask.id == "tag-select"){
+                          let tagType = selectedTask.value;
+                          selectedTask.task_tag = tagType;
+            
+                          let parentTask = selectedTask.parentElement.querySelector('#tasks');
+                          let oldData = {status:"daily",type:"task", content:parentTask.value,date:parentTask.date};
+                          let content = parentTask.value;
+                          let date = new Date();
+                          data = {status:"daily",type:"task", content:content,date:date.toDateString(), tag:selectedTask.task_tag};
+                          let newData = data;
+                          send_data = {old:oldData, new:newData}; 
+                          fetch('/updateTask', {  
+                              method: 'POST',
+                              headers: {
+                                "Content-Type": "application/json"
+                              }, 
+                              body: JSON.stringify(send_data)
+                              })
+                              .then(response => response.json())
+                              .then(data => {
+                                  if(data["status"]==200){
+                                      let newTask = data["task"];
+                                  }else{
+                                      // alert("Task didn't added");
+                                  }
+                              })
+                              .catch((error) => {
+                              console.error('Error:', error);
+                          });
+                        }
+                      })
+                    });
+                    /* */
+
 
                     let selection = task.shadowRoot.querySelector('#checklist-select');
-                    console.log(taskInput); 
                 
                     let change;
                     selection.addEventListener('change', () => {
@@ -553,7 +640,7 @@ window.onload = function(event){
                         }
 
                         //Update the task type
-                        /*let index = Array.prototype.indexOf.call(text_box.children, task);
+                        let index = Array.prototype.indexOf.call(text_box.children, task);
                         let oldData = data.task[index];
                         //let inputArr = taskInput.value.split(" ");
                         taskInput.value[0] = change;
@@ -579,7 +666,7 @@ window.onload = function(event){
                             })
                             .catch((error) => {
                             console.error('Error:', error);
-                        });*/
+                        });
                     })
 
                     taskInput.addEventListener('change', (event)=> {
@@ -711,7 +798,15 @@ window.onload = function(event){
 
                                     let content = subTemp.content;
                                     subTask.isSubtask = true;
-                                    //subTaskInput.value = "● ";
+
+                                    //Load in the right type
+                                    let taskType = subTask.shadowRoot.querySelector('#checklist-select');
+                                    for(let i = 1; i < taskType.options.length; i++){
+                                      if(taskType.options[i].value == tmp.type){
+                                        taskType.selectedIndex = `${i}`;
+                                      }
+                                    }
+                                    
                                     subTaskInput.addEventListener('change', ()=>{
                                         let oldData = subTemp;
                                         newData = {status:"daily",type:"task", content:content,date:date.toDateString(), task_id: subTask.task_id };
@@ -803,6 +898,30 @@ window.onload = function(event){
             })
         }
     });
+    //Load in custom tags
+    /*fetch('/getCustomTag', {
+      method: 'POST',
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({})
+      })
+      .then(response => response.json())
+      .then(data => {
+          if(data["status"] == 200) {
+              //obtains the task list
+              let tags = data["tags"];              
+              tags.forEach((tmp) => {
+                  let customTag = document.createElement('custom-tag');
+                  let customInput = customTag.shadowRoot.querySelector("#custom-tags");
+                  customInput.value = tmp.name;
+
+                  let tagTracker = document.getElementById('tracker-box');
+                  tagTracker.appendChild(customTag);
+              })
+          }
+      });*/
+
 }
 
 // reflect_btn.addEventListener('click', (event) => {

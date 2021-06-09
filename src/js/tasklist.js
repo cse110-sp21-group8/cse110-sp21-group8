@@ -99,7 +99,6 @@ class TaskList extends HTMLElement {
 
   set isSubtask(value){
     this.shadowRoot.querySelector('#tag-select').style.display = 'none';
-    console.log(this.shadowRoot.querySelector('#tag-select'));
   }
 }
 customElements.define('task-list', TaskList);
