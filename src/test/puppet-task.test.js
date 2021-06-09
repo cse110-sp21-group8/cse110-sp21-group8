@@ -22,13 +22,8 @@ describe('Daily Tasks tests:', () => {
   });
   // User login and go to daily log page. Verify it is in daily log page
   it('Test1: User login and go to daily log page. Verify it is in daily log page', async () => {
-    //await page.click('#index > div.widget-content > button:nth-child(1)');
-    await page.$eval(
-      '#index > div.widget-content > button:nth-child(1)',
-      (el) => {
-        el.click();
-      }
-    );
+    await page.waitFor(500);
+    await page.click('#index > div.widget-content > button:nth-child(1)');
 
     const title = await page.evaluate(() => {
       const elem = document.querySelector('title');

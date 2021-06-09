@@ -15,7 +15,6 @@ const months = [
   'November',
   'December'
 ];
-/* */
 
 describe('Monthly page tests:', () => {
   beforeAll(async () => {
@@ -31,6 +30,7 @@ describe('Monthly page tests:', () => {
 
   describe('Testing if the user go to the Home page correctly', () => {
     it('Test1: User login and stay. Verify if it is in Home page', async () => {
+      await page.waitFor(500);
       const title = await page.evaluate(() => {
         const elem = document.querySelector('title');
         return elem.innerText;

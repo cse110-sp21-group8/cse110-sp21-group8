@@ -10,7 +10,8 @@
         "page": true,
         "browser": true,
         "context": true,
-        "jestPuppeteer": true
+        "jestPuppeteer": true,
+        "mongo": true
       },
     "parserOptions": {
         "ecmaVersion": 12,

@@ -26,12 +26,13 @@ describe('Monthly page tests:', () => {
     const password = await page.$('#password');
     await password.type('123');
     await page.click('button[type="submit"]');
-    await page.click('#index > div.widget-content > button:nth-child(2)');
   });
 
   // User login and go to daily log page. Verify it is in daily log page
   describe('Testing if the user go to the Monthly page correctly', () => {
     it('Test1: User login and go to Monthly log page. Verify if it is in Monthly log page', async () => {
+      await page.waitFor(500);
+      await page.click('#index > div.widget-content > button:nth-child(2)');
       const title = await page.evaluate(() => {
         const elem = document.querySelector('title');
         return elem.innerText;

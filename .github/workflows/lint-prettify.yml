@@ -16,8 +16,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install modules
-      run: yarn install
-    - run: yarn lint --fix
+      run: npm install
+    - run: npm run lint --fix
     - name: Auto-commit formatting results
       uses: stefanzweifel/git-auto-commit-action@v4
       with:

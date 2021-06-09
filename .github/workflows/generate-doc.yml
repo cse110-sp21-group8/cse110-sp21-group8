@@ -16,8 +16,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install modules
-      run: yarn install
-    - run: yarn doc
+      run: npm install
+    - run: npm run doc
+    - name: Deploy JSDoc
+      uses: JamesIves/github-pages-deploy-action@4.1.3
+      with:
+        branch: demo/doc # The branch the action should deploy to.
+        folder: . # The folder the action should deploy.
 
 
 

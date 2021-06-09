@@ -27,11 +27,12 @@ describe('Future page tests:', () => {
     const password = await page.$('#password');
     await password.type('123');
     await page.click('button[type="submit"]');
-    await page.click('#index > div.widget-content > button:nth-child(3)');
   });
 
   describe('Testing if the user go to the future page correctly', () => {
     it('Test1: User login and go to future log page. Verify it is in future log page', async () => {
+      await page.waitFor(500);
+      await page.click('#index > div.widget-content > button:nth-child(3)');
       const title = await page.evaluate(() => {
         const elem = document.querySelector('title');
         return elem.innerText;

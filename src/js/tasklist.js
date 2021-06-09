@@ -106,9 +106,6 @@ class TaskList extends HTMLElement {
     this.shadowRoot.querySelector('#tag-select').style.display = 'none';
   }
 
-  /**
-   * @param {number} value
-   */
   set status(value) {
     this._status = value;
     if (value == 1) {
