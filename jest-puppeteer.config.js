@@ -1,10 +1,14 @@
 module.exports = {
-    launch: {
-        headless: false,
-        slowMo: 500
-      },
-    server: {
-        command: 'node app.js',
-        port:8080,
-    },
-}
+  launch: {
+    dumpio: false,
+    headless: false,
+    slowMo: 500
+  },
+  browser: 'chromium',
+  browserContext: 'default',
+  server: {
+    command: 'npm start',
+    port: 8080,
+    debug: true
+  }
+};

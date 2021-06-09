@@ -15,13 +15,8 @@ class CustomTag extends HTMLElement {
     </div>
 
     `;
-    this.attachShadow({ mode: 'open' });
+    this.attachShadow({mode: 'open'});
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
-
 }
 customElements.define('custom-tag', CustomTag);
-
-
-
-

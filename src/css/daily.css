@@ -19,7 +19,7 @@ body {
 }
 
 /*Calendar*/
-#calendar {
+#calendar,#MigrationCalendar {
   background: #F7F3E9;
   border-radius: 50px;
 
@@ -238,4 +238,31 @@ h1, h2 {
 .tracker-image{
   width: 300px;
   height:300px;
+}
+
+.disapper{
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    background: #222;
+  }
+
+  .log{
+    color: #DDD;
+  }
+
+  .nav-buttons button {
+    color: #DDD;
+  }
+
+  #text-box, #tracker-box, #reflect-box, #reflect-box * {
+    background: #222;
+    color: #DDD;
+  }
+
+  #daily-tasks .widget, #trackers, #calendar{
+    background: #444;
+  }
 }

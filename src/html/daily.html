@@ -5,6 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Log</title>
+    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+    rel = "stylesheet">
+  <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
     <link rel="stylesheet" href="../css/daily.css">
   </head>
 
@@ -40,7 +45,6 @@
           </div>
         </div>
       </div>
-
       <!--Wrapper for calendar and tracker-->
       <div class='col' id="cal-tracker">
         <!--Calendar. Containg month title-->
@@ -60,6 +64,22 @@
           <div class="cal-body">
           </div>
         </div>
+        <div class="widget disapper" id="MigrationCalendar">
+          <div id="month">
+            <h2 id="Migratiocal"></h2>
+            <div class="week"> 
+              <div class="day">Sun</div>
+              <div class="day">Mon</div>
+              <div class="day">Tue</div>
+              <div class="day">Wed</div>
+              <div class="day">Thu</div>
+              <div class="day">Fri</div>
+              <div class="day">Sat</div>
+            </div>
+          </div>
+          <div class="cal-body" id = "cal-bodyM">
+          </div>
+        </div>
         <!--Tracker. Containing tracker box and input area-->
         <div id="trackers">
           <div class="header">
@@ -76,6 +96,17 @@
         </div>
     </div>
     <script src="../js/daily.js"></script>
+
+    <script>
+      
+      $(function() {
+     $('#dateSpan').datepicker({onSelect: function(dateStr) { alert('selected ' + dateStr); }}).hide();
+     $('#dateButton').click(function() {
+           $('#dateSpan').toggle();
+     });
+    }); 
+    
+  </script>
 
   <!--Daily Log Calendar Script-->
     <script src="../js/dailycal.js"></script>   

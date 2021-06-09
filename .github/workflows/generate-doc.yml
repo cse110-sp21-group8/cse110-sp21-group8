@@ -1,23 +1,21 @@
 name: Generator JS Docs
 
-on: [push, pull_request]
+on: push
 
 jobs:
   eslint:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
-
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+    - uses: actions/checkout@v2.3.1
     - name: Install modules
       run: yarn install
     - run: yarn doc
+    - name: Deploy JSDoc
+      uses: JamesIves/github-pages-deploy-action@4.1.4
+      with:
+        branch: docs # The branch the action should deploy to.
+        folder: . # The folder the action should deploy.
 
 
 

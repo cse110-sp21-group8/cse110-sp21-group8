@@ -2,13 +2,13 @@
   "name": "cse110-sp21-group8",
   "version": "1.0.0",
   "description": "Bullet Journal for the Flat Earthers",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "test": "jest --detectOpenHandles --coverage",
     "lint": "eslint ./src ",
     "doc": "jsdoc -c jsdoc.json",
-    "stop": "pkill --signal SIGINT myApp"
+    "stop": "pkill --signal SIGINT node"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
+    "dotenv": "^10.0.0",
     "eslint": "^7.25.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",

@@ -25,8 +25,8 @@ class TaskList extends HTMLElement {
         <option value="Note"> Note </option>
       </select>
       <div id="text-box">
+      <button id="delete" >delete</button>
         <form id='form'>
-        <button id="delete" >delete</button>
           <input type="text" id="tasks" size="100" placeholder="Click to add tasks!"><br>
         </form>
       </div>
@@ -35,12 +35,12 @@ class TaskList extends HTMLElement {
       </div>
     </div>
     `;
-    this.attachShadow({ mode: 'open' });
+    this.attachShadow({mode: 'open'});
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
-  isNew = true; 
-  task_id = '';
+  //isNew = true;
+  //task_id = '';
 
   /*set isSubtask(value){
     this.shadowRoot.querySelector('#tag-select').style.display = 'none';

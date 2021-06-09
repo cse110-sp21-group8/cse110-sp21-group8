@@ -13,9 +13,8 @@ class TagButtons extends HTMLElement {
     <div id="tag">
     </div>
     `;
-    this.attachShadow({ mode: 'open' });
+    this.attachShadow({mode: 'open'});
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
-
 }
 customElements.define('tag-buttons', TagButtons);

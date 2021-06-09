@@ -32,6 +32,7 @@ body {
     justify-content: space-evenly;
     width: 100%;
     flex-grow: 1;
+    height: inherit;
   }
 
   /* left side of screen formatting*/
@@ -205,13 +206,37 @@ body {
 }
 
 .append{
-  display: grid;
-  grid-column: auto;
-  height:10px;
-  width: 80px;
+  flex-grow: 1;
+
   font-size: 13px;
   align-content: center;
 }
 
 
-  
+.calTask {
+  display: flex;
+  padding: .5rem;
+  box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    background: #222;
+  }
+
+  .log{
+    color: #DDD;
+  }
+
+  .nav-buttons button {
+    color: #DDD;
+  }
+
+  .cal-content * {
+    color: #DDD;
+  }
+
+  .list {
+    background: #444;
+  }
+}

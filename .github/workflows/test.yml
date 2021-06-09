@@ -6,18 +6,27 @@ jobs:
   eslint:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
-
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: '10.x'
     - name: Install modules
       run: yarn install
-    - run: yarn jest
+    - run: sudo apt-get install xvfb
+    
+    - run: xvfb-run --auto-servernum yarn test tasks.test.js
+    - run: xvfb-run --auto-servernum yarn test users.test.js 
+    - run: xvfb-run --auto-servernum yarn test puppet-user.test.js
+    - run: xvfb-run --auto-servernum yarn test puppet-task.test.js
+    - run: xvfb-run --auto-servernum yarn test puppet-future.test.js
+    - run: xvfb-run --auto-servernum yarn test puppet-monthly.test.js
+    - run: xvfb-run --auto-servernum yarn test puppet-home.test.js
 
+            
+        
+
+        
+        
 
 
