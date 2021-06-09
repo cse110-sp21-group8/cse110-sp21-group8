@@ -94,11 +94,45 @@ class TaskList extends HTMLElement {
     this.task_id = '';
     this.task_tag = '';
     this.task_date = '';
+
+    this.status = 1
+
+    this.shadowRoot.querySelector('#status').addEventListener('click', ()=> {
+      this.changeStatus();
+    })
+
+ 
   }
 
   set isSubtask(value){
     this.shadowRoot.querySelector('#tag-select').style.display = 'none';
-    console.log(this.shadowRoot.querySelector('#tag-select'));
+  }
+
+  
+  /**
+   * @param {number} value
+   */
+  set status (value){
+    this._status = value;
+    if(value == 1){
+      this.shadowRoot.querySelector('#status').innerHTML = '\u26AA'
+    } else if (value == 2){
+      this.shadowRoot.querySelector('#status').innerHTML = '\u{1F7E1}'
+    } else if (value == 3) {
+      this.shadowRoot.querySelector('#status').innerHTML = '\u{1F7E2}'
+    }
+  }
+
+  get status (){
+    return this._status;
+  }
+
+  changeStatus() {
+    if (this._status < 3){
+      this.status = this.status + 1;
+    } else {
+      this.status = 1;
+    }
   }
 }
 customElements.define('task-list', TaskList);

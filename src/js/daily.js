@@ -487,6 +487,7 @@ addButton.addEventListener('click', () => {
         });
     }
     document.activeElement.blur();
+
   });
 
   //Deleting task from page and  database when user clicks delete button
