@@ -2,7 +2,7 @@ module.exports = {
   launch: {
     dumpio: false,
     headless: false,
-    slowMo: 100
+    slowMo: 500
   },
   browser: 'chromium',
   browserContext: 'default',
