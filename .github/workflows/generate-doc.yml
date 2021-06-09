@@ -1,6 +1,6 @@
 name: Generator JS Docs
 
-on: [push, pull_request]
+on: push
 
 jobs:
   eslint:
@@ -14,7 +14,7 @@ jobs:
     - name: Deploy JSDoc
       uses: JamesIves/github-pages-deploy-action@4.1.4
       with:
-        branch: repo/demo/doc # The branch the action should deploy to.
+        branch: docs # The branch the action should deploy to.
         folder: . # The folder the action should deploy.
 
 
