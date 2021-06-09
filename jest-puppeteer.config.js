@@ -2,9 +2,9 @@ module.exports = {
   launch: {
     dumpio: false,
     headless: false,
-    slowMo: 500
+    slowMo: 500,
+    product: 'chromium'
   },
-  browser: 'chromium',
   browserContext: 'default',
   server: {
     command: 'npm start',

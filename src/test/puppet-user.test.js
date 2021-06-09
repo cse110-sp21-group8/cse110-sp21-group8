@@ -23,13 +23,13 @@ describe('User test:', () => {
 
   // User go to signup page: verify with title to be sign up
   it('Test2: User go to signup page', async () => {
+    await page.waitFor(500);
     await page.goto('http://localhost:8080/signup');
     const title = await page.evaluate(() => {
       const elem = document.querySelector('title');
       return elem.innerText;
     });
     expect(title).toBe('Sign Up');
-    await page.waitFor(500);
   });
 
   // User signup: verify with matched Home page title
