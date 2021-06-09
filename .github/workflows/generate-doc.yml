@@ -14,9 +14,8 @@ jobs:
     - name: Deploy JSDoc
       uses: JamesIves/github-pages-deploy-action@4.1.4
       with:
-        branch: demo/doc # The branch the action should deploy to.
+        branch: repo/demo/doc # The branch the action should deploy to.
         folder: . # The folder the action should deploy.
-        token: ${{ secrets.GITHUB_TOKEN }}
 
 
 
