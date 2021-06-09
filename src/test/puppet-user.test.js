@@ -29,6 +29,7 @@ describe('User test:', () => {
       return elem.innerText;
     });
     expect(title).toBe('Sign Up');
+    await page.waitFor(500);
   });
 
   // User signup: verify with matched Home page title
