@@ -47,6 +47,7 @@ let curIdx = currentDay + 6;
 for (let i = 7; i < dayBtns.length; i++) {
   dayBtns[i].addEventListener('click', () => {
     // change background color of selected day
+    let curDate;
     curIdx = i;
     dayBtns[i].style.background = '#5aa8979f';
     for (let j = 7; j < dayBtns.length; j++) {
@@ -55,15 +56,13 @@ for (let i = 7; i < dayBtns.length; i++) {
       }
     }
     document.getElementById('text-box').innerHTML = '';
-    console.log("line 58");
-    document.getElementById('reflection').innerHTML = 'poop';
     let date = new Date(today.getFullYear(), today.getMonth(), i - 6);
     fetch('/getDailyTask', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({date: curDate.toDateString()})
+      body: JSON.stringify({date: date.toDateString()})
     })
       .then((response) => response.json())
       .then((data) => {
@@ -155,12 +154,14 @@ for (let i = 7; i < dayBtns.length; i++) {
               let dayBtns = document.querySelectorAll('.day');
               let curDay;
               for (let i = 7; i < dayBtns.length; i++) {
-                if (dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)') {
+                if (
+                  dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)'
+                ) {
                   curDay = dayBtns[i].innerHTML;
                   break;
                 }
               }
-              let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
+              curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
               let newData = {
                 status: 'daily',
                 type: 'task',
