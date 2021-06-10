@@ -461,7 +461,6 @@ addButton.addEventListener('click', () => {
       };
       let newData = data;
       let send_data = {old: oldData, new: newData};
-      
       //udpating task in database
       fetch('/updateTask', {
         method: 'POST',
@@ -572,6 +571,8 @@ function getDailyTasks() {
         tasks.forEach((tmp) => {
           // skip reflections
           if (tmp['type'] === 'reflection') {
+            document.getElementById('reflection').value= tmp['content'];
+            isReflectionNew = false;
             return;
           }
 
@@ -641,7 +642,7 @@ function getDailyTasks() {
             for (let i = 7; i < dayBtns.length; i++) {
               if (dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)') {
                 curDay = dayBtns[i].innerHTML;
-              break;
+                break;
               }
             }
             let date = new Date();
@@ -661,7 +662,6 @@ function getDailyTasks() {
 
             //updating on database
             let send_data = {old: oldData, new: newData};
-            
             fetch('/updateTask', {
               method: 'POST',
               headers: {
@@ -855,16 +855,16 @@ function getDailyTasks() {
       break;
     }
   }
-  let date = new Date();
-  let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
-
+  //let date = new Date();
+  //let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
+  /*
   //load reflection
   fetch('/getDailyTask', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({date: new Date(today.getFullYear(), today.getMonth(), curDay).toDateString})
+    body: JSON.stringify({date: new Date(today.getFullYear(), today.getMonth(), curDay).toDateString, type:"reflection"})
   })
     .then((response) => response.json())
     .then((data) => {
@@ -872,16 +872,12 @@ function getDailyTasks() {
       if (data['status'] == 200) {
         //obtains the task list
         let tasks = data['task'];
-
-        tasks.forEach((tmp) => {
-          
-          if (tmp['type'] === 'reflection') {
-            document.getElementById('reflection').append(tmp['content']);
-            isReflectionNew = false;
-          }
-        });
+        console.log(tasks);     
+        document.getElementById('reflection').append(tasks['content']);
+        isReflectionNew = false;
       }
     });
+    */
 }
 
 //load Task:
@@ -995,7 +991,6 @@ reflection.addEventListener('focusout', () => {
               console.log('reflection deleted');
           } else {
             let send_data = {old: oldData, new: newData};
-            
             fetch('/updateTask', {
               method: 'POST',
               headers: {
@@ -1085,7 +1080,6 @@ for (let i = 1; i <= m_lastDay; i++) {
       old: {_id: M_cal.getAttribute('task_id')},
       new: {date: cday.toDateString()}
     };
-    
     fetch('/updateTask', {
       method: 'POST',
       headers: {

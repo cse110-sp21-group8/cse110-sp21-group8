@@ -71,7 +71,7 @@ for (let i = 7; i < dayBtns.length; i++) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({date: new Date(today.getFullYear(), today.getMonth(), curDay).toDateString})
+      body: JSON.stringify({date: new Date(today.getFullYear(), today.getMonth(), curDay).toDateString()})
     })
       .then((response) => response.json())
       .then((data) => {
@@ -84,7 +84,12 @@ for (let i = 7; i < dayBtns.length; i++) {
           //add each task into the box
           tasks.forEach((tmp) => {
             // skip reflections
-            if (tmp['type'] === 'reflection') {
+            if (tmp['type'] == 'reflection') {
+                  // eslint-disable-next-line no-unused-vars
+              console.log("RELECT:",tmp['content']);
+              document.getElementById('reflection').value= tmp['content'];
+              // eslint-disable-next-line no-undef
+              isReflectionNew = false;
               return;
             }
             console.log(tmp);
@@ -163,12 +168,14 @@ for (let i = 7; i < dayBtns.length; i++) {
               let dayBtns = document.querySelectorAll('.day');
               let curDay;
               for (let i = 7; i < dayBtns.length; i++) {
-                if (dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)') {
+                if (
+                  dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)'
+                ) {
                   curDay = dayBtns[i].innerHTML;
                   break;
                 }
               }
-              let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
+              curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
               let newData = {
                 status: 'daily',
                 type: 'task',
@@ -371,12 +378,14 @@ for (let i = 7; i < dayBtns.length; i++) {
       .catch((error) => {
         console.error('Error:', error);
       });
+
+    /*
     fetch('/getDailyTask', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({date: new Date(today.getFullYear(), today.getMonth(), curDay).toDateString()})
+      body: JSON.stringify({date: new Date(today.getFullYear(), today.getMonth(), curDay).toDateString(), type:"reflection"})
     })
       .then((response) => response.json())
       .then((data) => {
@@ -385,38 +394,12 @@ for (let i = 7; i < dayBtns.length; i++) {
           //obtains the task list
           let tasks = data['task'];
           // eslint-disable-next-line no-unused-vars
-          let reflect_box = document.getElementById('reflect-box');
-
-          let curDay;
-          if (i <= 15) {
-            curDay = '0' + (i.toString() - 6);
-          } else {
-            curDay = i.toString() - 6;
-          }
-
-          tasks.forEach((tmp) => {
-            if (
-              tmp['type'] === 'reflection' &&
-              tmp['date'].slice(8, 10) == curDay
-            ) {
-              document.getElementById('reflection').append(tmp['content']);
-              // eslint-disable-next-line no-undef
-              isReflectionNew = false;
-            }
-          });
-
-          tasks.forEach((tmp) => {
-            if (
-              tmp['type'] === 'reflection' &&
-              tmp['date'].slice(8, 10) === curDay
-            ) {
-              document.getElementById('reflection').append(tmp['content']);
-              // eslint-disable-next-line no-undef
-              isReflectionNew = false;
-            }
-          });
+          document.getElementById('reflection').append(tasks['content']);
+          // eslint-disable-next-line no-undef
+          isReflectionNew = false;
         }
       });
+      */
   });
   dayBtns[i].addEventListener('mouseenter', () => {
     dayBtns[i].style.background = '#5aa8979f';
