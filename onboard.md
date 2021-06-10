@@ -78,6 +78,8 @@ By pressing the tab button on any log, you can add a nested log
 - ## Updating a Log 
 By directly, editing the text box, you can update your log.
 
+![alt text](/images/update.gif)
+
 
 - ## Deleting a Log 
 By pressing the delete (X) button, you can delete your log 
