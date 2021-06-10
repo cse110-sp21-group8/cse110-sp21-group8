@@ -231,7 +231,6 @@ addButton.addEventListener('click', () => {
     }
   });
 
-
   //adds or updates task to database when user focuses out
   taskInput.addEventListener('focusout', (event) => {
     //Sets date to log the task depending on date user selects
@@ -349,26 +348,6 @@ addButton.addEventListener('click', () => {
 
 //load Task:
 window.onload = function () {
-  let tagOpts = ["Important", "Later", "Interesting"];
-  //Load in custom tags
-  fetch('/getCustomTag', {
-    method: 'POST',
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({})
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data["status"] == 200) {
-            //obtains the task list
-            let tags = data["tags"];              
-            tags.forEach((tmp) => {
-                tagOpts.push(`${tmp.name}`);
-            })
-        }
-  });
-  console.log(tagOpts);
   fetch('/getDailyTask', {
     method: 'POST',
     headers: {
@@ -400,9 +379,9 @@ window.onload = function () {
           task.isNew = false;
 
           //Load in the right tag
-          console.log(task.tag);
-          for (let i = 1; i < tagOpts.length; i++) {
-            if (tagOpts[i] == task.tag) {
+          console.log(tmp.tag);
+          for (let i = 1; i < tag.options.length; i++) {
+            if (tag.options[i].value == tmp.tag) {
               tag.selectedIndex = `${i}`;
             }
           }
@@ -430,37 +409,6 @@ window.onload = function () {
             } else {
               taskInput.value = '⚬ ';
             }
-          });
-
-          //updates the tag after changing selected
-          let tagOption = task.shadowRoot.querySelector('#tag-select');
-          tagOption.addEventListener('change', () => {
-            if(task.isNew){
-              taskTag = tagOption.value;
-            } else {
-              taskTag = tagOption.value;
-              let oldData = data;
-              let newData = oldData; 
-              newData.tag = taskTag; 
-              //updating on database
-              let send_data = {old: oldData, new: newData};
-              fetch('/updateTask', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(send_data)
-                })
-                .then((response) => response.json())
-                .then((data) => {
-                  if (data['status'] == 200) {
-                    //Success;
-                  }
-                })
-                .catch((error) => {
-                  console.error('Error:', error);
-                });
-              }
           });
 
           //updates task when user focus out of textbox
@@ -666,10 +614,10 @@ window.onload = function () {
       }
 
       /* Custom Tag */
-      /*//let tmp = data['task'][0];
+      let tmp = data['task'][0];
       let task = document.createElement('task-list');
-      //let taskInput = task.shadowRoot.querySelector('#tasks');
-      //taskInput.value = tmp['content'];
+      let taskInput = task.shadowRoot.querySelector('#tasks');
+      taskInput.value = tmp['content'];
       let tagOpts = task.shadowRoot.querySelector('#tag-select').options;
       let buttonDiv = document.getElementById('tag-button');
       for (let i = 1; i < tagOpts.length; i++) {
@@ -730,19 +678,7 @@ window.onload = function () {
               }
             });
         });
-      }*/
-
-      //navigating to see tasks with special tag
-      let buttonDiv = document.getElementById('tag-button');
-      tagOpts.forEach((element) => {
-        console.log(element);
-        let button = document.createElement('button');
-        button.type = "button";
-        button.innerHTML = element;
-        button.value = element;
-        buttonDiv.appendChild(button);
-        button.addEventListener('click', function(){getButtons(button.value)});
-      });
+      }
 
       //Go Back to Collections
       let header = document.getElementById('collect-h');
@@ -766,59 +702,3 @@ window.onload = function () {
       console.error('Error:', error);
     });
 };
-
-//function for clicking the buttons
-function getButtons(value) {
-let collections = document.getElementById('tag-button');
-while (collections.firstChild) {
-  collections.removeChild(collections.firstChild);
-}
-collections.className = 'show-tag';
-
-console.log(collections);
-
-fetch('/getDailyTask', {  
-  method: 'POST',
-  headers: {
-    "Content-Type": "application/json"
-  }, 
-  body: JSON.stringify({date: new Date().toDateString()})
-})
-  .then(response => response.json())
-  .then(data => {
-      if(data["status"]==200){
-          //obtains the task list
-          let tasks = data["task"];
-          tasks.forEach((tmp)=>{
-            console.log(tmp.tag);
-            console.log(value);
-            if(tmp.tag == value){
-              let task = document.createElement('task-list');
-              let taskInput = task.shadowRoot.querySelector('#tasks');
-              let taskForm = task.shadowRoot.querySelector('#form');
-              let tag = task.shadowRoot.querySelector('#tag-select');
-              task.task_id = tmp._id;
-              taskInput.value = tmp["content"];
-              task.isNew = false;
-
-              //Load in the right tag
-              console.log(tmp.tag);
-              for(let i = 1; i < tag.options.length; i++){
-                if(tag.options[i].value == tmp.tag){
-                  tag.selectedIndex = `${i}`;
-                }
-              }
-
-              //Load in the right task type
-              let taskType = task.shadowRoot.querySelector('#checklist-select');
-              for(let i = 1; i < taskType.options.length; i++){
-                if(taskType.options[i].value == tmp.type){
-                  taskType.selectedIndex = `${i}`;
-                }
-              }
-                collections.append(task);
-            }
-          }); 
-      }
-  });
-}

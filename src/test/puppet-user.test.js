@@ -65,6 +65,7 @@ describe('Home Page Navigation testing', () => {
 
   // User click the Daily Log button and go to the daily log page:
   it('Test4: User click the Daily Log button and go to the daily log page:', async () => {
+    await page.waitFor(500);
     await page.click('#index > div.widget-content > button:nth-child(1)');
 
     const title = await page.evaluate(() => {

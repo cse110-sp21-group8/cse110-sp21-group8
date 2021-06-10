@@ -26,26 +26,6 @@ addTagButton.addEventListener('click', () => {
     customTag.id = customInput.value;
     let tagList = document.getElementById('text-box').childNodes;
 
-    let data = {name: `${customInput.value}`};
-    fetch('/addCustomTag', {  
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      }, 
-      body: JSON.stringify(data)
-      })
-      .then(response => response.json())
-      .then(data => {
-          console.log(data);
-          if(data["status"]==200){
-              let newTag = data["tags"];
-          }else{
-          }
-      })
-      .catch((error) => {
-      console.error('Error:', error);
-    });
-
     for (let i = 1; i < tagList.length; i++) {
       newTag = false;
       let choices = new Option(`${customTag.id}`, `${customTag.id}`);
@@ -73,6 +53,36 @@ document.addEventListener('click', (event) => {
           break;
         }
       }
+
+      let oldData = data;
+      let content = selectedTask.parentElement.querySelector('#tasks').value;
+      data = {
+        status: 'daily',
+        type: 'task',
+        content: content,
+        date: oldData['date'],
+        tag: selectedTask.task_tag
+      };
+      let newData = data;
+      let send_data = {old: oldData, new: newData};
+      fetch('/updateTask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(send_data)
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data['status'] == 200) {
+            //Success;
+          } else {
+            // alert("Task didn't added");
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
     }
   });
 });
@@ -281,8 +291,6 @@ addButton.addEventListener('click', () => {
   taskInput.value = '● ';
 
   let selection = task.shadowRoot.querySelector('#checklist-select');
-  let tagOption = task.shadowRoot.querySelector('#tag-select');
-  let taskTag;
 
   //prefixes value with correct symbol based on drop down menu
   selection.addEventListener('change', () => {
@@ -293,36 +301,6 @@ addButton.addEventListener('click', () => {
     } else {
       taskInput.value = '⚬ ';
     }
-  });
-
-  tagOption.addEventListener('change', () => {
-    if(task.isNew){
-      taskTag = tagOption.value;
-    } else {
-      taskTag = tagOption.value;
-      let oldData = data;
-      let newData = oldData; 
-      newData.tag = taskTag; 
-      console.log(newData);
-      //updating on database
-      let send_data = {old: oldData, new: newData};
-      fetch('/updateTask', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(send_data)
-        })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data['status'] == 200) {
-            //Success;
-          }
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-      }
   });
 
   //adds or updates task to database when user focuses out
@@ -349,8 +327,7 @@ addButton.addEventListener('click', () => {
         status: 'daily',
         type: 'task',
         content: content,
-        date: curDate.toDateString(),
-        tag: taskTag
+        date: curDate.toDateString()
       };
 
       //add data to the database
@@ -399,8 +376,7 @@ addButton.addEventListener('click', () => {
         status: 'daily',
         type: 'task',
         content: content,
-        date: curDate.toDateString(),
-        tag: taskTag
+        date: curDate.toDateString()
       };
       let newData = data;
       let send_data = {old: oldData, new: newData};
@@ -424,8 +400,6 @@ addButton.addEventListener('click', () => {
         });
     }
   });
-
-
 
   // When user presses enter after entering a task, data is added/updated in the database
   let taskForm = task.shadowRoot.querySelector('#form');
@@ -487,7 +461,7 @@ addButton.addEventListener('click', () => {
       };
       let newData = data;
       let send_data = {old: oldData, new: newData};
-
+      
       //udpating task in database
       fetch('/updateTask', {
         method: 'POST',
@@ -626,33 +600,13 @@ function getDailyTasks() {
             console.log(tmp._id);
           });
 
-          //tagging 
-          fetch('/getCustomTag', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({})
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data["status"] == 200) {
-                    //obtains the task list
-                    let tags = data["tags"];              
-                    tags.forEach((elem) => {
-                      let choices = new Option(`${elem.name}`, `${elem.name}`);
-                      tag.appendChild(choices);
-                    })
-                }
-            });
-            //Load in the right tag
-            console.log(task);
-            console.log(task.task_tag);
-            for(let i = 1; i < tag.options.length; i++){
-              if(tag.options[i].value == task.task_tag){
-                tag.selectedIndex = `${i}`;
-              }
+          //Load in the right tag
+          console.log(tmp.tag);
+          for (let i = 1; i < tag.options.length; i++) {
+            if (tag.options[i].value == tmp.tag) {
+              tag.selectedIndex = `${i}`;
             }
+          }
 
           //Load in the right task type
           let taskType = task.shadowRoot.querySelector('#checklist-select');
@@ -668,10 +622,8 @@ function getDailyTasks() {
           }
 
           let selection = task.shadowRoot.querySelector('#checklist-select');
-          let tagOption = task.shadowRoot.querySelector('#tag-select');
-          let taskTag;
-        
-          //prefixes value with correct symbol based on drop down menu
+
+          //prefix symbol depending if user selects event, task, note
           selection.addEventListener('change', () => {
             if (selection.value == 'Task') {
               taskInput.value = '● ';
@@ -682,57 +634,34 @@ function getDailyTasks() {
             }
           });
 
-          //updates the changed tag option
-          tagOption.addEventListener('change', () => {
-            if(task.isNew){
-              taskTag = tagOption.value;
-            } else {
-              taskTag = tagOption.value;
-              let oldData = data;
-              let newData = oldData; 
-              newData.tag = taskTag; 
-              console.log(newData);
-              //updating on database
-              let send_data = {old: oldData, new: newData};
-              fetch('/updateTask', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(send_data)
-                })
-                .then((response) => response.json())
-                .then((data) => {
-                  if (data['status'] == 200) {
-                    //Success;
-                  }
-                })
-                .catch((error) => {
-                  console.error('Error:', error);
-                });
-              }
-          });
-
-          let index = Array.prototype.indexOf.call(text_box.children, task);
-        
           //updates task when user focuses out of textbox
           taskInput.addEventListener('focusout', (event) => {
+            let dayBtns = document.querySelectorAll('.day');
+            let curDay;
+            for (let i = 7; i < dayBtns.length; i++) {
+              if (dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)') {
+                curDay = dayBtns[i].innerHTML;
+              break;
+              }
+            }
+            let date = new Date();
+            let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
             event.preventDefault();
             //getting old data from database
+            let index = Array.prototype.indexOf.call(text_box.children, task);
             let oldData = data.task[index];
             //setting new data based on user input
             let content = taskInput.value;
-            let date = new Date();
             let newData = {
               status: 'daily',
               type: `${selection.value}`,
               content: content,
-              date: date.toDateString(),
-              tag: oldData.tag
+              date: curDate.toDateString()
             };
 
             //updating on database
             let send_data = {old: oldData, new: newData};
+            
             fetch('/updateTask', {
               method: 'POST',
               headers: {
@@ -756,32 +685,6 @@ function getDailyTasks() {
             event.preventDefault();
             taskInput.blur();
           });
-
-          tagOption.addEventListener('change', () => {
-            taskTag = tagOption.value;
-            let oldData = data.task[index];
-            let newData = oldData; 
-            newData.tag = taskTag; 
-            //updating on database
-            let send_data = {old: oldData, new: newData};
-            fetch('/updateTask', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(send_data)
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                if (data['status'] == 200) {
-                  //Success;
-                }
-              })
-              .catch((error) => {
-                console.error('Error:', error);
-              });
-          });
-
 
           //deletes task and corresponding subtask from page and database
           let deleteButton = task.shadowRoot.querySelector('#delete');
@@ -977,8 +880,6 @@ function getDailyTasks() {
         });
       }
     });
-
-    
 }
 
 //load Task:
@@ -1080,6 +981,7 @@ reflection.addEventListener('focusout', () => {
               });
           } else {
             let send_data = {old: oldData, new: newData};
+            
             fetch('/updateTask', {
               method: 'POST',
               headers: {
@@ -1169,6 +1071,7 @@ for (let i = 1; i <= m_lastDay; i++) {
       old: {_id: M_cal.getAttribute('task_id')},
       new: {date: cday.toDateString()}
     };
+    
     fetch('/updateTask', {
       method: 'POST',
       headers: {
