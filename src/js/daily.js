@@ -862,15 +862,17 @@ function getDailyTasks() {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({date: curDate.toDateString()})
+    body: JSON.stringify({date: new Date(today.getFullYear(), today.getMonth(), curDay).toDateString})
   })
     .then((response) => response.json())
     .then((data) => {
+      console.log(data['status']);
       if (data['status'] == 200) {
         //obtains the task list
         let tasks = data['task'];
 
         tasks.forEach((tmp) => {
+          
           if (tmp['type'] === 'reflection') {
             document.getElementById('reflection').append(tmp['content']);
             isReflectionNew = false;
@@ -890,6 +892,15 @@ let reflection = document.getElementById('reflection');
 // eslint-disable-next-line no-unused-vars
 let reflectionForm = document.querySelector('#reflect-box form');
 
+reflection.addEventListener('click', () => {
+  if (document.getElementById('reflection').value === '') {
+    isReflectionNew = true;
+  }
+  else {
+    isReflectionNew = false;
+  }
+})
+
 //adding reflection when user focuses out
 reflection.addEventListener('focusout', () => {
   let dayBtns = document.querySelectorAll('.day');
@@ -902,7 +913,7 @@ reflection.addEventListener('focusout', () => {
   }
   let date = new Date();
   let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
-  if (document.getElementById('reflection').innerHTML === '') {
+  if (isReflectionNew) {
     //create new reflection on back end
     let content = reflection.value;
     data = {
@@ -920,6 +931,7 @@ reflection.addEventListener('focusout', () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data['status']);
         if (data['status'] == 200) {
           //let newReflection = data['reflection'];
         } else {
@@ -961,6 +973,7 @@ reflection.addEventListener('focusout', () => {
 
           if (newData['content'] === '') {
             let delete_data = oldData;
+            console.log('reflection deleted');
             fetch('/deleteTask', {
               method: 'POST',
               headers: {
@@ -977,6 +990,7 @@ reflection.addEventListener('focusout', () => {
               .catch((error) => {
                 console.error('Error:', error);
               });
+              console.log('reflection deleted');
           } else {
             let send_data = {old: oldData, new: newData};
             fetch('/updateTask', {
@@ -1081,7 +1095,7 @@ for (let i = 1; i <= m_lastDay; i++) {
           cal.classList.remove('disapper');
           M_cal.classList.add('disapper');
           document.getElementById('text-box').innerHTML = '';
-          document.getElementById('reflection').innerHTML = '';
+          document.getElementById('reflection').value = '';
           getDailyTasks();
         } else {
           // alert("Task didn't added");

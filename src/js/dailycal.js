@@ -40,7 +40,7 @@ for (let i = 1; i <= lastDay; i++) {
   monthDays.innerHTML = days;
 }
 
-let dayBtns = document.querySelectorAll('#calendar  .day');
+let dayBtns = document.querySelectorAll('#calendar .day');
 dayBtns[currentDay + 6].style.background = '#5aa8979f';
 
 let curIdx = currentDay + 6;
@@ -55,17 +55,28 @@ for (let i = 7; i < dayBtns.length; i++) {
         dayBtns[j].style.background = 'none';
       }
     }
+
+    for (let i = 7; i < dayBtns.length; i++) {
+      if (dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)') {
+        curDay = dayBtns[i].innerHTML;
+        break;
+      }
+    }
+    let curDate = new Date(today.getFullYear(), today.getMonth(), curDay);
+
     document.getElementById('text-box').innerHTML = '';
+    document.getElementById('reflection').value = '';
     let date = new Date(today.getFullYear(), today.getMonth(), i - 6);
     fetch('/getDailyTask', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({date: date.toDateString()})
+      body: JSON.stringify({date: new Date(today.getFullYear(), today.getMonth(), curDay).toDateString})
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data['status']);
         if (data['status'] == 200) {
           //obtains the task list
           let tasks = data['task'];
@@ -107,7 +118,6 @@ for (let i = 7; i < dayBtns.length; i++) {
             }
             //fixed bug where future and monthly tasks were getting mixed up
             if (tmp['status'] == 'daily' && tmp['date'].slice(8, 10) == curDay) {
-              console.log('in here!!!');
               text_box.append(task);
             }
 
@@ -178,6 +188,7 @@ for (let i = 7; i < dayBtns.length; i++) {
               })
                 .then((response) => response.json())
                 .then((data) => {
+                  console.log(data['status']);
                   if (data['status'] == 200) {
                     //Success
                   } else {
@@ -209,6 +220,7 @@ for (let i = 7; i < dayBtns.length; i++) {
               })
                 .then((response) => response.json())
                 .then((data) => {
+                  console.log(data['status']);
                   if (data['status'] == 200) {
                     //Success
                   } else {
@@ -230,6 +242,7 @@ for (let i = 7; i < dayBtns.length; i++) {
               })
                 .then((response) => response.json())
                 .then((subdata) => {
+                  console.log(data['status']);
                   if (subdata['status'] == 200) {
                     let subtasks = subdata['task'];
                     subtasks.forEach((subTemp) => {
@@ -243,6 +256,7 @@ for (let i = 7; i < dayBtns.length; i++) {
                       })
                         .then((response) => response.json())
                         .then((data) => {
+                          console.log(data['status']);
                           if (data['status'] == 200) {
                             //Success
                           } else {
@@ -267,6 +281,7 @@ for (let i = 7; i < dayBtns.length; i++) {
             })
               .then((response) => response.json())
               .then((subdata) => {
+                console.log(data['status']);
                 if (subdata['status'] == 200) {
                   console.log(subdata);
                   let subtasks = subdata['task'];
@@ -306,6 +321,7 @@ for (let i = 7; i < dayBtns.length; i++) {
                       })
                         .then((response) => response.json())
                         .then((data) => {
+                          console.log(data['status']);
                           if (data['status'] == 200) {
                             //Success
                           } else {
@@ -334,6 +350,7 @@ for (let i = 7; i < dayBtns.length; i++) {
                       })
                         .then((response) => response.json())
                         .then((data) => {
+                          console.log(data['status']);
                           if (data['status'] == 200) {
                             //Success
                           } else {
@@ -362,10 +379,11 @@ for (let i = 7; i < dayBtns.length; i++) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({date: date.toDateString()})
+      body: JSON.stringify({date: new Date(today.getFullYear(), today.getMonth(), curDay).toDateString()})
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data['status']);
         if (data['status'] == 200) {
           //obtains the task list
           let tasks = data['task'];
@@ -412,3 +430,4 @@ for (let i = 7; i < dayBtns.length; i++) {
     }
   });
 }
+
