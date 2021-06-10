@@ -1,6 +1,6 @@
 # Quickstart guide:
 
-![App on Home Page](images/app-home.png =55%x55%)
+![App on Home Page](images/app-home.png)
 
 1. Clone this project to your local machine with `git clone https://github.com/cse110-sp21-group8/cse110-sp21-group8.git`. Then do `git checkout demo` to check out the development branch (if `demo` did not show up as the default branch). The `main` branch is where we store our past meeting notes along with other specification documents.
 2. Enter `npm install` into the terminal in the root directory to install necessary node modules for development.
@@ -9,7 +9,7 @@
 
 # But wait, what do all the directories and files mean?
 
-![View from the root directory](images/root.png =11%x11%)
+![View from the root directory](images/root.png)
 
 - Use the `main` branch to check out the `admin` and `specs` directory. The former is for our group's past meeting notes, and the latter contains specifications of our app, including ADRS documents, past brainstorming session notes and our pitch deck template.
 - Back to the `demo` branch, `.github` is the directory containing all the stuff related to Github. Right now we only have the `workflows` directory in it for the yml files of our CI/CD Pipeline which consists of linting-formatting, documentation generation and testing. 
@@ -22,7 +22,7 @@
 
 # Time to test:
 
-![Snapshot of our testing](images/test-process.png =50%x50%)
+![Snapshot of our testing](images/test-process.png)
 
 - To test, simply `npm test` in the root directory. It will produce test reports in `coverage`. 
 - Currently, unit and UI testing are what we do. 
@@ -31,7 +31,7 @@
 - If you take a peek inside of test files, there's some test cases that we commented out; this is because we ran out of time before we figured out how to utilize the `puppeteer` commands properly. We also ran into problems with the testing Github Action where it gives us inconsistent test results even though our tests all passed locally.
 - Other than that, you can help us add or fix test cases of our app.
 
-![Local test coverage report](images/test-coverage.png =70%x70%)
+![Local test coverage report](images/test-coverage.png)
 
 # What about deployment?
 
