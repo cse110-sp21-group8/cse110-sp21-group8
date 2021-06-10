@@ -219,7 +219,6 @@ addButton.addEventListener('click', () => {
   text_box.append(task);
   let taskInput = task.shadowRoot.querySelector('#tasks');
   let selection = task.shadowRoot.querySelector('#checklist-select');
-  taskInput.value = '● ';
 
   //prefixes value with correct symbol based on drop down menu
   selection.addEventListener('change', () => {
