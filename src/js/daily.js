@@ -571,6 +571,8 @@ function getDailyTasks() {
         tasks.forEach((tmp) => {
           // skip reflections
           if (tmp['type'] === 'reflection') {
+            document.getElementById('reflection').value= tmp['content'];
+            isReflectionNew = false;
             return;
           }
 
@@ -853,16 +855,16 @@ function getDailyTasks() {
       break;
     }
   }
-  let date = new Date();
-  let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
-
+  //let date = new Date();
+  //let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
+  /*
   //load reflection
   fetch('/getDailyTask', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({date: new Date(today.getFullYear(), today.getMonth(), curDay).toDateString})
+    body: JSON.stringify({date: new Date(today.getFullYear(), today.getMonth(), curDay).toDateString, type:"reflection"})
   })
     .then((response) => response.json())
     .then((data) => {
@@ -870,16 +872,12 @@ function getDailyTasks() {
       if (data['status'] == 200) {
         //obtains the task list
         let tasks = data['task'];
-
-        tasks.forEach((tmp) => {
-          
-          if (tmp['type'] === 'reflection') {
-            document.getElementById('reflection').append(tmp['content']);
-            isReflectionNew = false;
-          }
-        });
+        console.log(tasks);     
+        document.getElementById('reflection').append(tasks['content']);
+        isReflectionNew = false;
       }
     });
+    */
 }
 
 //load Task:
