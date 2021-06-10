@@ -10,5 +10,6 @@ Check out our [Wiki](https://github.com/cse110-sp21-group8/cse110-sp21-group8/wi
 
 ## Our Product 
 We sacrificed our time, energy, and mental health to create a UI-focused Bullet Journal Crud Application. Here is our [onboarding documentation](/onboarding.md) to teach you how to navigate through our repo and utilize our product. Hope you enjoy!
+
 ![image](images/introduction.gif)
 
