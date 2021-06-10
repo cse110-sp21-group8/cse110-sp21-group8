@@ -8,7 +8,7 @@
     "test": "jest --detectOpenHandles --coverage",
     "lint": "eslint ./src ",
     "doc": "jsdoc -c jsdoc.json",
-    "stop": "pkill --signal SIGINT node"
+    "stop": "pkill -SIGINT -f node"
   },
   "repository": {
     "type": "git",
