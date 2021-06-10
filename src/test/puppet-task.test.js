@@ -123,7 +123,7 @@ describe('Daily Tasks tests:', () => {
       let elem = document.getElementById('reflection');
       return elem.value;
     });
-    expect(Reflect).toBe(new Date().toDateString() + old_Reflect);
+    expect(Reflect).toBe(old_Reflect+new Date().toDateString());
   });
 
   //User click on the calendar and it shows the tasks correctly
