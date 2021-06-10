@@ -461,7 +461,6 @@ addButton.addEventListener('click', () => {
       };
       let newData = data;
       let send_data = {old: oldData, new: newData};
-      
       //udpating task in database
       fetch('/updateTask', {
         method: 'POST',
@@ -641,7 +640,7 @@ function getDailyTasks() {
             for (let i = 7; i < dayBtns.length; i++) {
               if (dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)') {
                 curDay = dayBtns[i].innerHTML;
-              break;
+                break;
               }
             }
             let date = new Date();
@@ -661,7 +660,6 @@ function getDailyTasks() {
 
             //updating on database
             let send_data = {old: oldData, new: newData};
-            
             fetch('/updateTask', {
               method: 'POST',
               headers: {
@@ -981,7 +979,6 @@ reflection.addEventListener('focusout', () => {
               });
           } else {
             let send_data = {old: oldData, new: newData};
-            
             fetch('/updateTask', {
               method: 'POST',
               headers: {
@@ -1071,7 +1068,6 @@ for (let i = 1; i <= m_lastDay; i++) {
       old: {_id: M_cal.getAttribute('task_id')},
       new: {date: cday.toDateString()}
     };
-    
     fetch('/updateTask', {
       method: 'POST',
       headers: {
