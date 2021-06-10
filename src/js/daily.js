@@ -303,6 +303,7 @@ addButton.addEventListener('click', () => {
       let oldData = data;
       let newData = oldData; 
       newData.tag = taskTag; 
+      console.log(newData);
       //updating on database
       let send_data = {old: oldData, new: newData};
       fetch('/updateTask', {
@@ -679,6 +680,37 @@ function getDailyTasks() {
             } else {
               taskInput.value = '⚬ ';
             }
+          });
+
+          //updates the changed tag option
+          tagOption.addEventListener('change', () => {
+            if(task.isNew){
+              taskTag = tagOption.value;
+            } else {
+              taskTag = tagOption.value;
+              let oldData = data;
+              let newData = oldData; 
+              newData.tag = taskTag; 
+              console.log(newData);
+              //updating on database
+              let send_data = {old: oldData, new: newData};
+              fetch('/updateTask', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(send_data)
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data['status'] == 200) {
+                    //Success;
+                  }
+                })
+                .catch((error) => {
+                  console.error('Error:', error);
+                });
+              }
           });
 
           let index = Array.prototype.indexOf.call(text_box.children, task);
