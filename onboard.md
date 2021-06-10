@@ -43,6 +43,8 @@
 6. Now, trust the process and `git push -f heroku deploy:main` to push, build and deploy our app in one command via the Heroku remote!
 7. Our app exists at this address: https://flatearth-bujo.herokuapp.com/
 
+![Build Success!](images/build-success.png)
+
 # Extras:
 
 - **Scripts**:
