@@ -548,7 +548,6 @@ addButton.addEventListener('click', () => {
                         taskInput.value[0] = change;
                         let content = taskInput.value; //.replace(inputArr[0], change);
                         let date = new Date();
-                        //TODO: fix the bug that content isnt fully showing
                         let newData = {status:"daily", type:`${selection.value}`, content:content,date:date.toDateString()};
                         send_data = {old:oldData, new:newData}; 
                         fetch('/updateTask', {  

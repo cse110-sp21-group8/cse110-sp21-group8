@@ -602,6 +602,11 @@ window.onload = function () {
                       .catch((error) => {
                         console.error('Error:', error);
                       });
+                    });
+                  });
+                }
+              }); 
+         
 
 //load Task:
 window.onload = function(event){
@@ -634,15 +639,14 @@ window.onload = function(event){
         .then(response => response.json())
         .then(data => {
             if(data["status"]==200){
-                    subTask.remove();
-                  });
-                });
-              }
-            });
+              subTask.remove();
+            } else {
+              //alert("Task didn't added");
+            }         
         });
-      } else {
-        //alert("Task didn't added");
-      }
+              //}
+            //});
+        //});
 
       /* Custom Tag */
       let tmp = data['task'][0];
@@ -657,12 +661,14 @@ window.onload = function(event){
         button.innerHTML = tagOpts[i].innerHTML;
         button.value = tagOpts[i].innerHTML;
         buttonDiv.appendChild(button);
-        button.addEventListener('click', () => {
+        button.addEventListener('click', getButtons(button.value)); 
+      }
+        /*() => {
           let collections = document.getElementById('tag-button');
           while (collections.firstChild) {
             collections.removeChild(collections.firstChild);
           }
-          collections.className = 'show-tag';
+          collections.className = 'show-tag';*/
 
           fetch('/getDailyTask', {
             method: 'POST',
@@ -685,6 +691,8 @@ window.onload = function(event){
                     let tag = task.shadowRoot.querySelector('#tag-select');
                     taskInput.value = tmp["content"];
                     task.isNew = false;
+                  
+                
 
                     //Load in custom tags
                     fetch('/getCustomTag', {
@@ -759,6 +767,46 @@ window.onload = function(event){
                         }
                       })
                     });
+
+                    //Load in the right tag
+                    console.log(tmp.tag);
+                    for (let i = 1; i < tag.options.length; i++) {
+                      if (tag.options[i].value == tmp.tag) {
+                        tag.selectedIndex = `${i}`;
+                      }
+                    }
+
+                    /* Custom Tag */
+                    let buttonDiv = document.getElementById('tag-button');
+                    tagOpts.forEach((element) => {
+                      let button = document.createElement('button');
+                      button.type = "button";
+                      button.innerHTML = element;
+                      button.value = element;
+                      buttonDiv.appendChild(button);
+                      button.addEventListener('click', function(){getButtons(button.value)});
+                    });
+
+                    //Go Back to Collections
+                    let header = document.getElementById('collect-h');
+                    header.addEventListener('click', () => {
+                      let collections = document.getElementById('tag-button');
+                      while (collections.firstChild) {
+                        collections.removeChild(collections.firstChild);
+                      }
+                      collections.className = 'widget-content';
+                      tagOpts.forEach((element) => {
+                        console.log(element);
+                        let button = document.createElement('button');
+                        button.type = "button";
+                        button.innerHTML = element;
+                        button.value = element;
+                        buttonDiv.appendChild(button);
+                        button.addEventListener('click', function(){getButtons(button.value)});
+                      });
+
+                    });
+
                     /* */
 
                     taskInput.addEventListener('focusout', (event) => {
@@ -803,46 +851,11 @@ window.onload = function(event){
                     task.task_id = tmp._id;
                     taskInput.value = tmp['content'];
                     task.isNew = false;
-
-                    //Load in the right tag
-                    console.log(tmp.tag);
-                    for (let i = 1; i < tag.options.length; i++) {
-                      if (tag.options[i].value == tmp.tag) {
-                        tag.selectedIndex = `${i}`;
-                      }
                     }
+                  }
+              
 
-            /* Custom Tag */
-            let buttonDiv = document.getElementById('tag-button');
-            tagOpts.forEach((element) => {
-              let button = document.createElement('button');
-              button.type = "button";
-              button.innerHTML = element;
-              button.value = element;
-              buttonDiv.appendChild(button);
-              button.addEventListener('click', function(){getButtons(button.value)});
-            });
-
-            //Go Back to Collections
-            let header = document.getElementById('collect-h');
-            header.addEventListener('click', () => {
-              let collections = document.getElementById('tag-button');
-              while (collections.firstChild) {
-                collections.removeChild(collections.firstChild);
-              }
-              collections.className = 'widget-content';
-              tagOpts.forEach((element) => {
-                console.log(element);
-                let button = document.createElement('button');
-                button.type = "button";
-                button.innerHTML = element;
-                button.value = element;
-                buttonDiv.appendChild(button);
-                button.addEventListener('click', function(){getButtons(button.value)});
-              });
-
-            });
-
+                    
             //Function for clicking the buttons
             function getButtons(value) {
               let collections = document.getElementById('tag-button');
@@ -899,44 +912,12 @@ window.onload = function(event){
                     });
               } 
             /* */
-        })
+            })
         .catch((error) => {
         console.error('Error:', error);
-                    //Load in the right task type
-                    let taskType =
-                      task.shadowRoot.querySelector('#checklist-select');
-                    for (let i = 1; i < taskType.options.length; i++) {
-                      if (taskType.options[i].value == tmp.type) {
-                        taskType.selectedIndex = `${i}`;
-                      }
-                    }
-                    collections.append(task);
-                  }
-                });
-              }
-            });
-        });
-      }
-
-      //Go Back to Collections
-      let header = document.getElementById('collect-h');
-      header.addEventListener('click', () => {
-        let collections = document.getElementById('tag-button');
-        while (collections.firstChild) {
-          collections.removeChild(collections.firstChild);
-        }
-        collections.className = 'widget-content';
-        for (let i = 1; i < tagOpts.length; i++) {
-          let button = document.createElement('button');
-          button.type = 'button';
-          button.innerHTML = tagOpts[i].innerHTML;
-          button.value = tagOpts[i].innerHTML;
-          buttonDiv.appendChild(button);
-        }
-      });
-      /* */
-    })
+      })
     .catch((error) => {
       console.error('Error:', error);
-    });
+    })
+
 };
