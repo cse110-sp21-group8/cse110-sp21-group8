@@ -895,11 +895,10 @@ let reflectionForm = document.querySelector('#reflect-box form');
 reflection.addEventListener('click', () => {
   if (document.getElementById('reflection').value === '') {
     isReflectionNew = true;
-  }
-  else {
+  } else {
     isReflectionNew = false;
   }
-})
+});
 
 //adding reflection when user focuses out
 reflection.addEventListener('focusout', () => {
@@ -990,7 +989,7 @@ reflection.addEventListener('focusout', () => {
               .catch((error) => {
                 console.error('Error:', error);
               });
-              console.log('reflection deleted');
+            console.log('reflection deleted');
           } else {
             let send_data = {old: oldData, new: newData};
             fetch('/updateTask', {

@@ -13,3 +13,8 @@ We sacrificed our time, energy, and mental health to create a UI-focused Bullet 
 
 ![image](images/introduction.gif)
 
+## Our Process 
+
+[Private Video](https://youtu.be/2J-X0AxxSjM)
+
+

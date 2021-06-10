@@ -73,7 +73,13 @@ for (let i = 7; i < dayBtns.length; i++) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({date: new Date(today.getFullYear(), today.getMonth(), curDay).toDateString()})
+      body: JSON.stringify({
+        date: new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          curDay
+        ).toDateString()
+      })
     })
       .then((response) => response.json())
       .then((data) => {
@@ -87,9 +93,9 @@ for (let i = 7; i < dayBtns.length; i++) {
           tasks.forEach((tmp) => {
             // skip reflections
             if (tmp['type'] == 'reflection') {
-                  // eslint-disable-next-line no-unused-vars
-              console.log("RELECT:",tmp['content']);
-              document.getElementById('reflection').value= tmp['content'];
+              // eslint-disable-next-line no-unused-vars
+              console.log('RELECT:', tmp['content']);
+              document.getElementById('reflection').value = tmp['content'];
               // eslint-disable-next-line no-undef
               isReflectionNew = false;
               return;
@@ -411,4 +417,3 @@ for (let i = 7; i < dayBtns.length; i++) {
     }
   });
 }
-
