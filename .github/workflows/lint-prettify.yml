@@ -13,7 +13,7 @@ jobs:
         node-version: '10.x'
     - name: Install modules
       run: npm install
-    - run: npm lint --fix
+    - run: npm run lint --fix
     - name: Auto-commit formatting results
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
