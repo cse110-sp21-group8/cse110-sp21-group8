@@ -55,15 +55,14 @@ for (let i = 7; i < dayBtns.length; i++) {
       }
     }
     document.getElementById('text-box').innerHTML = '';
-    console.log("line 58");
-    document.getElementById('reflection').innerHTML = 'poop';
+    document.getElementById('reflection').innerHTML = '';
     let date = new Date(today.getFullYear(), today.getMonth(), i - 6);
     fetch('/getDailyTask', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({date: curDate.toDateString()})
+      body: JSON.stringify({date: date.toDateString()})
     })
       .then((response) => response.json())
       .then((data) => {
@@ -152,20 +151,11 @@ for (let i = 7; i < dayBtns.length; i++) {
               let oldData = data.task[index];
               let content = taskInput.value;
               let date = new Date();
-              let dayBtns = document.querySelectorAll('.day');
-              let curDay;
-              for (let i = 7; i < dayBtns.length; i++) {
-                if (dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)') {
-                  curDay = dayBtns[i].innerHTML;
-                  break;
-                }
-              }
-              let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
               let newData = {
                 status: 'daily',
                 type: 'task',
                 content: content,
-                date: curDate.toDateString()
+                date: date.toDateString()
               };
               let send_data = {old: oldData, new: newData};
               fetch('/updateTask', {
@@ -292,7 +282,7 @@ for (let i = 7; i < dayBtns.length; i++) {
                         status: 'daily',
                         type: 'task',
                         content: content,
-                        date: curDate.toDateString(),
+                        date: date.toDateString(),
                         task_id: subTask.task_id
                       };
                       let send_data = {old: oldData, new: newData};
