@@ -461,7 +461,7 @@ addButton.addEventListener('click', () => {
       };
       let newData = data;
       let send_data = {old: oldData, new: newData};
-
+      
       //udpating task in database
       fetch('/updateTask', {
         method: 'POST',
@@ -636,22 +636,32 @@ function getDailyTasks() {
 
           //updates task when user focuses out of textbox
           taskInput.addEventListener('focusout', (event) => {
+            let dayBtns = document.querySelectorAll('.day');
+            let curDay;
+            for (let i = 7; i < dayBtns.length; i++) {
+              if (dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)') {
+                curDay = dayBtns[i].innerHTML;
+              break;
+              }
+            }
+            let date = new Date();
+            let curDate = new Date(date.getFullYear(), date.getMonth(), curDay);
             event.preventDefault();
             //getting old data from database
             let index = Array.prototype.indexOf.call(text_box.children, task);
             let oldData = data.task[index];
             //setting new data based on user input
             let content = taskInput.value;
-            let date = new Date();
             let newData = {
               status: 'daily',
               type: `${selection.value}`,
               content: content,
-              date: date.toDateString()
+              date: curDate.toDateString()
             };
 
             //updating on database
             let send_data = {old: oldData, new: newData};
+            
             fetch('/updateTask', {
               method: 'POST',
               headers: {
@@ -971,6 +981,7 @@ reflection.addEventListener('focusout', () => {
               });
           } else {
             let send_data = {old: oldData, new: newData};
+            
             fetch('/updateTask', {
               method: 'POST',
               headers: {
@@ -1060,6 +1071,7 @@ for (let i = 1; i <= m_lastDay; i++) {
       old: {_id: M_cal.getAttribute('task_id')},
       new: {date: cday.toDateString()}
     };
+    
     fetch('/updateTask', {
       method: 'POST',
       headers: {
