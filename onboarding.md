@@ -104,3 +104,83 @@ To add a Future Log, you must click a specific date in the calendar. After click
 Dark mode or light mode person, our BuJo can support both! It actually adapts to your browser settings, so if you change your browser settings to dark or light mode, your BuJo's color scheme will also change!
 
 ![alt text](/images/darkmode.gif)
+
+# Workflow
+
+- ## Github Procedures
+If you don’t have the Yarn package manager on your computer, install it following instructions via this link: 
+https://classic.yarnpkg.com/en/docs/install#mac-stable
+
+If you have never cloned the project repository to your local computer, open your terminal and do this:
+git clone https://github.com/cse110-sp21-group8/cse110-sp21-group8.git
+
+Otherwise, navigate to the repository:  
+- cd cse110-sp21-group8
+
+Make sure you check out the main branch first:  
+- git checkout main
+
+Remember to pull any remote code to your local computer before working:  
+- git pull
+
+Then install necessary dependencies of the project:  
+- yarn install
+
+Now, create a new branch out of main:  
+- git checkout -b [BRANCH_NAME]
+
+Here, BRANCH_NAME should be relevant to what you’re working on. We’re going to use the following templates for branch names; this helps keep task branches tractable based on names.  
+- If you’re working on a new feature, based on the team, the branch name should be [TEAM_NAME]/feature/[WHAT_YOURE_WORKING_ON].
+  - Example: if you’re doing frontend work and creating the daily log component, you’ll want to create a branch like this:
+  - git checkout -b frontend/feature/daily-log
+
+In the process of working on a feature, you may be stepping through several substages until you finish implementing it. At the end of each substage, it is important that you record your process by adding your work to the local branch and committing it. You do this by (first, again, navigating to your repository and checking out the right branch, and then) executing these lines:  
+- (cd cse110-sp21-group8)  
+- git checkout -b [BRANCH_NAME])  
+- git add . (⤺ that is a dot)  
+- git commit -m “[COMMIT_MESSAGE]” (include the double quotation too!)  
+
+Now, this [COMMIT_MESSAGE] should be clear and semantic. Note that there’s no need for dashing and lowerCamelCasing.  
+- Example: git commit -m “add date for daily log”
+
+Eventually, you’ve finished implementing the feature and you gotta push your code to the remote repository. But before pushing, it is good practice to pull so that, if you’re working with someone else on the same branch, any major conflicts stay on the local branch instead of the remote one. So, always pull before pushing:  
+- git pull  
+- git push -u origin [BRANCH_NAME]
+
+After pushing the code, take a look at Github Actions – which is where our CI/CD pipeline is doing its job. If there’s any error raised during the process, you should go back and fix your code accordingly so that it passes through the pipeline with green checks.
+
+With the code passing the push-activated Actions, you want to create a pull request for the Repo team to review your code. To create a pull request:  
+- Navigate to our repository website. 
+- Go to the “Pull Requests” tab.
+- Click “New pull request”.
+- Choose your [BRANCH_NAME] and click “Create pull request”. You’ll be transported to the comparison page where you’ll see all the changes you made. Click “Create pull request”. 
+- Include @bao and @dante in the “Reviewers” section on the right for them to review and merge the branch soon. Also include @yourself and @anyone-else-who-worked-on-this-with-you in the “Assignees” section below.
+- **Note**: on the last pull request dashboard, it’s very tempting to click “Merge pull request” but please don’t. DO NOT MERGE INTO main BY YOURSELF.
+
+
+- ## How to Use the Kanban Board
+To access the project [Kanban](https://github.com/cse110-sp21-group8/cse110-sp21-group8/projects), click the Projects tab:
+![alt text](/images/project_board.png)
+
+Go to the only entry there and it should look like [this](https://github.com/cse110-sp21-group8/cse110-sp21-group8/projects/1):
+![alt text](/images/kanban_board.png)
+
+In the **To Do** column, we'll put tasks that have been created but we have not started working on. We'll usually create **To Do** entries at our spring meetings at the beginning of the week. However, the **To Do** can be updated at anytime, and doesn't just hae to be at meetings.
+
+In the **Attention Please!** column, this is where we'll drag entries from other columns if a serious bug were to happen or if an entry has really high priority.
+
+In the **In Progress** column, this is where we'll drag entries from the **To Do** when they are currently being worked on.
+
+In the **Review** column, this is where we'll drag **In Progress** entries once they are finished and being reviewed by the Repo team to see if the code is up to standards.
+
+Finally the **Done** column is where the Repo team will put entries that have been successfully merged into the main branch.
+
+- ## Converting Kanban Cards to Issues
+Take an entry in the project board and convert it to a github issues.
+Here is an example:
+![alt text](/images/issues.png)
+
+Next, although we already have the label in the title. Make sure to assign the label in the right column.
+![alt text](/images/issues_label.png)
+
+Finally, don't forget to tag the issue when making a pull request so we can get that issue resolved.
