@@ -799,5 +799,42 @@ function addCustomTag(data, res, req) {
   });
 }
 
+
+//deleting Custom Tag
+app.post('/deleteCustomTag', function (req, res) {
+  let data = req.body; //get the form data
+  data['user'] = req.session.uid;
+  console.log('Got Custom tag body:', data);
+  //insert data into the database:
+  deleteCustomTag(data, res, req);
+});
+
+/**
+ * Deletes a custom tag
+ * @param {*} data - data used to identify custom tag being deleted
+ * @param {*} res - response sent back by server
+ * @param {*} req - request sent from server
+ */
+ function deleteCustomTag(data, res, req) {
+  const conn = mongoose.createConnection(process.env.DATABASE_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    poolSize: 10
+  });
+  const CustomTags = conn.model('CustomTags', CustomTagSchema);
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function () {
+    // insert new task into the database
+    //add the user id into the data
+    CustomTags.deleteOne(data, function (err, result) {
+      if (err) return console.error(err);
+      console.log('Custom tag deleted successfully');
+      res.send({status: 200});
+      conn.close();
+    });
+  });
+}
+
+
 //export the module function for testing
 module.exports = {app: app};
