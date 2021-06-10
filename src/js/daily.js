@@ -26,6 +26,26 @@ addTagButton.addEventListener('click', () => {
     customTag.id = customInput.value;
     let tagList = document.getElementById('text-box').childNodes;
 
+    let data = {name: `${customInput.value}`};
+    fetch('/addCustomTag', {  
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      }, 
+      body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log(data);
+          if(data["status"]==200){
+              let newTag = data["tags"];
+          }else{
+          }
+      })
+      .catch((error) => {
+      console.error('Error:', error);
+    });
+
     for (let i = 1; i < tagList.length; i++) {
       newTag = false;
       let choices = new Option(`${customTag.id}`, `${customTag.id}`);
@@ -53,36 +73,6 @@ document.addEventListener('click', (event) => {
           break;
         }
       }
-
-      let oldData = data;
-      let content = selectedTask.parentElement.querySelector('#tasks').value;
-      data = {
-        status: 'daily',
-        type: 'task',
-        content: content,
-        date: oldData['date'],
-        tag: selectedTask.task_tag
-      };
-      let newData = data;
-      let send_data = {old: oldData, new: newData};
-      fetch('/updateTask', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(send_data)
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data['status'] == 200) {
-            //Success;
-          } else {
-            // alert("Task didn't added");
-          }
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
     }
   });
 });
@@ -291,6 +281,8 @@ addButton.addEventListener('click', () => {
   taskInput.value = '● ';
 
   let selection = task.shadowRoot.querySelector('#checklist-select');
+  let tagOption = task.shadowRoot.querySelector('#tag-select');
+  let taskTag;
 
   //prefixes value with correct symbol based on drop down menu
   selection.addEventListener('change', () => {
@@ -301,6 +293,10 @@ addButton.addEventListener('click', () => {
     } else {
       taskInput.value = '⚬ ';
     }
+  });
+
+  tagOption.addEventListener('change', () => {
+    taskTag = tagOption.value;
   });
 
   //adds or updates task to database when user focuses out
@@ -327,7 +323,8 @@ addButton.addEventListener('click', () => {
         status: 'daily',
         type: 'task',
         content: content,
-        date: curDate.toDateString()
+        date: curDate.toDateString(),
+        tag: taskTag
       };
 
       //add data to the database
@@ -376,7 +373,8 @@ addButton.addEventListener('click', () => {
         status: 'daily',
         type: 'task',
         content: content,
-        date: curDate.toDateString()
+        date: curDate.toDateString(),
+        tag: taskTag
       };
       let newData = data;
       let send_data = {old: oldData, new: newData};
@@ -600,13 +598,33 @@ function getDailyTasks() {
             console.log(tmp._id);
           });
 
-          //Load in the right tag
-          console.log(tmp.tag);
-          for (let i = 1; i < tag.options.length; i++) {
-            if (tag.options[i].value == tmp.tag) {
-              tag.selectedIndex = `${i}`;
+          //tagging 
+          fetch('/getCustomTag', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data["status"] == 200) {
+                    //obtains the task list
+                    let tags = data["tags"];              
+                    tags.forEach((elem) => {
+                      let choices = new Option(`${elem.name}`, `${elem.name}`);
+                      tag.appendChild(choices);
+                    })
+                }
+            });
+            //Load in the right tag
+            console.log(task);
+            console.log(task.task_tag);
+            for(let i = 1; i < tag.options.length; i++){
+              if(tag.options[i].value == task.task_tag){
+                tag.selectedIndex = `${i}`;
+              }
             }
-          }
 
           //Load in the right task type
           let taskType = task.shadowRoot.querySelector('#checklist-select');
@@ -622,8 +640,10 @@ function getDailyTasks() {
           }
 
           let selection = task.shadowRoot.querySelector('#checklist-select');
-
-          //prefix symbol depending if user selects event, task, note
+          let tagOption = task.shadowRoot.querySelector('#tag-select');
+          let taskTag;
+        
+          //prefixes value with correct symbol based on drop down menu
           selection.addEventListener('change', () => {
             if (selection.value == 'Task') {
               taskInput.value = '● ';
@@ -632,6 +652,10 @@ function getDailyTasks() {
             } else {
               taskInput.value = '⚬ ';
             }
+          });
+        
+          tagOption.addEventListener('change', () => {
+            taskTag = tagOption.value;
           });
 
           //updates task when user focuses out of textbox
@@ -647,7 +671,8 @@ function getDailyTasks() {
               status: 'daily',
               type: `${selection.value}`,
               content: content,
-              date: date.toDateString()
+              date: date.toDateString(),
+              tag: taskTag
             };
 
             //updating on database
@@ -870,6 +895,8 @@ function getDailyTasks() {
         });
       }
     });
+
+    
 }
 
 //load Task:
