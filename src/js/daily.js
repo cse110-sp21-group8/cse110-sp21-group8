@@ -571,7 +571,7 @@ function getDailyTasks() {
         tasks.forEach((tmp) => {
           // skip reflections
           if (tmp['type'] === 'reflection') {
-            document.getElementById('reflection').value= tmp['content'];
+            document.getElementById('reflection').value = tmp['content'];
             isReflectionNew = false;
             return;
           }
@@ -783,6 +783,7 @@ function getDailyTasks() {
                       status: 'daily',
                       type: 'task',
                       content: content,
+                      // eslint-disable-next-line no-undef
                       date: date.toDateString(),
                       task_id: subTask.task_id
                     };
@@ -851,6 +852,7 @@ function getDailyTasks() {
   let curDay;
   for (let i = 7; i < dayBtns.length; i++) {
     if (dayBtns[i].style.background === 'rgba(90, 168, 151, 0.624)') {
+      // eslint-disable-next-line no-unused-vars
       curDay = dayBtns[i].innerHTML;
       break;
     }

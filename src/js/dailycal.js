@@ -44,6 +44,7 @@ let dayBtns = document.querySelectorAll('#calendar .day');
 dayBtns[currentDay + 6].style.background = '#5aa8979f';
 
 let curIdx = currentDay + 6;
+let curDay;
 for (let i = 7; i < dayBtns.length; i++) {
   dayBtns[i].addEventListener('click', () => {
     // change background color of selected day
@@ -65,6 +66,7 @@ for (let i = 7; i < dayBtns.length; i++) {
 
     document.getElementById('text-box').innerHTML = '';
     document.getElementById('reflection').value = '';
+    // eslint-disable-next-line no-unused-vars
     let date = new Date(today.getFullYear(), today.getMonth(), i - 6);
     fetch('/getDailyTask', {
       method: 'POST',
@@ -114,7 +116,6 @@ for (let i = 7; i < dayBtns.length; i++) {
               console.log(tmp._id);
             });
 
-            let curDay;
             if (i <= 15) {
               curDay = '0' + (i.toString() - 6);
             } else {
