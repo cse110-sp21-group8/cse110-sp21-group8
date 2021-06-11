@@ -50,7 +50,12 @@ for (let i = 1; i <= 4; i++) {
 
   /* Loops until the last day */
   for (let k = today.getDate(); k <= lastDay; k++) {
-    fDay = actualDate;
+    /* Gets the first day of that week */
+    if(actualDate % lastDay == 1){
+      fDay = 1;
+    } else {
+      fDay = actualDate;
+    }
     fMonth = months[(currentMonth + currMonth) % 12];
 
     /* Fills in the week */
@@ -62,6 +67,7 @@ for (let i = 1; i <= 4; i++) {
       let toNum = document.createElement('div');
 
       /* If it reaches past the last day then it will go into the next month */
+      lMonth = months[(currentMonth + currMonth) % 12];
       actualDate = actualDate % lastDay;
       if (actualDate == 0) {
         actualDate = lastDay;
@@ -70,7 +76,6 @@ for (let i = 1; i <= 4; i++) {
       } else {
         numDay = ((currentMonth + currMonth + 1) % 12) + '/' + actualDate;
       }
-      lMonth = months[(currentMonth + currMonth) % 12];
       lDay = actualDate;
       toNum.innerHTML = numDay;
 
