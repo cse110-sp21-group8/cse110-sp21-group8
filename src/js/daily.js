@@ -570,10 +570,11 @@ addButton.addEventListener('click', () => {
                             console.error('Error:', error);
                         });
                     })
+                  
         .catch((error) => {
           console.error('Error:', error);
         });
-    }
+    //}
   });
 
   // When user presses enter after entering a task, data is added/updated in the database
@@ -717,7 +718,7 @@ addButton.addEventListener('click', () => {
           });
         }
       });
-  });
+  //});
 
   taskInput.focus();
 });
@@ -1281,3 +1282,4 @@ for (let i = 1; i <= m_lastDay; i++) {
   });
   migration_monthDays.appendChild(day);
 }
+

@@ -636,7 +636,7 @@ window.onload = function(event){
         .then(data => {
             if(data["status"]==200){
                     subTask.remove();
-                  });
+                  };
                 });
               }
             });
