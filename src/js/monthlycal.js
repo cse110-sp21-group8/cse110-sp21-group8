@@ -51,7 +51,7 @@ for (let i = 1; i <= 4; i++) {
   /* Loops until the last day */
   for (let k = today.getDate(); k <= lastDay; k++) {
     /* Gets the first day of that week */
-    if(actualDate % lastDay == 1){
+    if (actualDate % lastDay == 1) {
       fDay = 1;
     } else {
       fDay = actualDate;
