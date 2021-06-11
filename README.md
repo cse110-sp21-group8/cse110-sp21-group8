@@ -16,5 +16,6 @@ We sacrificed our time, energy, and mental health to create a UI-focused Bullet 
 ## Our Process 
 
 [Private Video](https://youtu.be/2J-X0AxxSjM)
+[Public Video](https://youtu.be/QuXwBWVee7M)
 
 
