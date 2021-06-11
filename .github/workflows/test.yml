@@ -1,6 +1,6 @@
 name: Test JS files
 
-on: [push, pull_request]
+on: push
 
 jobs:
   eslint:
@@ -12,16 +12,9 @@ jobs:
       with:
         node-version: '10.x'
     - name: Install modules
-      run: yarn install
+      run: npm install
     - run: sudo apt-get install xvfb
-    
-    - run: xvfb-run --auto-servernum yarn test tasks.test.js
-    - run: xvfb-run --auto-servernum yarn test users.test.js 
-    - run: xvfb-run --auto-servernum yarn test puppet-user.test.js
-    - run: xvfb-run --auto-servernum yarn test puppet-task.test.js
-    - run: xvfb-run --auto-servernum yarn test puppet-future.test.js
-    - run: xvfb-run --auto-servernum yarn test puppet-monthly.test.js
-    - run: xvfb-run --auto-servernum yarn test puppet-home.test.js
+    - run: xvfb-run --auto-servernum npm test
 
             
         
