@@ -368,7 +368,6 @@ window.onload = function () {
             })
         }
   });
-  console.log(tagOpts);
   fetch('/getDailyTask', {
     method: 'POST',
     headers: {
@@ -400,12 +399,14 @@ window.onload = function () {
           task.isNew = false;
 
           //Load in the right tag
-          console.log(task.tag);
-          for (let i = 1; i < tagOpts.length; i++) {
-            if (tagOpts[i] == task.tag) {
-              tag.selectedIndex = `${i}`;
+          console.log(tmp.tag);
+          let i = 1;
+          tagOpts.forEach((element) => {
+            if (element == tmp.tag) {
+              tag.selectedIndex = i;
             }
-          }
+            i++;
+          })
 
           //Load in the right task type
           let taskType = task.shadowRoot.querySelector('#checklist-select');
@@ -442,6 +443,8 @@ window.onload = function () {
               let oldData = data;
               let newData = oldData; 
               newData.tag = taskTag; 
+              console.log(newData);
+              console.log("hello");
               //updating on database
               let send_data = {old: oldData, new: newData};
               fetch('/updateTask', {
@@ -752,13 +755,15 @@ window.onload = function () {
           collections.removeChild(collections.firstChild);
         }
         collections.className = 'widget-content';
-        for (let i = 1; i < tagOpts.length; i++) {
+        tagOpts.forEach((element) => {
+          console.log(element);
           let button = document.createElement('button');
-          button.type = 'button';
-          button.innerHTML = tagOpts[i].innerHTML;
-          button.value = tagOpts[i].innerHTML;
+          button.type = "button";
+          button.innerHTML = element;
+          button.value = element;
           buttonDiv.appendChild(button);
-        }
+          button.addEventListener('click', function(){getButtons(button.value)});
+        });
       });
       /* */
     })
@@ -795,7 +800,6 @@ fetch('/getDailyTask', {
             if(tmp.tag == value){
               let task = document.createElement('task-list');
               let taskInput = task.shadowRoot.querySelector('#tasks');
-              let taskForm = task.shadowRoot.querySelector('#form');
               let tag = task.shadowRoot.querySelector('#tag-select');
               task.task_id = tmp._id;
               taskInput.value = tmp["content"];
