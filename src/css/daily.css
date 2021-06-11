@@ -141,6 +141,8 @@ body {
   width: 90%;
   height: 90%;
   justify-self: center;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 /* formatting for home button itself */
