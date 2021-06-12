@@ -621,7 +621,7 @@ window.onload = function () {
       taskInput.value = tmp['content'];
       let tagOpts = task.shadowRoot.querySelector('#tag-select').options;
       let buttonDiv = document.getElementById('tag-button');
-      console.log("Testing build");
+      console.log('Testing build');
       for (let i = 1; i < tagOpts.length; i++) {
         let button = document.createElement('button');
         button.type = 'button';
